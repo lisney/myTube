@@ -1,3 +1,5 @@
+https://rogerdudler.github.io/git-guide/index.ko.html
+
 //Git Bash 한글 안될 때(Bash : 유닉스 쉘)
 상단 오른 쪽 클릭 > Options...> Text > Locale :: ko_KR, UTF-8로 변경
 
