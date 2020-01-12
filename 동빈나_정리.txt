@@ -4,4 +4,80 @@ npm i -g create-react-app
 2. 리액트 프로젝트 생성
 create-react-app.cmd <프로젝트 폴더명> //.cmd 보안에러시 붙임
 
-3.
+3.깃허브에 저장
+소스컨트롤 탭 > +버튼을 눌러 모두 추가해 준다 > 커밋 메시지를 입력 후 >체크 버튼을 눌러 커밋한다
+터미널에서 깃허브에서 생성한 주소를 리모트 주소로 설정한다
+git remote add origin <깃 주소>
+git push origin master
+
+4.자바스크립트에서 Emmet 사용하기
+Ctrl +, > WorkSpace setting > Include Languages > setting.json 편집
+{
+   "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+   }
+}
+추가
+
+5. props
+::컴포넌트
+        <div>
+            <h2>{this.props.name}</h2>
+            <p>{this.props.birthday}</p>
+            <p>{this.props.gender}</p>
+            <p>{this.props.job}</p>
+        </div>
+:: 불러옴 import Customer from './components/Customer.js'
+const customer ={'name':'...', 'birthday':'...'
+<Customer name={customer.name} birthday={customer.birthday}...
+
+6.컴포넌트 구조화
+## https://placeimg.com/64/64/any  //랜덤으로 이미지 보여주는 사이트
+$$ VScode 에서는 Ctrl 키를 누른 상태에서 컴포넌트 명을 클릭하면 해당 컴포넌트로 바로 이동한다
+
+6.map 매소드 사용 배열 반복처리
+>>map() 함수는 각 배열의 요소를 돌면서 인자로 전달된 함수를 사용하여 처리 된 새로운 결과를 새로운 배열에 담아 반환하는 함수입니다.
+
+const numbers = [1, 2, 3, 4, 5];
+const result = numbers.map((num) => num *2);
+console.log(result);
+
+>>Component 배열로 map하기
+class MyComponent extends Component
+{    
+    render(){
+        return(
+            <ul>
+                <li>Menu1</li>
+                <li>Menu2</li>
+                <li>Menu3</li>
+                <li>Menu4</li>
+            </ul>
+        )
+    };
+}
+를 다음과 같이 바꿀 수 있다.
+class MyComponent extends Component
+{    
+    render(){
+
+        const menus = ["Menu1", "Menu2", "Menu3", "Menu4"]
+        const menuList = menus.map((menu, index) => (<li key={index}>{menu}</li>));
+
+        return(
+            <ul>
+                {menuList}
+            </ul>
+        )
+    };
+}
+//{}안에 배열 객체 이름을 작성합니다.
+//리액트(React)에서 key는 컴포넌트를 렌더링 하였을 때 어떤 원소가 변경되었는지 빠르게 감지하기 위해 사용됩니다.
+ 만약 key가 설정되지 않았다면 가상 DOM을 순차적으로 비교하면서 감지하기 때문에 key가 없을때보다 속도가 느립니다.
+
+7.Material UI
+material-ui.com
+>> 설치
+npm i @material-ui/core
+
+
