@@ -1,8 +1,8 @@
-1. 리액트 설치
+﻿1. 리액트 설치
 npm i -g create-react-app
 
 2. 리액트 프로젝트 생성
-create-react-app.cmd <프로젝트 폴더명> //.cmd 보안에러시 붙임
+create-react-app.cmd <프로젝트 폴더명> --scripts-version 2.0.3 //.cmd 보안에러시 붙임, class 버전 설치
 
 3.깃허브에 저장
 소스컨트롤 탭 > +버튼을 눌러 모두 추가해 준다 > 커밋 메시지를 입력 후 >체크 버튼을 눌러 커밋한다
@@ -79,5 +79,9 @@ class MyComponent extends Component
 material-ui.com
 >> 설치
 npm i @material-ui/core
+
+##create-react-app 생성 안될 때
+yarn cache clean
+
 
 
