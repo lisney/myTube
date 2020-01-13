@@ -1,0 +1,14 @@
+http://www.mingw-w64.org/  컴파일러 설치
+::migw-developer-toolkit, mingw32-base, mingw322-gcc-g++,msys-base 체크 > 설치 
+
+VSCode 마켓에서 Install the Microsoft C/C++ extension
+
+환경변수 C:\MinGW\bin 추가
+
+VSCode 터미널(ctrl + `  혹은 Terminal>New Terminal)을 열어 컴파일해줌
+gcc <파일명.c>
+
+
+
+
+
