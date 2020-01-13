@@ -38,3 +38,11 @@ $git push origin master
 //git fetch <remote>  ::리모트 저장소로 가져옴
 //git push origin master :: origin은 원격 저장소 이름, master은 현재 사용하는 컴퓨터의 브랜치 이름
 
+>> 원격 저장소에서 가져오기
+$git pull origin master
+
+error: Your local changes to the following files would be overwritten by merge
+발생 시
+$git stash
+$git pull
+
