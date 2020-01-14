@@ -83,5 +83,31 @@ npm i @material-ui/core
 ##create-react-app 생성 안될 때
 yarn cache clean
 
+////////////////////////////////////////////
+npm init은 package.json을 만드는 명령어였죠? 새로운 프로젝트나 패키지를 만들 때 사용합니다.
+
+npm root는 node_modules의 위치를 알려줍니다.
+
+npm ls는 패키지를 조회하는 명령어입니다.
+
+npm adduser은 npm에 회원가입하는 명령어입니다. 로그인도 됩니다. npm login도 똑같은 역할을 합니다.
+
+npm logout은 반대로 logout할 때 사용합니다.
+
+npm publish는 패키지를 직접 출시하거나 버전 업그레이드를 할 때 사용하는 명령어입니다. .gitignore또는 .npmignore 파일에 적혀있지 않은 파일들은 npm 저장소에 업로드되어 출시됩니다.
+
+npm deprecate는 이미 낸 패키지를 사용하지 않도록 권고하는 명령어입니다. 자신이 어떤 버전을 출시했는데 치명적인 버그가 있다면 이 명령어를 사용해서 다른 사람들에게 사용하지 말도록 말해줍시다.
+
+npm version은 버전 업데이트를 할 때 사용합니다. 새로운 버전이 나왔다면 npm version [버전]하면 됩니다.
+
+npm start은 package.json의 scripts에 있는 start 명령어를 실행하는 부분입니다. 만약 start 명령어를 따로 설정하지 않았다면 node server.js가 실행됩니다.
+
+npm cache는 npm 내의 cache를 보여줍니다. 만약 npm에 문제가 생기거나 하면 제일 먼저 하는 게 npm cache clean으로 cache를 지우는 겁니다.
+
+npm rebuild는 npm을 다시 설치하는 명령어입니다. 에러가 발생했을 시 주로 npm cache clean을 한 후 이 명령어를 쳐서 재설치해봅니다.
+
+npm config는 npm의 설정을 조작하는 명령어입니다. npm config list 하면 현재 설정들을 볼 수 있고, npm set [이름] [값], npm get [이름]으로 속성을 설정하거나 조회할 수 있습니다.
+
+
 
 

@@ -45,3 +45,10 @@ error: Your local changes to the following files would be overwritten by merge
 $git stash
 $git pull
 
+//git clone <원격 주소> //로컬로 복사해온다( tortose>Git 복제하기)
+
+//tortose 깃>원격>origin:: URL 에 원격주소 붙여넣기//일반>Git:: 이름, 메일주소 넣기
+
+//package.json 을 참조하여 모듈 설치
+git install
+

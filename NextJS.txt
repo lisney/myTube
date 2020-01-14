@@ -1,0 +1,26 @@
+﻿>>설치
+mkdir hello-next
+cd hello-next
+npm init -y
+npm install --save react react-dom next
+mkdir pages
+
+>>Then open the package.json
+"scripts": {
+  "dev": "next",
+  "build": "next build",
+  "start": "next start"
+}
+
+>>실행
+npm run dev
+
+///Emmet 리액트에서 사용하기
+설정(Ctrl + ,) > WorkSpace setting > Include Languages :: setting.json 후 아래 복붙!
+{
+   "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+   }
+}
+//
+
