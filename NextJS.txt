@@ -2,10 +2,10 @@
 mkdir hello-next
 cd hello-next
 npm init -y
-npm install --save react react-dom next
+npm install --save react react-dom next //설치 Dependencies 에 모듈(react, react-dom, next)을 추가한다
 mkdir pages
 
->>Then open the package.json
+>>Then open the package.json 스크립트 수정
 "scripts": {
   "dev": "next",
   "build": "next build",
@@ -23,4 +23,35 @@ npm run dev
    }
 }
 //
+
+//실행 PORT 바꾸기
+"scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start -p $PORT"
+  }
+
+>npm run build
+>PORT=8000 npm start
+
+https://jcon.tistory.com/133 참조
+-----------------------------------
+
+//정적폴더 사용하기
+루트에 'public' 폴더를 만든다 :: 주소는 / 이다(/ 루트이다, public 아래 images 폴더를 만들어 /images 로 활용한다)
+
+//이미지를 센터에 놓기 CSS
+1. 부모 요소 사용
+	div{text-align : center}
+	<div>
+		<img .../>
+	</div>
+2.block요소로 만든 후  margin 속성 사용
+	img{display:block, margin: 0px auto}
+
+
+https://jcon.tistory.com/129 튜토리얼
+
+
+
 
