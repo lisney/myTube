@@ -1,0 +1,969 @@
+//전체 블록
+display: grid; //그리드로 보이겠다
+grid-template-columns: auto 100px 1fr 2fr ...;
+grid-template-rows: 100px 100px ...;
+// fr(fraction/분수)
+//auto 콘텐츠에 맞춰 사이즈 조정, 1fr 2fr 남은 공간을 분배한다
+//repeat(3, 100px) //100px 3회 
+//grid-gap
+
+//해당 아이템 grid-column: 2/4;  //시작선, 끝선
+
+//border 보다 outline을 사용한다  outline: 3px dotted black;
+
+//z-index
+==============================================================
+//CSS 컬러 : (light)slategray, (floral)white, beige, orange, tomato, (blue)violet, (dodger, sky)blue, navy, teal, gold, silver, (forest, yellow)green
+
+  <style>
+        .grid{
+            display: grid;
+            grid-template-columns: 1fr 5fr 1fr;
+            grid-template-rows: 20px 200px 20px;
+            outline: 1px;
+            grid-template-areas: 
+                "header header header"
+                "nav main aside"
+                "footer footer footer"
+        }
+        header{
+            grid-area: header;
+            background: slategray;
+        }
+        nav{
+            grid-area: nav;
+            background: teal;
+        }
+        main{
+            grid-area: main;
+            background: plum;
+        }
+        aside{
+            grid-area: aside;
+            background: tomato;
+        }
+        footer{
+            grid-area: footer;
+            background: dodgerblue;
+        }
+    </style>
+<body>
+    <div class="grid">
+        <header></header>
+        <nav></nav>
+        <main></main>
+        <aside></aside>
+        <footer></footer>
+    </div>
+
+</body>
+
+======================================================
+
+Emmet 스닙펫 대신 HTML 스닙펫 사용
+파일>기본설정>사용자 코드 조각:: html  검색 => html.json : 다음 코드 삽입
+//////////////////////////
+{
+	// Place your snippets for html here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	
+	"HTML5 form": {
+
+		
+	
+		"prefix": "!",
+	
+		"body": [
+	
+		  "<!--",
+	
+		  " * File : ${1:file name & version}",
+	
+		  " * Update: ${2:date}",
+	
+		  " * Author: developerN",
+	
+		  "-->",
+	
+		  "<!DOCTYPE html>",
+	
+		  "<html lang=\"ko\">",
+	
+		  "<head>",
+	
+		  " <meta charset=\"UTF-8\">",
+	
+		  " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+	
+		  " <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">",
+	
+		  " <title>${3:title}</title>",
+	
+		  "</head>",
+	
+		  "<body>",
+	
+		  "$0", 
+	
+		  "</body>",
+	
+		  "</html>"
+	
+		],
+	
+		"description": "default html5 form"
+}
+}
+
+//////Emmet///////
+
+// {내용$}  <>내용<>
+// [href="#"]
+// ul>li
+// div*5
+
+//script:src 
+//link:css
+//ul.slider>li*7>img[src="images/pic_$.jpg"]
+
+//ul{내용$}*4
+/////////////////////
+>>Position, z-index, overflow, float 예제- display도 테스트해볼것
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        span, div{
+            background:yellow;
+            border: 1px solid red;
+            width: 300px;
+            height: 80px;
+            float: left;
+            
+          }
+
+        .left{
+            position: relative; // 상대적(Position 기본은 static이다)//absolute는 형제 간 서열을 무시한다(부모 기준으로 위치를 정한다)
+            bottom: 5px;  //Position:relative, absolute 하면 위치를 바꿀 수 있다(left:값은 좌측 기준으로 떨어지는 값이다)
+            z-index: -1; (값이 낮을수록 멀어진다)
+        }
+        .parent{
+            position: relative;
+            left:30px;
+            z-index: -1;
+            overflow: hidden; //자식이 넘치는 부분을 감춰줌(비행float자식은 부모의 울타리를 넘어가버리는데...)
+        }
+        .child{
+            position: static;
+            background: green;
+            width: 80px;
+            height: 100px;
+            right: 50px;
+            float: left;
+        }
+        .child:nth-child(2n+1){
+            background: olive;
+        }
+        .child:nth-child(2){
+            position: relative;
+            left: -20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="left">div1</div>
+    <div class="parent">
+        <div class="child">아들</div>
+        <div class="child">아들</div>
+        <div class="child">아들</div>
+    </div>
+</body>
+</html>
+
+==============================================
+>>미디어쿼리
+
+@media screen and (max-width: 768px) {  //미디어의 속성이 screen이고 최대값이 768을 넘지않는다(768이하일 때만 작동)
+	body { background-color: lightgreen; }
+ }
+==============================================
+>> 애니메이션
+
+    <style>
+        p{
+            animation-duration: 3s;
+            animation-name: slidein; // 키프레임으로 넘길 애니메이션 이름
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        @keyframes slidein{  //
+            from{
+                margin-left: 100%;
+                width: 200%;
+            }
+            to{
+                margin-left: 0%;
+            }
+            75%{			//75% 위치의 키프레임
+                font-size: 300%;
+                margin-left: 25%;
+                width:150%;
+            }
+        }
+        
+    </style>
+
+==================================================
+========= JQuery 애니메이션
+    <script>
+        $(function(){
+            $("#box").slideUp(2000,"linear", function(){
+                alert("핼로");
+            });
+        });
+    </script>
+==================================================
+========= JQuery 애니메이션
+    <script>
+    $(function(){
+        $("#box").animate({marginLeft:"500px",fontSize:"30px"},2000,"linear",function(){ // .delay(2000).animate(....  2초 후 애니메이션 시작
+            setTimeout(function(){
+               alert("미션 콤플리트!!");    //.animate().animate().animate()  꼬리에 꼬리를 무는 애니메이션
+            }, 2000);
+        });
+    });
+    </script>
+
+====================================================
+========= 버튼 글자 이동 애니메이션
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script>
+    $(function(){
+        var txt1 = $(".txt1");
+        var count = 1;
+        $(".btnWrap button").on("click",function(){
+            if(!txt1.is(":animated")){    // 만약 txt1이 애니메이션되고 있지 않다면, 애니메이션되는 도중에는 실행되지 않는다
+                if($(this).hasClass("backBtn")){   // 누른게 backBtn 인가?
+                    count--;
+                    if(count<1){
+                        count =1;
+                        return false;
+                    }
+                    txt1.animate({marginLeft:"-=10%"},300);
+                }else{
+                    count++;
+                    if(count>10){
+                        count=10;
+                        return false;
+                    }
+                    txt1.animate({marginLeft:"+=10%"},300);
+                }
+        }});
+        
+    });
+    </script>
+
+
+</head>
+<body>
+    <p class="btnWrap">
+        <button class="backBtn">Back</button>
+        <button class="goBtn">Go</button>
+    </p>
+    <div class="wrap">
+        <p class="txt1">내용1</p>
+    </div>
+</body>
+</html>
+
+============================================================
+
+>>Grid 로 반응형 웹디자인
+
+1. html(li를 다섯 번 복사한다)
+<ul class=”boxes”>
+	<li>
+		<div class=”boxes__text-wrapper”>
+		<h2>Case Study Title</h2>
+		<p>A catchy description for our case study. We worked hard.</p>
+		</div>
+	</li>
+</ul>
+
+2. 기본 스타일 작성
+body { font-family: Avenir, sans-serif; margin: 2rem auto; width: 95%; }
+h2, p { margin: 0; }
+ul { list-style: none; padding: 0; margin: 0; }
+.boxes > * { padding: .5rem; background-color: #333; color: white; } //그래디언트 백 background: linear-gradient(#000,#777, chocolate);
+
+// 중복 배경 CSS:  background: center/30% 50% url('./grass.png'), center/contain no-repeat  url('./wampstack.png');
+//center/contain  :: center 대신 "10% 10%","10%",left등이 가능하고 contain 대신 cover, "10% 20%", "10%" 등을 써도된다
+//no-repeat 대신 repeat-x등이 가능
+
+//Column
+	.....
+/*            column-count: 2;*/  // 컬럼을 두 개 사용한다
+            column-width: 200px; //컬럼의 폭을 정의
+            column-gap: 10px;
+            column-rule: 5px dotted green;  // 가르는 선의 속성
+        }
+        h1{
+            column-span: all; // 모든 컬럼 영역을 사용한다
+        }
+
+
+3. 기본 그리드 생성
+.boxes {
+	display: grid;
+	grid-auto-rows: minmax(125px, auto);(행의 최소값 125px 최대값을 자동으로 맞춘다)
+	grid-gap: .5rem; } //rem의 root의 치수를 기준으로 한다(em은 부모의 치수를 기준)
+
+4. 미디어쿼리를 사용해 반응형을 구현한다 
+@media screen and (min-width: 40em) {  //최소값이 40em이다. 40보다 작으면 작동하지않는다
+	.boxes { 
+		grid-template-columns: repeat(6, 1fr);  // 6개의 균등한 열을 만든다
+		grid-gap: 2px; } }
+=======================================================================
+
+
+#javascript 선택자
+var varName = document.querySelector("#아이디");   //아이디를 가진 태그를 변수에 할당
+---getElementById("아이디")
+---getElementByClassName("클래스명")
+
+prompt("내용","placeHolder");
+varName.style.color = 'red';
+varName.onclick = function(){...} 
+// 클릭 시 함수  html 태그에 바로 onclick="함수명()"으로 해도된다(이때 스크립트에는 function 함수명(){....} 이라는 함수를 생성해야한다)
+document.write("내용");
+
+#객체 //변수형
+var 객체명{
+name: ['이름1', '이름2'],
+age: 32,
+Bio: function(){...}
+}
+
+#객체 //생성함수(클래스)
+function 객체생성자명(파라미터,...){
+this.name = 인수; // 프로퍼티 할당
+this.Greeting = function(){...}; //매서드
+}
+
+#생성함수로 객체 생성하기
+var 객체명 = new 생성함수(인수);
+
+#객체 추가
+객체명['멤버명'] = 프로퍼티 혹은 함수;
+
+####JQUERY######
+//책 내용 중 실행되지 않는 구문
+$("#member:password").css({...}) => $("#member input[type='password']").css({...})
+하거나 member :password 띄어쓰기 할 것
+
+
+$("선택자").mouseover(function(){...});  //선택자  .wrap1, #wrap
+$(function(){...});
+$("선택자").on("mouseover focus", function(){..,});  // 복합 이벤트
+
+샘플######################## 메뉴 아코디언
+<div class="wrap_1">안녕하셍</div>
+    <ul style="display:none">  //감춤
+        <li>리스트1</li>
+        <li>리스트2</li>
+        <li>리스트3</li>
+    </ul>
+    <div class="wrap_1">안녕하셍</div>
+    <ul style="display:none">
+        <li>리스트1</li>
+        <li>리스트2</li>
+        <li>리스트3</li>
+    </ul>
+
+<script>
+        $(".wrap_1").click(function(){
+            $(this).css("background-color","yellow");
+            
+            var ts = $(this);
+            $(".wrap_1").next().filter(":visible").hide(); // .wrap Next의 보이는(필터) 모든 것이 사라짐
+            ts.next().show();  // 현재 선택한 것 Next를 보이게 함
+          });
+</script>
+
+####################################
+테이블 생성 - 태그와 요소값을 동시에
+
+	    var tb = $("<table />");   
+
+           	    var row = $("<tr />").append(
+                $("<td />").text("이름"),
+                $("<td />").text("박자"),
+                $("<td />").text("성별"),
+           		 );
+            tb.append(row);
+            $(".grid header").append(tb);
+
+    <style>
+        table{
+            border-collapse:collapse;
+        }
+        table td{
+            border: 1px solid #00f; 
+        }
+    </style>
+
+
+r#####고스톱
+<body>
+   <p class="btnWrap">
+       <button class="backBtn">Back</button>
+       <button class="goBtn">Go</button>
+   </p>
+   
+   <div class="wrap">
+       <p class="txt1">내용</p>
+   </div>
+    
+    <script>
+        var txt1 = $(".txt1");
+        var count = 1;
+        $(".btnWrap button").on("click", function(){
+            var ts = $(this);
+            if(ts.hasClass("backBtn")){
+                count--;
+                if(count < 1){
+                    count = 1;
+                    return;
+                }
+                txt1.stop(true,true).animate({marginLeft:"-=10%"},500); //stop() 스택을 비우고 멈춘다
+            }else{
+                count++;
+                if(count >10){
+                    count = 10;
+                    return;
+                    }
+                txt1.stop(true,true).animate({marginLeft:"+=10%"},500);
+            }
+        });
+    </script>
+</body>
+
+######################################################
+#########비동기 Ajax
+########## 우선 mockaroo.com에서 가상 json 데이터를 생성한다
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script> //CDN 방식으로 라이브러리 연결
+    <script>
+        $.ajax({url:"ajax/MOCK_DATA.json",
+               dataType:"json",
+                success:function(data){
+                    var tableTag =$("<table />"); //table 태그 생성
+                    data.forEach(function(obj, idx){
+                        var trTag = $("<tr />");
+                        var td1Tag = $("<td />").text(obj.id);
+                        var td2Tag = $("<td />").text(obj.first_name);
+                        trTag.append(td1Tag, td2Tag);
+                        tableTag.append(trTag);
+                    });
+                    $(".member-wrap").append(tableTag); 
+                }
+               });
+    </script>
+</head>
+<body>
+    <div class="member-wrap">
+        
+    </div>
+</body>
+</html>
+################################################################
+$(document).ready(function(){...});   //$(function(){...}); 으로 줄여써도된다
+<사용자 방문><웹브라우저 시작><웹문서 읽기><DOM 생성><ready메소드 실행><이미지등 로드><모든 요소가 로드되면 load메소드 실행>
+$(window).load(function(){...});
+
+#############################################################
+############## bxSlider PlugIn(CSS\images 폴더 생성 후 좌우이동버튼 넣기)
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="plugin/bxslider-4-master/js/jquery.bxslider.js"></script>
+    <link rel="stylesheet" href="plugin/bxslider-4-master/css/jquery.bxslider.css">
+    <script>
+    
+        $(document).ready(function(){
+            $(".slider").bxSlider();
+        });
+    </script>
+    <style>
+    
+        .slidWidth{
+            max-width: 330px;
+        }
+    </style>
+</head>
+<body>
+   <div class="slidWidth">
+    <ul class="slider">
+        <li><img src="plugin/bxslider-4-master/images/pic1.jpg" alt=""></li>
+        <li><img src="plugin/bxslider-4-master/images/pic2.jpg" alt=""></li>
+        <li><img src="plugin/bxslider-4-master/images/pic3.jpg" alt=""></li>
+    </ul>
+       
+   </div>
+</body>
+</html>
+###########################################################
+확장기능 Snippet
+//Brackets snippets(by edc)
+
+#####################################
+
+콜백함수
+//"함수의 인수로 전달"되는 함수로 "특정한 상황이 되었을 때(예; 로딩이 끝났을 때) 실행"되는 함수
+
+///////////////////////////////////////////////////////////
+/////////////////// JQuery
+
+$().css("color","blue").css("color","blue").css("color","blue"); //체이닝 기법
+$("*").css({margin: "5px", padding:"10px", color: "blue"});
+
+// 태그 생성과 추가 - 자바스크립트
+   <script>
+        var todo = ['디자인 샘플 작성','데이터 정리','스터디 신청', '우유 사기'];
+        for(var i = 0; i<todo.length; i++){
+            var li = document.createElement('li');
+            li.textContent = todo[i];
+            document.getElementById("list").append(li);  //document.querySelector("#list").append(li);
+        }
+    </script>
+
+//생성과 추가 -JQuery
+
+//        var text = $('span').text();   //단순 텍스트를 불러온다 // 자바스크립트의 textContent = "텍스트" 와 같은 결과
+//        var html = $('span').html();  //태그를 포함해 불러온다
+
+
+//$('태그') - DOM객체 생성 
+   <script>
+        var todo = ['디자인 샘플 작성','데이터 정리','스터디 신청', '우유 사기'];
+        for(var i = 0; i<todo.length; i++){
+            var li = $('<li>'+todo[i]+'</li>');
+            $("#list").append(li);  //DOM 요소, 태그포함 *추가, .html(li)는 기존의 내용을 *대체한다
+        }
+    </script>
+
+//특수문자 사용(Tab등)
+<pre> 태그를 사용한다 
+
+//////////////////////////////////////////////////////////////////
+// 숫자를 문자로 바꾸고 앞에 지정한 문자로 채우는 함수
+    <script>
+        $(function(){
+            function addZero(num, digit){
+                var numString = String(num);  // 숫자를 문자로 변환하여 변수에 대입
+                while(numString.length < digit){  // 개수만큼 앞에 '0'을 넣는다 01, 001, 0001처럼
+                    numString = '0' + numString;
+                }
+                return numString;
+            }
+            
+            var songs = ['Stella By star light',
+                        'Satim Doll',
+                        'Caravan',
+                        'Besame Mucho',
+                        'Bluesette'];
+            for(var i =0; i <songs.length; i++){
+                var paragraph = document.createElement('p');
+                paragraph.textContent = addZero(i+1, 3) + ' : '+ songs[i];
+                document.getElementById('list').appendChild(paragraph);
+            }
+        });
+    </script>
+
+/////////////////////////////////////////////////////////////////////
+배열 반복문
+$(배열명).each(function(i,o){...}); // i 인덱스, o 내용
+
+var obj = ["서울","부산","전주"];
+
+$(obj).each(function(i,o){...};
+
+==> $.map(obj, function(i,o){....; return i}); 같은 결과
+
+배열 요소 찾아 인덱스 반환
+$.inArray("요소",배열명)
+
+            var obj = ["서울","부산","전주"];
+             var i = $.inArray("서울",obj);
+            $("#menu").append(obj[i]);
+
+=========================
+>>선택한 요소의 속성 .attr("src")
+
+var secVal = $("#sec_1 img").attr("src"); //img 태그의 src 속성을 secVal 변수에 저장
+
+    <section id="sec_1">
+        <img src="#" alt="">
+    </section>
+
+>>요소의 value 값 .val()
+
+<input type="text" name="user_id" id="user_id" value="hello">
+
+>>폼 요소(선택 상자, 체크 박스, 라디오 버튼)의 상태 속성값 .prop("[checked \selected]")
+
+>>요소의 윈도우상 위치좌표
+$("").offset().top
+
+var result_1 = $("#sec_1").offset().top; //해당 요소의 윈도우 상단에서 떨어진 값
+$(window).scrollTop(result_1); // 거리값만큼 슬라이더바 옮김//결국 해당 요소의 위치로 간다
+
+>>요소 복사
+var copyObj = $("#sec1").clone();
+var copyObj = $("#sec1").children().clone();//하위 태그의 내용
+
+<section id="sec_1">
+        <img src="#" alt="">안녕하세요
+        <h1>너는 누구냐</h1>  //하위태그의 내용
+    </section>
+
+>>하위 요소의 홀수(인덱스) 필터링 
+$(".container div:odd").css({background:"green"});
+
+>>$(this) //나야 나
+	$(".aside").hover(function(){             //.hover =>.mouseover 또는 .on({"mouseover", function(){...}} 로도 쓴다 ##on({ < 중괄호 주의
+               $(this).css({background:"green"});   //멀티 이벤트 .on({"이벤트1":function(){...}, "이벤트2":function(){...}});
+           });
+
+>>$(".btn1").on({"click":function(a){   //<a>태그같은 눌렀을 때 작동하는 기능을 없애고 자바스크립트가 핸들링하기위해 사용 a.preventDefault
+               a.preventDefault();
+
+>>마우스오버(아웃)와 마우스엔터(리브)
+오버는 자식영역에 들어가도 감지, 엔터는 자식영역에 들어가면 감지하지 않는다
+
+>>호버((마우스엔터,리브 동시에 연결))
+	$(".aside").hover(function(){
+                $(this).css({background:"green"});            
+            $(".header").css({background:"silver"});
+           },function(){
+                $(this).css({background:"gold"});
+                alert("환영합니다");                
+                       });
+
+=======================================
+=== 현재 마우스 X,Y위치값 ========= mousemove 
+       $(function(){
+          $(document).on("mousemove",function(e){
+             $(".main").text(e.pageX); 
+             $(".aside").text(e.pageY); 
+          });
+       });
+=======================================
+
+>>마우스 포커스/블러
+
+>>라이브 이벤트 등록 :: 자바스크립트 실행 중 생성한 클래스에는 .on 이벤트 등록으로하면 실행되지 않는다
+$(".btn_1 on").on("mouseover focus", function(){...}); //on 클래스는 실행되지 않는다
+$("btn_1").addClass("on");
+>>그래서
+$(document).on("mouseover focus", "btn_1 on", function(){...});
+$("btn_1").addClass("on");
+>>방법을 사용한다
+
+======================================================
+===== 버튼으로 폰트 사이즈 조정하기
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script>
+        $(function(){
+            var baseFontSize = 14;
+            $(".zoomBtn button").on("click",zoomInOut);
+            function zoomInOut(){
+                if($(this).hasClass("zOut")){
+                    if(baseFontSize<=8)return false;
+                    baseFontSize--;
+                }else if($(this).hasClass("zIn")){
+                    if(baseFontSize>=20) return false;
+                    baseFontSize++;
+                }else{
+                    baseFontSize = 14;
+                }
+                
+                $(".fontSize").text(baseFontSize+"px");
+                $("body").css({fontSize:baseFontSize +"px"});
+            }
+        });
+    </script>
+</head>
+<body>
+    <p class="zoomBtn">
+        <button class="zOut">-</button>
+        <button class="origin">100%</button>
+        <button class="zIn">+</button>
+    </p>
+    <p class="fontSize">14pt</p>
+    <div id="wrap">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat natus possimus totam, consequuntur tempore reiciendis id ab! Eos modi doloremque fugit, nostrum facere ex quod, laudantium, quia doloribus dolore possimus.</div>
+</body>
+</html>
+
+====================================================================
+== 소수점 두 자리까지만 
+
+    <script>
+        $(function(){
+            function point(num, digit){
+                var time = Math.pow(10, digit);
+                return Math.floor(num*time)/time;
+            }
+            $("#output").text(point(Math.PI, 2));
+        });
+    </script>
+
+====================================================================
+== Date 객체 초기
+
+            var goal = new Date(2020,6,7,59,59);  //년, 월, 일은 필수항목
+//	  var goal = new Date();
+//            goal.setHours(23);
+//            goal.setMinutes(59);
+//            goal.setSeconds(59);
+
+====================================================================
+== 풀다운 메뉴 form>select>option
+
+1.방법
+    <script>
+        $(function(){
+            document.getElementById('form').select.onchange = function(){
+                location.href = document.getElementById('form').select.value;
+            };
+        });
+    </script>
+
+2.Jquery
+
+    <script>
+        $(function(){
+            $('#form select').change(function(){
+                 $(location).attr('href', $("#form select").val());  // $("#ind").html($("#form option:selected").var()) , .text()하면 내용
+            });
+        });
+    </script>
+
+====================================================================
+== 풀다운 메뉴 Selected Bool 속성 사용
+
+1.js 파일
+
+var lang = document.querySelector('html').lang;
+
+var opt;
+if(lang === 'ko'){
+    opt = document.querySelector('option[value="index.html"]');
+}else if(lang ==='en'){
+    opt = document.querySelector('option[value="index-en.html"]');
+}else if(lang ==='ja'){
+    opt = document.querySelector('option[value="index-jp.html"]');
+}
+
+//switch(lang){          // switch 문을 사용해도 같은 결과
+//	case 'ko' : opt = document.querySelector(...);
+//		break;
+//	case ...
+
+opt.selected = true;
+
+document.getElementById('forms').mySelect.onchange = function(){
+    location.href = document.getElementById('forms').mySelect.value;
+}
+
+2. html, html-en, html-ja 세 개 만든다
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    
+</head>
+<body>
+   <form action="" id="forms">
+       <select name="mySelect" id="">
+           <option value="index.html">한국어</option>
+           <option value="index-en.html">영한국어</option>
+           <option value="index-ja.html">일본어</option>
+       </select>
+   </form>
+    한국어
+    <script src="./script.js"></script>
+
+</body>
+</html>
+
+====================================================================
+== 쿠키 생성과 삭제
+1. <script src="./jquery.cookie.js"></script>
+
+2. HTML
+       <form action="index-en.html" id="form1">
+           <input type="radio" name="frequency">주 1회 이상<br>
+           <input type="radio" name="frequency" checked>주 1회 이상<br>
+           <input type="radio" name="frequency">주 1회 이상<br>
+           <input type="submit" name="전송하기" id="submit">
+       </form>
+       
+       <button id="removeCookie">쿠키삭제</button>
+
+3.   <script>
+        document.getElementById('form1').onsubmit = function(){
+            if($.cookie('answered') ==='yes'){
+                window.alert('이미 응답했습니다. 설문지 응답은 한 번만');
+                return false;
+            }else{
+                $.cookie('answered', 'yes', {expires: 7}); //$.cookie('name', 'value', {expires:7}) //7일 뒤 만료되는 쿠키 생성
+            }
+        };
+       document.getElementById('removeCookie').onclick = function(){
+           $.removeCookie('answered'); //쿠키 삭제
+       }
+    </script>
+
+
+// data-무엇이든  => dataset.무엇이든
+태그에    <.....data-image = "img1.jpg"></..>
+
+1. 자바스크립트에선 	document.getElementById("bigimg").src = this.dataset.image;
+
+2. JQuery에선 	$("#bigimg").attr("src", $(this).data('image'));
+
+//썸네일 클릭 이미지 전환
+1. 자바스크립트
+var thumbs = document.querySelectorAll('.thumb');
+for(var i = 0; i < thumbs.length; i++){
+	thumbs[i].onclick = function(){
+		documant.getElementById('bigimg').src = this.dataset.image;
+	}
+
+}
+
+2.JQuery
+        $(function(){
+            var thumbs =$('.thumb');
+            thumbs.on("click", function(){
+                $('#bigimg').attr("src",$(this).data('image'));
+            });
+        });
+
+//toggleClass('...')  //클래스 생성과 삭제
+ ==> $(this).next().toggleClass('hidden')   // 'hidden' 이라는 이름의 클래스가 있으면 삭제 없으면 생성한다
+
+// 스킴, 서브 도메인, 도메인, 포트 번호(보통은 표시하지 않음)
+http://www.jpub.kr:80
+==> http:// 스킴, www  서브도메인, jpub.kr 도메인, 80 포트
+
+
+///////////////////////////////////////////////////////////
+
+실행 시 한글 깨질 때 CMD 명령프롬프터에서 코드 페이지를 바꾼다 chcp
+
+And, change the code page to UTF-8.
+chcp 65001
+
+///////////////////////////////////////////////////////////
+/////////////////////// 3 초 후 실행
+function run(){
+    console.log("3초 후 실행함");
+}
+
+console.log("시작");
+
+setTimeout(run,3000);
+
+console.log('끝');
+
+
+///자바스크립트 클래스 예
+        class Product{
+            constructor(name){
+                this.name = name;
+                this.color = 'white';
+                this.price = 3000000;
+            }
+            
+            info(){
+                document.write(this.name+' 색상: '+this.color,'<br>');
+                document.write(this.name+' 가격: '+this.price,'<br>');
+            }
+        }
+        
+        let tv = new Product('TV');
+        let car = new Product('CAR');
+        
+        tv.info();
+        car.info();
+
+/////////////////////////////////// forEach
+        let arr = [30, '따르릉', true];
+        
+        arr.forEach(e=>document.write(e,'<br>'));
+
+// CSS animation
+animation: App-logo-spin infinite 10s linear;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+    width:100vmin;
+  }
+  to {
+    transform: rotate(360deg);
+    width:10vmin;
+  }
+}
+
+   @keyframes q-bounce{
+     0%, 20%, 50%, 80%, 100%{
+       transform:translateY(0)
+     }
+     40%{
+       transform:translateY(30px)
+     }
+     60%{
+       transform:translateY(15px)
+     }
+   }
+
+
+
+
