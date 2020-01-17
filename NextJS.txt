@@ -54,4 +54,702 @@ https://jcon.tistory.com/129 튜토리얼
 
 데이터베이스 설계 : ERD 검색
 
+//CSS 사용하기
+next js 프레임 워크는 서버사이드와 클라이언트 사이드 렌더링이 이루어져 
+기존의 react에서 처럼 css를 import하는 방법으로는 css를 적용 시킬 수 없다.
 
+1>모듈 설치
+npm install styled-components
+npm install babel-plugin-styled-components
+
+2>루트폴더에 .babeilrc 파일 생성
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
+      }
+    ]
+  ]
+}
+
+3>/pages/_document.js
+import Document, { Head, Main, NextScript } from 'next/document';
+// Import styled components ServerStyleSheet
+import { ServerStyleSheet } from 'styled-components';
+
+export default class MyDocument extends Document {
+  static getInitialProps({ renderPage }) {
+    // Step 1: Create an instance of ServerStyleSheet
+    const sheet = new ServerStyleSheet();
+
+    // Step 2: Retrieve styles from components in the page
+    const page = renderPage(App => props => sheet.collectStyles(<App {...props} />));
+
+    // Step 3: Extract the styles as <style> tags
+    const styleTags = sheet.getStyleElement();
+
+    // Step 4: Pass styleTags as a prop
+    return { ...page, styleTags };
+  }
+
+  render() {
+    return (
+      <html>
+        <Head>
+          {/* Step 5: Output the styles in the head  */}
+          <meta charSet='utf-8' />
+          <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+          {this.props.styleTags}
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </html>
+    );
+  }
+}
+
+4>npm run dev 끝
+
+5>            <style jsx>
+                {`
+                div{
+                    background-color:#345672;
+                }
+                `}
+            </style>
+ 적용해본다
+
+//bootstrap 등 css 라이브러리 적용하기
+
+1>node_modules 설치
+npm install @zeit/next-css
+
+2>루트 폴더에 next.config.js 파일을 생성한 후 아래의 내용을 넣는다
+// next.config.js
+const withCSS = require('@zeit/next-css');
+module.exports = withCSS({});
+
+3>css module로 사용하지 않고 css 파일을 import하여 className을 이용하여 css를 적용 시키는 방법에 대한 설정이다
+설정 후엔 아래와 같은 방식으로 css 파일을 import하여 사용할 수 있다.
+import 'bootstrap/dist/css/bootstrap.css';
+
+4>매번 컴포넌트마다 넣기에는 귀찮으니 _app.js를 커스텀해서 한 줄만 넣어 모든 컴포넌트에 적용되도록 하자
+pages/_app.js 파일을 생성한 후 아래와 같이 넣으면 설정이 끝난다. 이 또한 자세한 내용은 아래의 두번째 참고url을 확인하자
+import React from 'react';
+import App from 'next/app';
+
+import 'bootstrap/dist/css/bootstrap.css';
+
+class MyApp extends App {
+  // Only uncomment this method if you have blocking data requirements for
+  // every single page in your application. This disables the ability to
+  // perform automatic static optimization, causing every page in your app to
+  // be server-side rendered.
+  //
+  // static async getInitialProps(appContext) {
+  //   // calls page's `getInitialProps` and fills `appProps.pageProps`
+  //   const appProps = await App.getInitialProps(appContext);
+  //
+  //   return { ...appProps }
+  // }
+
+  render() {
+    const { Component, pageProps } = this.props;
+    return <Component {...pageProps} />;
+  }
+}
+
+export default MyApp;
+
+//이미지 불러오기
+1>images 폴더생성
+
+2>모듈 설치
+npm install --save next-images
+
+3>Create a next.config.js in your project
+// next.config.js
+const withImages = require('next-images')
+module.exports = withImages()
+
+4>
+<img src={require('./my-image.jpg')} />
+
+5>또는
+import img from '../images/soo.jpg'
+
+export default () => <div>
+  <img src={img} />
+</div>
+
+//Next js 구조
+pages/ // HTML Document, Application Container, 각종 페이지 등을 작성한다.
+    _document.js // HTML Document.  Next.js에서 서버 사이드 렌더링이 시작이되는 Document 파일이다.
+		즉, <html>, <head>, <body>를 포함한다고 보면된다.
+    _app.js // Application Container. 공통의 레이아웃을 작성한다.
+	_app.js는 어플리케이션이 시작되는 초기 페이지라고 볼 수 있다
+	ComponentDidCatch와 같은 라이프 사이클을 통해 Error Handling을 할 수 있다.
+    _error.js // Error Page.Next.js에서는 pages에 없는 경로로 접근했을 경우, 내장되어 있는 Error 페이지를 보여주게 되어있다.
+    index.js // Root Page /로 시작되는 경로를 말한다.
+    hello.js // Hello Page /hello로 시작되는 경로를 말한다.
+static/ // 정적 파일 (이미지, 파일 등)을 업로드 한다.
+next.config.js // 기본적으로 Next.js는 프로젝트의 루트 경로에 있는 next.config.js를 읽어들이게 된다.
+		Next.js의 환경 설정 파일이다. 라우팅 설정, typescript, less 등의 webpack 플러그인을 설정한다.
+
+//.gitignore 생성
+node_modules/
+pacakge-lock.json
+
+//정적 웹사이트 만들기
+
+1>pages\_document.js 파일 생성
+import Document, { Head, Main, NextScript } from 'next/document';
+
+export default class RootDocument extends Document {
+    render() {
+        return (
+            <html>
+                <Head>
+                    <meta charSet="utf-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+                    <meta name="description" content="My First Static Website"/>
+                    <meta name="keywords" content="nextjs,static,website" />
+                    <style global jsx>
+                        {`
+                            html, body, #__next {
+                                height: 100%;
+                                width: 100%;
+                                overflow: hidden;
+                            }
+                        `}
+                    </style>
+                </Head>
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
+            </html>
+        );
+    }
+}
+
+2>_app.js 파일 생성
+import App, { Container } from 'next/app';
+import Head from 'next/head';
+import React from 'react';
+
+const styles = {
+    layout: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
+    },
+    header: {
+        height: 60,
+    },
+    main: {
+        flex: 1,
+    },
+    footer: {
+        height: 60,
+    },
+}
+
+export default class RootApp extends App {
+    render() {
+        const { Component, ...other } = this.props;
+        return (
+            <Container>
+                <Head>
+                    <title>Static Website</title>
+                </Head>
+                <div style={styles.layout}>
+                    <header style={styles.header}>Header</header>
+                    <main style={styles.main}>
+                        <Component {...other} />
+                    </main>
+                    <footer style={styles.footer}>Footer</footer>
+                </div>
+            </Container>
+        );
+    }
+}
+
+3>_error.js 파일 생성
+import React, { Component } from 'react';
+
+export default class RootError extends Component {
+    render() {
+        return 'Error!';
+    }
+}
+
+4>라우팅
+pages디렉토리에 post.js, about.js까지 생성하였다면 총 3개의 Routing이 생기게 되었다.
+
+5>_app.js에 Link 컴포넌트 추가
+import React from 'react';
+import App, { Container } from 'next/app';
+import Head from 'next/head';
+import Link from 'next/link';
+
+const styles = {
+    layout: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
+    },
+    header: {
+        height: 60,
+    },
+    main: {
+        flex: 1,
+    },
+    footer: {
+        height: 60,
+    },
+    divider: {
+        margin: '0 8px',
+    },
+}
+
+export default class RootApp extends App {
+    render() {
+        const { Component, ...other } = this.props;
+        return (
+            <Container>
+                <Head>
+                    <title>Static Website</title>
+                </Head>
+                <div style={styles.layout}>
+                    <header style={styles.header}>
+                        <Link href="/"><a>Home</a></Link>
+                        <span style={styles.divider}>|</span>
+                        <Link href="/post"><a>Post</a></Link>
+                        <span style={styles.divider}>|</span>
+                        <Link href="/about"><a>About</a></Link>
+                    </header>
+                    <main style={styles.main}>
+                        <Component {...other} />
+                    </main>
+                    <footer style={styles.footer}>Footer</footer>
+                </div>
+            </Container>
+        );
+    }
+}
+
+6>post.js에 라우터 추가
+
+import Router from 'next/router';
+
+export default (props) => {
+    return (
+        <div>
+            First post page
+            <div>
+                <button onClick={() => Router.push('/')}>Home</button>
+            </div>
+        </div>  
+    );
+}
+<Link>와 Router의 큰 차이점은 클라이언트 사이드로 렌더링 하냐 안하냐에 있다.
+Router.push를 사용하면 클라이언트 사이드로 렌더링을 한다.
+
+마찬가지로 about.js에도 추가해준다.
+
+import Router from 'next/router';
+
+export default (props) => {
+    return (
+        <div>
+            About
+            <div>
+                <button onClick={() => Router.push('/')}>Home</button>
+            </div>
+        </div>
+    );
+}
+
+7>URL Params(Query String) 전달
+
+>index.js
+const styles = {
+    from: {
+        color: 'red',
+    },
+};
+
+export default (props) => {
+    const { router } = props;
+    return (
+        <div>
+            Home
+            {
+                router.query.history ? (
+                    <div style={styles.from}>
+                        From the {router.query.history}
+                    </div>
+                ) : null
+            }
+        </div>
+    );
+}
+
+>post.js
+import Router from 'next/router';
+
+export default (props) => {
+    return (
+        <div>
+            First post page
+            <div>
+                <button onClick={() => Router.push('/?history=post')}>Home</button>
+            </div>
+        </div>  
+    );
+}
+
+>about.js
+import Router from 'next/router';
+
+export default (props) => {
+    return (
+        <div>
+            About
+            <div>
+                <button onClick={() => Router.push('/?history=about')}>Home</button>
+            </div>
+        </div>
+    );
+}
+
+
+출처 : https://salgum1114.github.io/nextjs/2019-05-24-nextjs-static-website-4/
+
+
+8>as 속성으로 URL Params 숨기기
+URL Params가 URL에 보이는 것이 맘이 편하지 않다면 Next.js에서는 숨길 수 있는 방법이 있다.
+as속성을 이용하는 것인데, <Link href="/?history=post" as="/">로 사용하거나 
+Router.push("/?history=post", '/')로 사용할 수 있다.
+
+>post.js
+import Router from 'next/router';
+
+export default (props) => {
+    return (
+        <div>
+            First post page
+            <div>
+                <button onClick={() => Router.push('/?history=post', '/')}>Home</button>
+            </div>
+        </div>  
+    );
+}
+
+>about.js
+import Router from 'next/router';
+
+export default (props) => {
+    return (
+        <div>
+            About
+            <div>
+                <button onClick={() => Router.push('/?history=about', '/')}>Home</button>
+            </div>
+        </div>
+    );
+}
+
+
+9>withRouter 사용
+다음으로 withRouter를 사용해볼 것인데, 이 녀석은 Router의 HOC로써 컴포넌트에서
+router props를 전달받을 수 있도록 해준다.
+History 예제를 위해서 root 경로에 components 디렉토리를 만들고 하위에 History.js 파일을 생성한다.
+
+import React, { Component } from 'react';
+import { withRouter } from 'next/router';
+
+const styles = {
+    history: {
+        color: 'red',
+    },
+};
+
+class History extends Component {
+    render() {
+        const { router } = this.props;
+        return router.query.history ? (
+            <div style={styles.history}>
+                {router.query.history}
+            </div>
+        ) : null;
+    }
+}
+
+export default withRouter(History);
+------------------------------------------------------
+import { withRouter } from 'next/router'로 모듈을 import 시키고 
+withRouter(History)로 Component를 감싸게 되면 props로 router를 전달받을 수 있게 된다.
+
+>index.js
+import History from '../components/History';
+
+export default (props) => {
+    return (
+        <div>
+            Home
+            <History />
+        </div>
+    );
+}
+
+index.js에서 <History>로 router를 props으로 전달하지 않지만 
+<History>컴포넌트에서 HOC로 withRotuer를 사용했기 때문에 props로 router오브젝트를 전달받은 것을 볼 수 있다.
+
+
+//Material UI
+
+1>설치
+npm install --save @material-ui/core @material-ui/icons @material-ui/styles
+
+Next.js는 기본적으로 Server Side Rendering 이기 때문에, 단순히 Material UI 컴포넌트를 
+사용만할 경우 스타일이 정상적으로 먹히지 않는다. 그렇기 때문에 몇가지 작업을 해줘야 하는데, 
+일반적인 Server Rendering인 경우에는 Material Server Rendering을 참고하면 되고 
+우리는 Next.js를 사용하기 때문에 Material with Next.js를 참고하면 된다
+
+2>Layout.js 생성
+기존에 _app.js에 작성된 레이아웃을 바꿔보기 위해 Layout 컴포넌트를 새로 만든다.
+components 디렉토리에 Layout.js 파일을 생성하고 다음 코드를 작성한다.
+
+import React, { Component } from 'react';
+import Link from 'next/link';
+import {
+    AppBar,
+    IconButton,
+    Toolbar,
+    Typography,
+    Drawer,
+    Divider,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Container,
+} from '@material-ui/core';
+import { Menu, ChevronLeft, Home, Inbox, Mail } from '@material-ui/icons';
+
+const drawerWidth = 240;
+
+class Layout extends Component {
+    state = {
+        open: false,
+    }
+
+    handleDrawerOpen = () => {
+        this.setState({
+            open: true,
+        });
+    }
+
+    handleDrawerClose = () => {
+        this.setState({
+            open: false,
+        });
+    }
+
+    render() {
+        const { children } = this.props;
+        const { open } = this.state;
+        return (
+            <section>
+                <AppBar
+                    position="static"
+                    style={{
+                        width: `calc(100% - ${open ? drawerWidth : 0}px)`,
+                        marginLeft: open ? drawerWidth : 0,
+                        transition: 'all 0.2s',
+                    }}
+                >
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" aria-label="Menu" onClick={this.handleDrawerOpen}>
+                            <Menu />
+                        </IconButton>
+                        <Typography variant="h6" style={{ flex: 1 }}>
+                            Static Website
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <Drawer variant="persistent" open={open}>
+                    <div style={{ width: drawerWidth }}>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <IconButton onClick={this.handleDrawerClose}>
+                                <ChevronLeft />
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <List>
+                            <Link href="/">
+                                <a>
+                                    <ListItem button>
+                                        <ListItemIcon><Home /></ListItemIcon>
+                                        <ListItemText primary="Home"/>
+                                    </ListItem>
+                                </a>
+                            </Link>
+                            <Link href="/post">
+                                <a>
+                                    <ListItem button>
+                                        <ListItemIcon><Inbox /></ListItemIcon>
+                                        <ListItemText primary="Post"/>
+                                    </ListItem>
+                                </a>
+                            </Link>
+                            <Link href="/about">
+                                <a>
+                                    <ListItem button>
+                                        <ListItemIcon><Mail /></ListItemIcon>
+                                        <ListItemText primary="About"/>
+                                    </ListItem>
+                                </a>
+                            </Link>
+                        </List>
+                    </div>
+                </Drawer>
+                <Container>
+                    <article style={{
+                        width: `calc(100% - ${open ? drawerWidth : 0}px)`,
+                        marginLeft: open ? drawerWidth : 0,
+                        transition: 'all 0.2s',
+                        margin: '16px 0',
+                    }}>
+                        {children}
+                    </article>
+                </Container>
+            </section>
+        );
+    }
+}
+
+export default Layout;
+
+3>app.js 수정
+import React from 'react';
+import App, { Container } from 'next/app';
+import Head from 'next/head';
+import Layout from '../components/material/Layout';
+
+export default class RootApp extends App {
+    render() {
+        const { Component, ...other } = this.props;
+        return (
+            <Container>
+                <Head>
+                    <title>Static Website</title>
+                </Head>
+                <Layout>
+                    <Component {...other} />
+                </Layout>
+            </Container>
+        );
+    }
+}
+
+하지만 화면을 새로고침해서 보게되면 처음에 설명했다시피 스타일이 적용되지 않았다가 
+렌더링이 모두 끝난 후 스타일이 적용되는 것을 볼 수 있다.
+
+4>이 문제를 해결하기 위해 _document.js와 _app.js를 수정한다.
+
+>_document.js
+import Document, { Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheets } from '@material-ui/styles';
+import flush from 'styled-jsx/server';
+
+export default class RootDocument extends Document {
+    static async getInitialProps(ctx) {
+        // Render app and page and get the context of the page with collected side effects.
+        const sheets = new ServerStyleSheets();
+        const originalRenderPage = ctx.renderPage;
+
+        ctx.renderPage = () =>
+        originalRenderPage({
+            enhanceApp: App => props => sheets.collect(<App {...props} />),
+        });
+
+        const initialProps = await Document.getInitialProps(ctx);
+
+        return {
+            ...initialProps,
+            // Styles fragment is rendered after the app and page rendering finish.
+            styles: (
+                <React.Fragment>
+                    {sheets.getStyleElement()}
+                    {flush() || null}
+                </React.Fragment>
+            ),
+        };
+    }
+
+    render() {
+        return (
+            <html>
+                <Head>
+                    <meta charSet="utf-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+                    <meta name="description" content="My First Static Website"/>
+                    <meta name="keywords" content="nextjs,static,website" />
+                </Head>
+                <body>
+                    <Main />
+                    <NextScript />
+                </body>
+            </html>
+        );
+    }
+}
+
+>_app.js
+import React from 'react';
+import App, { Container } from 'next/app';
+import Head from 'next/head';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import Layout from '../components/material/Layout';
+
+export default class RootApp extends App {
+    componentDidMount() {
+        // Remove the server-side injected CSS.
+        const jssStyles = document.querySelector('#jss-server-side');
+        if (jssStyles) {
+            jssStyles.parentNode.removeChild(jssStyles);
+        }
+    }
+
+    render() {
+        const { Component, ...other } = this.props;
+        return (
+            <Container>
+                <Head>
+                    <title>Static Website</title>
+                </Head>
+                <CssBaseline />
+                <Layout>
+                    <Component {...other} />
+                </Layout>
+            </Container>
+        );
+    }
+}
+
+새로고침을 해도 스타일이 정상적으로 적용되는 것을 확인할 수 있다.
+이렇게해서 Material UI 컴포넌트를 적용해봤고 컴포넌트들을 사용해서 화면을 구성해 나가면 된다.
+다음 글에서는 Ant.Design을 적용하여 Layout을 작성해본다.
