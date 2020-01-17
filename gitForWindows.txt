@@ -65,5 +65,14 @@ push
 pull url 원복
 
 /////////////////////////////////////////////////////////
+//git push 에러창 뜰 때
+To solve this:
+press "i"
+write your merge message.
+press "esc"
+write ":wq"
+then press enter.
 
+
+ 
 
