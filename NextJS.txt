@@ -58,6 +58,8 @@ https://jcon.tistory.com/129 튜토리얼
 next js 프레임 워크는 서버사이드와 클라이언트 사이드 렌더링이 이루어져 
 기존의 react에서 처럼 css를 import하는 방법으로는 css를 적용 시킬 수 없다.
 
+>>>> <div style={{background: 'black', color: 'white'}}>소개</div>
+
 1>모듈 설치
 npm install styled-components
 npm install babel-plugin-styled-components
@@ -168,8 +170,25 @@ class MyApp extends App {
 
 export default MyApp;
 
+//componets/Header.js 예제
+import Link from 'next/link';
+
+const linkStyle = {
+    marginRight: '1rem'
+}
+const Header = () => {
+    return (
+        <div>
+            <Link href="/"><a style={linkStyle}>홈</a></Link>
+            <Link href="/about"><a style={linkStyle}>소개</a></Link>
+        </div>
+    );
+};
+
+export default Header;
+
 //이미지 불러오기
-1>images 폴더생성
+1>images 폴더생성(폴더명은 아무거나)
 
 2>모듈 설치
 npm install --save next-images
@@ -204,7 +223,7 @@ next.config.js // 기본적으로 Next.js는 프로젝트의 루트 경로에 �
 		Next.js의 환경 설정 파일이다. 라우팅 설정, typescript, less 등의 webpack 플러그인을 설정한다.
 
 //.gitignore 생성
-node_modules/
+/node_modules
 pacakge-lock.json
 
 //정적 웹사이트 만들기
@@ -753,3 +772,41 @@ export default class RootApp extends App {
 새로고침을 해도 스타일이 정상적으로 적용되는 것을 확인할 수 있다.
 이렇게해서 Material UI 컴포넌트를 적용해봤고 컴포넌트들을 사용해서 화면을 구성해 나가면 된다.
 다음 글에서는 Ant.Design을 적용하여 Layout을 작성해본다.
+
+// _app.js  기본
+import React from 'react'
+import App from 'next/app'
+
+class MyApp extends App {
+
+  render() {
+    const { Component, pageProps } = this.props
+    return <Component {...pageProps} />
+  }
+}
+
+export default MyApp
+
+/////// _app.js Layout으로 사용하기
+import React from 'react'
+import App from 'next/app'
+
+class Layout extends React.Component {
+  render () {
+    const { children } = this.props
+    return <div className='layout'>{children}</div>
+  }
+}
+
+export default class MyApp extends App {
+  render () {
+    const { Component, pageProps } = this.props
+    return (
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    )
+  }
+}
+
+//flex 공부   https://d2.naver.com/helloworld/8540176 
