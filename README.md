@@ -4,7 +4,7 @@
 >메가 `CSS`
 
 ```
-새로운 크로스 플랫폼
+이미지 올리기 Issues
 ```
 
 <img src="https://user-images.githubusercontent.com/30430227/72674960-daf76680-3ac0-11ea-852c-6a0eb3808c6e.jpg" width=200>
@@ -18,13 +18,8 @@
 네번째 내용|| `다섯째` |
 여섯째| 일곱째| [여덟째]()|
 
-
-
-
-
-
-
-
+# 유튜브 CSS애니메이션
+[클릭](https://www.youtube.com/watch?v=2aP98fH-GmA&list=PL5e68lK9hEzcZLltZrc3NDlKWS3XygchY&index=14)
 
 
 
