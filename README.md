@@ -1,3 +1,15 @@
+---
+Order: 13
+Area: editor
+TOCTitle: Emmet
+ContentId: baf4717c-ea52-486e-9ea3-7bf1c4134dad
+PageTitle: Emmet in Visual Studio Code
+DateApproved: 12/12/2019
+MetaDescription: Using Emmet abbreviations inside Visual Studio Code.
+---
+
+
+
 # Mega CSS
 [샘플사이트](https://github.com/codingmarket07/CSSMegaMenu)
 
@@ -17,10 +29,9 @@
 여섯째| 일곱째| 여덟째|
 
 
----
-Order: 13
-Area: editor
-TOCTitle: Emmet
+
+
+
 
 
 
