@@ -41,7 +41,20 @@ mongo
 >db.book.insert({...})
 
 //컬렉션의 도큐먼트 확인하기
->db.book.find()
+>db.book.find()  // 깔끔하게 보려면 뒤에 .pretty() 를 붙인다.
+>db.articles.find({"likes":{$lte:30}}).pretty()  // likes 값이 30이하인 도큐먼트만 조회(less than or equals)
+
+//쿼리 연산자
+>db.articles.find({"likes":{$gt:10,$lt:30}}).pretty() //10보다 크고, 30보다 작다
+>db.articles.find({"writer":{$in:["Alpha","Bravo"]}}).pretty()  // 주어진 배열 안에 속하는 값, 반대로는 $nin
+
+>db.articles.find({$or:[{"title":"article01"},{"writer":"Alpha"}]})  //$or, $and, $not, $nor
+
+>db.articles.find({$and:[{"writer":"Velopert"},{"likes":{$lt:10}}]})
+=> 이렇게 해도 같은 결과 db.articles.find({"writer":"Velopert", "like":{$lt:10}})
+
+>db.articles.find({"title":/article0[1-2]/})  // 정규식 article0[1-2]에 일치하는 값이 title에 있는 도큐먼트 조회
+// "title":"article01", "title":"article02" 를 찾아준다
 
 //도큐먼트 제거
 >db.book.remove(criteria, justOne)
