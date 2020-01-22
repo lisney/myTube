@@ -246,5 +246,30 @@ vmin : 화면을 기준으로 사이즈를 정함
    }
 }
 
+//express-handlebars 바인딩 :: 라우터.js 파일
+
+const customer ={
+    name:'홍길동',
+    birthday:'98645',
+    gender:'남자',
+    job:'대학생',
+    list:['국어', '영어', '수학', '과학']
+}
 
 
+module.exports = function(app){
+    app.get('/',(req,res)=>{
+        // res.write("Hello")
+        res.render('index',{customer})
+    })
+}
+
+/////////////////////////////////// 배열  숫자만큼 실행한다.  {{#each customer.name}} 도 같은 결과
+<h1>안녕하세요!</h1>
+    {{customer.name}}
+    {{customer.age}}
+    {{#customer.list}}
+        안녕하세요{{this}}<br/>
+    {{/customer.list}}
+
+/////////////////////////////////
