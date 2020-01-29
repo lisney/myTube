@@ -30,3 +30,8 @@
 
 https://d2.naver.com/helloworld/8540176#ch2
 
+>### flex border collapse Tip
+```
+ul      { border-width: 2px  0   0  2px }
+ul > li { border-width:  0  2px 2px  0  }
+```
