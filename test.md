@@ -1,6 +1,6 @@
 
 # CSS
-### 가상요소 `:before`, `after`
+>###  가상요소 `:before`, `after`
 
 ```
 .tab_type1 ul li a:before{
@@ -17,4 +17,4 @@
 ```
 <img src="https://user-images.githubusercontent.com/30430227/73346127-b1142000-42c8-11ea-8db1-9b214669e73e.jpg">
 
-### list-style: none
+>### list-style: none
