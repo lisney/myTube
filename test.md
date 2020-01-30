@@ -57,6 +57,8 @@ clip-path: circle(10px at center); //at 50% 20%, px등으로 위치 지정
     
 background: 0% 50% / cover; `X, Y 포지션과 가득채움(cover) 속성`
 
+box-sizing : border-box 와 content-box 차이 
+
 ```
 
 > http://placeimg.com/640/480/any
