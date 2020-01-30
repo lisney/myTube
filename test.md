@@ -41,3 +41,17 @@ ul > li { border-width:  0  2px 2px  0  }
 ```
 `border 속성 다음에 놓어야 한다`
 
+### New
+```
+line-height : 2em;
+background:url('/images/pic_01.jpg');
+clip-path: circle(10px at center);
+
+    <script>
+        var section = document.querySelector('section')
+        window.addEventListener('scroll',function(){
+            var value = window.scrollY
+            section.style.clipPath = 'circle(' + value +'px at center)'
+        })
+    </script>
+```
