@@ -45,7 +45,7 @@ ul > li { border-width:  0  2px 2px  0  }
 ```
 line-height : 2em;
 background:url('/images/pic_01.jpg');
-clip-path: circle(10px at center);
+clip-path: circle(10px at center); //at 50% 20%, px등으로 위치 지정
 
     <script>
         var section = document.querySelector('section')
