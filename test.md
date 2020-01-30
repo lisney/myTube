@@ -227,3 +227,22 @@ img:last-of-type {
   background: #222;
 }
 ```
+
+# Animation 축약
+```
+   div {
+        animation-name: myShorthand;
+        animation-duration: 3s;
+        animation-timing-function: ease-in-out;
+        animation-delay: 1s;
+        animation-iteration-count: 3;
+        animation-direction: alternate;
+    }
+```
+
+> div { animation: myShorthand 3s ease-in-out 1s 3 alternate; }
+
+	@keyframes movingPara {
+        from { margin-left: 100%; }
+        to { margin-left: 0%; }
+	
