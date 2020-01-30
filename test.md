@@ -55,3 +55,7 @@ clip-path: circle(10px at center);
         })
     </script>
 ```
+
+> http://placeimg.com/640/480/any
+
+<img src="http://placeimg.com/640/480/any">
