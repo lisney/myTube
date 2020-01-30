@@ -54,6 +54,9 @@ clip-path: circle(10px at center);
             section.style.clipPath = 'circle(' + value +'px at center)'
         })
     </script>
+    
+background: 0% 50% / cover; `X, Y 포지션과 가득채움(cover) 속성`
+
 ```
 
 > http://placeimg.com/640/480/any
