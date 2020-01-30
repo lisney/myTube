@@ -20,6 +20,10 @@
 >### list-style: none
 ```
 리스트 스타일
+*{
+    padding:0;
+    list-style: none;
+}
 ```
 
 >### margin-left: auto
