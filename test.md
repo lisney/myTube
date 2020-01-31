@@ -246,10 +246,28 @@ img:last-of-type {
         from { margin-left: 100%; }
         to { margin-left: 0%; }
 	
-# 테스트
-	아랑ㄹㅇㄹㅇ랑ㄹㅇ
-	34384385
-	34343434
-	34343
+# em
+	폰트 사이즈에 비례 ex)font-size: 16 -> 2em : 32
 	
+> display : grid; 반응형
+	grid-template-columns: 폭 폭 폭 폭 폭;
+	grid-template-columns: repeat(5, 폭);
+	grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+	grid-gap: 1rem;
+	cursor: pointer;
 	
+> image Sprite 유니티의 아틀라스같은... 여러 이미지를 한 장에 모아 사용할 수 있다.
+	background: url('...');
+	width:
+	height:
+	background-position: -30,-50;//좌측 상단부위가 width, height 시작하는 지점
+	
+## SCSS 사용
+	 vscode live sass 익스텐션 설치(liveserver 도 동시에 설치된다, 좌측 탐색기에서 오른클릭으로 openWithLiveServer실행할 수 있다)
+	 하단 상태표시줄에서 Watch Sass 클릭하면 동일명의 css가 자동생성된다.
+
+## hover 시 자식도 변형효과
+	transition : transform 0.5s
+	
+	:hover 자식선택자{...} // .card:hover img{transform: translateX(-10px);
+	transform: rotate( 45deg ) // deg, rad, turn
