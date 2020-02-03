@@ -271,3 +271,87 @@ img:last-of-type {
 	
 	:hover 자식선택자{...} // .card:hover img{transform: translateX(-10px);
 	transform: rotate( 45deg ) // deg, rad, turn
+
+## addEventListener 에 대한 예제 window.addEventListener('mousemove', e=>{...e.target.offsetTop...)// e는 이벤트 타겟 객체
+	<div class="check">
+    <p>
+        <strong>
+            <span>click</span>
+        </strong>
+    </p>
+	</div>
+
+	<div id="result">색이 들어가있는 박스들을 하나씩 클릭해주세요</div>
+	
+	$("body").click(function(event){
+    $("#result").html("무엇을 클릭했을 까요? " + event.target.nodeName);
+	})
+> css
+	div.check{padding:10px;border:1px solid #000;margin-bottom:10px;background-color:#ffeed6;}
+	p{padding:10px;border:1px solid #000;background-color:#d6dfff;}
+	strong{padding:10px;border:1px solid #000;display:block;background-color:#d6ffdb;}
+	span{padding:10x;border:1px solid #000;display:block;background-color:#ffddd6;}
+
+## 이어서 메뉴
+	<ul class="one">
+    <li>메뉴1
+        <ul class="two">
+            <li>메뉴1-1</li>
+            <li>메뉴1-2</li>
+            <li>메뉴1-3</li>
+        </ul>
+    </li>
+    <li>메뉴2
+        <ul class="two">
+            <li>메뉴2-1</li>
+            <li>메뉴2-2</li>
+            <li>메뉴2-3</li>
+        </ul>
+    </li>
+    <li>메뉴3
+        <ul class="two">
+            <li>메뉴3-1</li>
+            <li>메뉴3-2</li>
+            <li>메뉴3-3</li>
+        </ul>
+    </li>
+	</ul>
+***
+function handler(event){
+    // 2단계. handler 의 함수를 작성. handler 함수가 호출이 되면 아래와 같은 행동을 하라.
+    var $target = $(event.target);
+        // 현재 클릭했던 요소가 뭔 요소인지 변수 $target 에 담는다.
+    if($target.is("li")){
+        // 만약에 $target 이 담고있었던 요소가 li 가 맞다면!
+        $target.children().toggle();
+            // 클릭했던 바로 그 li 의 자식 요소(.one li .two) 을 토글 시켜라.
+    }
+    
+  ***
+  *{margin:0;padding:0;}
+li{list-style-type:none;text-align:center;}
+.one{background-color:#ffddd6;padding:10px;*zoom:1;}
+.one:after{content:'';display:block;clear:both;}
+.one>li{float:left;background-color:#ffffd6;margin-right:10px;cursor:pointer;}
+.two{background-color:#d6ffd9;padding:10px;}
+.two>li{background-color:#dad6ff;}
+
+
+  
+}
+
+
+$(".one").click(handler).find("ul").hide();
+    // 1단계. one 라는 클래스를 가진 요소를 클릭하게 되면 handler 라는 함수를 동작하게 하라
+    // .one 가 자식으로 가지고 있는 요소들 중에 ul 을 찾아 숨겨라 <- 브라우저가 시작하마자 동작
+ 
+ *{margin:0;padding:0;}
+li{list-style-type:none;text-align:center;}
+.one{background-color:#ffddd6;padding:10px;*zoom:1;}
+.one:after{content:'';display:block;clear:both;}
+.one>li{float:left;background-color:#ffffd6;margin-right:10px;cursor:pointer;}
+.two{background-color:#d6ffd9;padding:10px;}
+.two>li{background-color:#dad6ff;}
+
+
+
