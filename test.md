@@ -340,18 +340,15 @@ li{list-style-type:none;text-align:center;}
   
 }
 
-
+```
 $(".one").click(handler).find("ul").hide();
     // 1단계. one 라는 클래스를 가진 요소를 클릭하게 되면 handler 라는 함수를 동작하게 하라
     // .one 가 자식으로 가지고 있는 요소들 중에 ul 을 찾아 숨겨라 <- 브라우저가 시작하마자 동작
- 
- *{margin:0;padding:0;}
-li{list-style-type:none;text-align:center;}
-.one{background-color:#ffddd6;padding:10px;*zoom:1;}
-.one:after{content:'';display:block;clear:both;}
-.one>li{float:left;background-color:#ffffd6;margin-right:10px;cursor:pointer;}
-.two{background-color:#d6ffd9;padding:10px;}
-.two>li{background-color:#dad6ff;}
+ ```
+
+## border-radius 찌그러짐
+> border-radius: 3%/10% //가로가 긴 경우 가로 % 값을 작게준다
+
 
 
 
