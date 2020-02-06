@@ -18,31 +18,32 @@ root/1234
 
 mongodb+srv://root:<password>@education-kv3ka.mongodb.net/test?retryWrites=true&w=majority
 
-·ÎÄÃ ¼­¹ö
+ë¡œì»¬ ì„œë²„
 mongodb://127.0.0.1:27017
-
+mongodb://localhost/mongodb_tutorial // ë¡œì»¬ ì„œë²„ì— 'mongodb_tutorial' dbê°€ ì—†ìœ¼ë©´ ìë™ ìƒì„±í•œë‹¤
 
 [Postman]
-º¸³»´Â Å¸ÀÔ ¼³Á¤ // header¿¡ json Å¸ÀÔÀÌ¶ó°í Á¤ÀÇÇÏ´Â ¹æ¹ı
+ë³´ë‚´ëŠ” íƒ€ì… ì„¤ì • // headerì— json íƒ€ì…ì´ë¼ê³  ì •ì˜í•˜ëŠ” ë°©ë²•
 KEY : Content-type
 VALUE : aplication/json
 
-º¸³»´Â ³»¿ë // body¿¡ json Å¸ÀÔÀ¸·Î ±âÀÔÇÑ´Ù
+ë³´ë‚´ëŠ” ë‚´ìš© // bodyì— json íƒ€ì…ìœ¼ë¡œ ê¸°ì…í•œë‹¤
 
 
->>¸ù°íDB »çÀÌÆ®
+>>ëª½ê³ DB ì‚¬ì´íŠ¸
 https://www.mongodb.com/download-center?jmp=homepage#community
-¿¡¼­ ÇÁ·Î±×·¥ ´Ù¿î ¼³Ä¡
+ì—ì„œ í”„ë¡œê·¸ë¨ ë‹¤ìš´ ì„¤ì¹˜
 
->>¼­¹ö½ÇÇà
-Ä¿¸àµå¼¿¿¡¼­ mongod
+>>ì„œë²„ì‹¤í–‰
+ì»¤ë©˜ë“œì…€ì—ì„œ mongod
 
->>¸ù°ídb½ÇÇà
+>>ëª½ê³ dbì‹¤í–‰
 mongo
 
->>DB ¼±ÅÃ/»ı¼º
+>>DB ì„ íƒ/ìƒì„±
  use mongodb_tutorial
 
+<<<<<<< HEAD
 >>DB »èÁ¦
 
 >>db.dropDatabase() // ¸ÕÀú DB°¡ ¼±ÅÃ(use)µÇ¾î ÀÖ¾î¾ßÇÑ´Ù.
@@ -60,14 +61,23 @@ mongo
 
 >>DB Ãß°¡
  db.books.insert({"name":"sample"}); //ÄÃ·º¼Ç booksÀÌ ¾øÀ¸¸é ÀÚµ¿»ı¼ºÇØÁØ´Ù// name:'sample' ·Î ½áµµ µÈ´Ù
+=======
+>>DB ì¶”ê°€
+ db.sample.insert({"name":"sample"});
 
-//ÄÃ·º¼Ç¿¡ µµÅ¥¸ÕÆ® Ãß°¡ÇÏ±â
+>>show.dbs // ìƒì„±ëœ ë””ë¹„ë¥¼ ë³´ì—¬ì¤€ë‹¤
+
+>>db.dropDatabase() // ë¨¼ì € DBê°€ ì„ íƒë˜ì–´ ìˆì–´ì•¼í•œë‹¤.
+>>>>>>> fe90d7afcd67a1765b0fa37a108c97aa5c403029
+
+//ì»¬ë ‰ì…˜ì— ë„íë¨¼íŠ¸ ì¶”ê°€í•˜ê¸°
 >db.book.insert({...})
 
-//ÄÃ·º¼ÇÀÇ µµÅ¥¸ÕÆ® È®ÀÎÇÏ±â
->db.book.find()  // ±ò²ûÇÏ°Ô º¸·Á¸é µÚ¿¡ .pretty() ¸¦ ºÙÀÎ´Ù.
->db.articles.find({"likes":{$lte:30}}).pretty()  // likes °ªÀÌ 30ÀÌÇÏÀÎ µµÅ¥¸ÕÆ®¸¸ Á¶È¸(less than or equals)
+//ì»¬ë ‰ì…˜ì˜ ë„íë¨¼íŠ¸ í™•ì¸í•˜ê¸°
+>db.book.find()  // ê¹”ë”í•˜ê²Œ ë³´ë ¤ë©´ ë’¤ì— .pretty() ë¥¼ ë¶™ì¸ë‹¤.
+>db.articles.find({"likes":{$lte:30}}).pretty()  // likes ê°’ì´ 30ì´í•˜ì¸ ë„íë¨¼íŠ¸ë§Œ ì¡°íšŒ(less than or equals)
 
+<<<<<<< HEAD
 //Äõ¸® ¿¬»êÀÚ
 $eq 	(equals) ÁÖ¾îÁø °ª°ú ÀÏÄ¡ÇÏ´Â °ª
 $gt 	(greater than) ÁÖ¾îÁø °ªº¸´Ù Å« °ª
@@ -80,15 +90,21 @@ $nin 	ÁÖ¾îºó ¹è¿­ ¾È¿¡ ¼ÓÇÏÁö ¾Ê´Â °ª
 
 >db.articles.find({"likes":{$gt:10,$lt:30}}).pretty() //10º¸´Ù Å©°í, 30º¸´Ù ÀÛ´Ù
 >db.articles.find({"writer":{$in:["Alpha","Bravo"]}}).pretty()  // ÁÖ¾îÁø ¹è¿­ ¾È¿¡ ¼ÓÇÏ´Â °ª, ¹İ´ë·Î´Â $nin
+=======
+//ì¿¼ë¦¬ ì—°ì‚°ì
+>db.articles.find({"likes":{$gt:10,$lt:30}}).pretty() //10ë³´ë‹¤ í¬ê³ , 30ë³´ë‹¤ ì‘ë‹¤
+>db.articles.find({"writer":{$in:["Alpha","Bravo"]}}).pretty()  // ì£¼ì–´ì§„ ë°°ì—´ ì•ˆì— ì†í•˜ëŠ” ê°’, ë°˜ëŒ€ë¡œëŠ” $nin
+>>>>>>> fe90d7afcd67a1765b0fa37a108c97aa5c403029
 
 >db.articles.find({$or:[{"title":"article01"},{"writer":"Alpha"}]})  //$or, $and, $not, $nor
 
 >db.articles.find({$and:[{"writer":"Velopert"},{"likes":{$lt:10}}]})
-=> ÀÌ·¸°Ô ÇØµµ °°Àº °á°ú db.articles.find({"writer":"Velopert", "like":{$lt:10}})
+=> ì´ë ‡ê²Œ í•´ë„ ê°™ì€ ê²°ê³¼ db.articles.find({"writer":"Velopert", "like":{$lt:10}})
 
->db.articles.find({"title":/article0[1-2]/})  // Á¤±Ô½Ä article0[1-2]¿¡ ÀÏÄ¡ÇÏ´Â °ªÀÌ title¿¡ ÀÖ´Â µµÅ¥¸ÕÆ® Á¶È¸
-// "title":"article01", "title":"article02" ¸¦ Ã£¾ÆÁØ´Ù
+>db.articles.find({"title":/article0[1-2]/})  // ì •ê·œì‹ article0[1-2]ì— ì¼ì¹˜í•˜ëŠ” ê°’ì´ titleì— ìˆëŠ” ë„íë¨¼íŠ¸ ì¡°íšŒ
+// "title":"article01", "title":"article02" ë¥¼ ì°¾ì•„ì¤€ë‹¤
 
+<<<<<<< HEAD
 >>Á¤·Ä
 > db.orders.find().sort({_id:-1}).limit(3).skip(2).pretty()
 
@@ -96,9 +112,12 @@ $nin 	ÁÖ¾îºó ¹è¿­ ¾È¿¡ ¼ÓÇÏÁö ¾Ê´Â °ª
 
 
 //µµÅ¥¸ÕÆ® Á¦°Å
+=======
+//ë„íë¨¼íŠ¸ ì œê±°
+>>>>>>> fe90d7afcd67a1765b0fa37a108c97aa5c403029
 >db.book.remove(criteria, justOne)
-*criteria 	document 	»èÁ¦ ÇÒ µ¥ÀÌÅÍÀÇ ±âÁØ °ª (criteria) ÀÔ´Ï´Ù. ÀÌ °ªÀÌ { } ÀÌ¸é ÄÃ·º¼ÇÀÇ ¸ğµç µ¥ÀÌÅÍ¸¦ Á¦°ÅÇÕ´Ï´Ù.
-justOne 	boolean 	¼±ÅÃÀû(Optional) ¸Å°³º¯¼öÀÌ¸ç ÀÌ °ªÀÌ true ¸é 1°³ ÀÇ ´ÙÅ¥¸ÕÆ®¸¸ Á¦°ÅÇÕ´Ï´Ù. ÀÌ ¸Å°³º¯¼ö°¡ »ı·«µÇ¸é ±âº»°ªÀº false ·Î ¼­, criteria¿¡ ÇØ´çµÇ´Â ¸ğµç ´ÙÅ¥¸ÕÆ®¸¦ Á¦°ÅÇÕ´Ï´Ù.
+*criteria 	document 	ì‚­ì œ í•  ë°ì´í„°ì˜ ê¸°ì¤€ ê°’ (criteria) ì…ë‹ˆë‹¤. ì´ ê°’ì´ { } ì´ë©´ ì»¬ë ‰ì…˜ì˜ ëª¨ë“  ë°ì´í„°ë¥¼ ì œê±°í•©ë‹ˆë‹¤.
+justOne 	boolean 	ì„ íƒì (Optional) ë§¤ê°œë³€ìˆ˜ì´ë©° ì´ ê°’ì´ true ë©´ 1ê°œ ì˜ ë‹¤íë¨¼íŠ¸ë§Œ ì œê±°í•©ë‹ˆë‹¤. ì´ ë§¤ê°œë³€ìˆ˜ê°€ ìƒëµë˜ë©´ ê¸°ë³¸ê°’ì€ false ë¡œ ì„œ, criteriaì— í•´ë‹¹ë˜ëŠ” ëª¨ë“  ë‹¤íë¨¼íŠ¸ë¥¼ ì œê±°í•©ë‹ˆë‹¤.
 >db.book.remove({... : ...})
 
 
