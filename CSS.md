@@ -168,4 +168,16 @@ Flex를 사용하는 방법
     </body>
     </html>
     
-   
+   > float:left 대신 요소 나란히 배열하고 화면 센터에 놓는 방법
+   ```
+   .pagination a {
+-    display: block;
++    display: inline-block;
+     width: 30px;
+     height: 30px;
+-    float: left;
+     margin-left: 3px;
+     background: url(/images/structure/pagination-button.png);
+ }
+ -대신 + 라인을 사용한다
+ ```
