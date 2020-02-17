@@ -7,6 +7,9 @@
 
 출처: https://webdir.tistory.com/318 [WEBDIR]
 ```
+>>## Input Type 선택
+` input[type=text] `
+
 >## clear both
 ```
 div 블럭은 넓이를 얼마를 주던간에 아래로만 깔린다.//좌우 공간을 다 차지
