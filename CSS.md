@@ -1,4 +1,4 @@
->##
+>## Fieldset
 ```
 <form> <fieldset> <legend>개인정보:</legend>
     <label>이름: <input type="text"></label><br> 
