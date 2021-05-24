@@ -1470,5 +1470,55 @@ video.addEventListener('play', () => {
             renderer.setSize(600, 300);
             document.body.appendChild(renderer.domElement)
 
+####### raycast 기초
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            display: block;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="300" height="300"></canvas>
+
+    <script type="module">
+        import * as THREE from './js/three.module.js'
+
+        const pickPosition ={x:0,y:0}
+        const ikPosition = new THREE.Vector2()
+
+        const canvas = document.querySelector('canvas')
+        function choose(event){
+            var Sx = event.clientX
+            var Sy = event.clientY
+            ikPosition.x = (Sx /canvas.clientWidth)*2 -1
+            ikPosition.y = (Sy /canvas.clientHeight)*-2 +1
+            console.log(Math.floor(ikPosition.x*100), Math.floor(ikPosition.y*100))
+
+            // const raycaster = new THREE.Raycaster()
+            // // raycaster.setFromCamera(pickPosition, camera)
+            // var intersects = raycaster.intersectObjects([boxMesh, sphereMesh, cylinderMesh])
+            // console.log("Object returned by ray projector", intersects)
+
+            // if(intersects.length>0){
+            //     intersects[0].object.material.transparent =true;
+            //     intersects[0].object.maerial.opacity =0.6;
+            // }
+        }
+
+        canvas.addEventListener('click', choose);
+        // addEventListener('click', choose);
+
+    </script>
+    
+</body>
+</html>
 
 
