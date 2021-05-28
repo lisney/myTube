@@ -138,3 +138,87 @@
         render()
  ```
  
+ # 정리할 것
+ ```
+ var MyData = function() {
+    this.dataString = "Dip2K";
+    this.dataNumber = 0.7;
+    this.dataBoolean = false;
+    this.dataFunction = function() {
+        alert(
+            "dataString: " + this.dataString + "\n" +
+            "dataNumber: " + this.dataNumber + "\n" +
+            "dataBoolean: " + this.dataBoolean
+        );
+    };
+};
+window.onload = function() {
+    var myData = new MyData();
+        
+    var gui = new dat.GUI();
+   
+    gui.add(myData, "dataString");
+    gui.add(myData, "dataNumber");
+    gui.add(myData, "dataBoolean");
+    gui.add(myData, "dataFunction");
+}
+```
+```
+ dataString 변수에 대해서 입력받을 수 있는 문자열을 Dip2K, James, Anold로 제한하고 싶다면 다음처럼 코드를 작성하면 됩니다.
+
+gui.add(myData, "dataString", ["Dip2K", "James", "Anold"]);
+dataNumber에 대해서 0~100 사이의 값만을 입력받으며 0.1 단위로 값의 증가, 감소하고자 한다면 아래처럼 코드를 작성하면 되구요.
+
+gui.add(myData, "dataNumber", 0, 100).step(0.1);
+dataNumber가 비록 수치 타입이지만, 항목으로써 선택 받도록 하고 각 항목에 대한 수치값을 지정하는 방식도 가능한데, 아래와 같습니다.
+
+gui.add(myData, "dataNumber", { A: 0, B:50, C:100 });
+색상값에 대한 직관적인 입력도 가능합니다. 그 예는 아래와 같습니다.
+
+var MyData = function() {
+    this.dataString = "Dip2K";
+    this.dataNumber = 50;
+    this.dataBoolean = false;
+    this.dataColor1 = "#ff0000";
+    this.dataColor2 = [ 0, 255, 0 ];
+    this.dataColor3 = { h: 350, s: 0.5, v: 0.7 };
+    this.dataFunction = function() {
+        alert(
+            "dataString: " + this.dataString + "\n" +
+            "dataNumber: " + this.dataNumber + "\n" +
+            "dataBoolean: " + this.dataBoolean + "\n" +
+            "dataColor1: " + this.dataColor1 + "\n" +
+            "dataColor2: " + this.dataColor2 + "\n" +
+            "dataColor3: " + this.dataColor3
+        );
+    };
+};
+window.onload = function() {
+    var myData = new MyData();
+    var gui = new dat.GUI();
+    gui.add(myData, "dataString", ["Dip2K", "James", "Anold"]);
+    gui.add(myData, "dataNumber", 0, 100).step(0.1);
+    gui.add(myData, "dataBoolean");
+    gui.addColor(myData, "dataColor1");
+    gui.addColor(myData, "dataColor2");
+    gui.addColor(myData, "dataColor3");
+            
+    gui.add(myData, "dataFunction");
+}
+그런데 만약, 값의 변경이 dat.gui가 아닌 다른 곳에서 이루어진 다면, 변경된 값을 dat.gui에서 반영해 줘야 할 것입니다. 이는 매우 간단합니다. 즉, 아래처럼 listen을 호출해 주면 됩니다. 이 listen 함수는 타이머를 생성하고 이 타이머에서 값의 변경 여부를 검사하여 dat.gui에 반영해주게 됩니다.
+
+gui.add(myData, "dataNumber").listen();
+끝으로 dat.gui를 통한 값의 변경이 발생하면, 이에 대한 이벤트가 호출되도록 할 수 있는데, 그 예는 아래와 같습니다.
+
+gui.add(myData, "dataNumber").onChange(
+    function(v) {
+        //alert(v);
+    }).onFinishChange(
+    function(v) {
+        alert(v);
+    });
+onChange는 값 변경 중의 매 순간 발생하는 이벤트이고, onFinishChange는 최종적인 값의 변경이 발생할 때 호출되는 이벤트입니다.
+
+이외에도 dat.gui는 설정된 값을 localStorage에 저장할 수 있는 기능도 있다는 것도 알아두시면 유용할듯합니다.
+
+```Drag transform multiple Control 추가할것
