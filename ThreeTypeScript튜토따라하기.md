@@ -318,6 +318,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
             tControls.attach(cubes[1])
             scene.add(tControls)
             // click 이벤트와 choose 함수를 사용하여 물체를 선택하게할 수 있을듯
+            // 사용가능 event : mousedown, mouseup 등
             
                         window.addEventListener('keydown',event=>{
                 switch(event.key){
