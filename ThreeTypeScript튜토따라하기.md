@@ -237,6 +237,10 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
             const scene = new THREE.Scene()
             const axesHelper = new THREE.AxesHelper(5)
             scene.add(axesHelper)
+            
+            const gridHelper = new THREE.GridHelper(5,20,'red', 'dodgerblue') //size, numbers, axisColor, color
+            gridHelper.rotation.set(Math.PI/2,0,0)
+            scene.add(gridHelper)
 
             const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 10)
             camera.position.set(0,0,5)
@@ -303,4 +307,30 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 ```
 
 # transform/multiple Control
+```
+
+        import {TransformControls} from './js/TransformControls.js'
+
+            const tControls = new TransformControls(camera, renderer.domElement)
+            tControls.setSize(3)
+            tControls.space = 'local' //기본은 world
+
+            tControls.attach(cubes[1])
+            scene.add(tControls)
+            // click 이벤트와 choose 함수를 사용하여 물체를 선택하게할 수 있을듯
+            
+                        window.addEventListener('keydown',event=>{
+                switch(event.key){
+                    case 'w':
+                        tControls.setMode('translate')
+                        break
+                    case 'e':
+                        tControls.setMode('rotate')
+                        break
+                    case 'r':
+                        tControls.setMode('scale')
+                        break
+                }
+            })
+            
 ```
