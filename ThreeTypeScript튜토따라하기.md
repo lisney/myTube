@@ -208,7 +208,6 @@
 
 
     </script>
-```
 
 그런데 만약, 값의 변경이 dat.gui가 아닌 다른 곳에서 이루어진 다면, listen을 호출해 주면 됩니다.
 gui.add(myData, "dataNumber").listen();
@@ -222,4 +221,86 @@ gui.add(myData, "dataNumber").onChange(
 onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적인 값의 변경이 발생할 때 호출되는 이벤트
 
 ```
-Drag transform multiple Control 추가할것
+
+# Drag Control
+```
+    <script type="module">
+        import * as THREE from './js/three.module.js'
+        import {DragControls} from './js/DragControls.js'
+        import Stats from './js/stats.module.js'
+
+        const canvas = document.querySelector('#c')
+
+        function main(){
+            const renderer = new THREE.WebGLRenderer({canvas})
+
+            const scene = new THREE.Scene()
+            const axesHelper = new THREE.AxesHelper(5)
+            scene.add(axesHelper)
+
+            const camera = new THREE.PerspectiveCamera(50, 2, 0.1, 10)
+            camera.position.set(0,0,5)
+
+            {
+                const light = new THREE.PointLight()
+                light.position.set(10,10,10)
+                scene.add(light)
+            }
+
+            const geometry = new THREE.BoxGeometry(1,1,1)
+
+            function rand(min,max){
+                if(max===undefined){
+                    max = min;
+                    min =0;
+                }
+                return min + (max - min)*Math.random()
+            }
+
+            function makeInstance(x){
+                const material = new THREE.MeshPhongMaterial({
+                    color:`hsl(${rand(360)|0}, ${rand(50,100)|0}%, 90%)`,
+                    // color:'white',
+                    transparent: true,
+                })
+                const cube = new THREE.Mesh(geometry, material)
+                cube.position.set(x,0,0)
+
+                scene.add(cube)
+
+                return cube
+            }
+
+            const cubes =[
+                makeInstance(-2),
+                makeInstance(0),
+                makeInstance(2),
+            ]
+
+            const controls = new DragControls(cubes, camera, renderer.domElement)
+            
+            controls.addEventListener('dragstart',event=>{
+                event.object.material.opacity =0.33
+            })
+            controls.addEventListener('dragend',event=>{
+                event.object.material.opacity =1
+            })
+
+            const stats = new Stats()
+            document.body.appendChild(stats.dom)
+
+
+            function render(){
+
+                renderer.render(scene, camera)
+                requestAnimationFrame(render)
+            }
+            requestAnimationFrame(render)
+
+        }
+
+        main()
+```
+
+# transform/multiple Control
+```
