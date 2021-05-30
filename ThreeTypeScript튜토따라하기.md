@@ -485,4 +485,4 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 ```
 
 
-# gltf animation, drag(boxControls), mouse Pick, measure
+# gltf animation, drag(boxControls), mouse Pick, measure, outline pass
