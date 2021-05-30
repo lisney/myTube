@@ -336,6 +336,8 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
             
 ```
 # Raycaster face normal
+![image](https://user-images.githubusercontent.com/30430227/120093992-aede0200-c158-11eb-88e8-c320ad768398.png)
+
 
 ```
     <script type="module">
