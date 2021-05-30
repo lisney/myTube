@@ -486,5 +486,16 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
         main()
 ```
 
+# 블렌더에서 GLTF 보내기
+```
+> 라이트 Include:Puncual Lights 체크
+
+> Bone Aniamtion
+ 각각 Track 클립 넣기 >  클립 교차되지 않게 위치 옮기기
+ 이름 바꾸기 : Animation Data 에서 애니메이션을 선택한 후 이름바꾼다
+ 시작 프레임 위치로 옮긴 후 Export
+
+```
+
 
 # gltf animation, drag(boxControls), mouse Pick, measure, outline pass
