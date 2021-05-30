@@ -499,4 +499,4 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 ![image](https://user-images.githubusercontent.com/30430227/120104397-3c3c4900-c18f-11eb-8143-51211c5121ec.png)
 [그램] 트랙에 배치한 후 mute 한다(체크해제)
 
-# gltf animation, drag(boxControls), mouse Pick, measure, outline pass
+# gltf animation, drag(boxHelper), mouse Pick, measure, outline pass
