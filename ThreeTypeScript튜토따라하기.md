@@ -163,6 +163,8 @@
 
             gui.add(api, 'dataString')
             gui.add(api, 'dataString',['Brush','Lisney','Kyoko']) //입력받을 수 있는 문자열을 제한
+            gui.add(api, 'dataString').options(['Brush','Lisney','Kyoko']) //위와 같다
+            
             gui.add(api,'dataNumber')
             gui.add(api,'dataNumber', 0,10,1)
             gui.add(api,'dataNumber', {A:0, B:10, C:20})  //수치 타입을 항목으로써 선택할려면
