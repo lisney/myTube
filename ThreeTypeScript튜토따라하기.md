@@ -501,4 +501,156 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 ![image](https://user-images.githubusercontent.com/30430227/120104397-3c3c4900-c18f-11eb-8143-51211c5121ec.png)
 [그램] 트랙에 배치한 후 mute 한다(체크해제)
 
-# gltf animation, drag(boxHelper), mouse Pick, measure, outline pass
+# drag(boxHelper)
+![image](https://user-images.githubusercontent.com/30430227/120190946-3f4d3d00-c254-11eb-96f1-6c42a549fc4a.png)
+```
+    <script type="module">
+        import * as THREE from './three.module.js'
+        import {OrbitControls} from './OrbitControls.js'
+        import {DragControls} from './DragControls.js'
+
+        import Stats from './stats.module.js'
+        import {GLTFLoader} from './GLTFLoader.js'
+
+        const canvas = document.querySelector('#c')
+
+        function main(){
+            const renderer = new THREE.WebGLRenderer({canvas})
+            renderer.shadowMap.enabled = true
+
+            const scene = new THREE.Scene()
+            
+            const axesHelper = new THREE.AxesHelper(5)
+            scene.add(axesHelper)
+
+            const camera = new THREE.PerspectiveCamera(75, 2, 0.1, 10)
+            camera.position.set(0,0,4)
+
+            const orbitControls = new OrbitControls(camera, canvas)
+            orbitControls.target.set(0,0,0)
+
+            {
+                const light1 = new THREE.PointLight(0xffffff, .9)
+                light1.position.set(2.5,2.5,2.5)
+                light1.castShadow = true
+                scene.add(light1)
+
+                const light2 = new THREE.PointLight(0xffffff, .5)
+                light2.position.set(-2.5,2.5,2.5)
+                light2.castShadow = true
+                scene.add(light2)
+            }
+
+            const sceneMeshes = new Array()
+            let boxHelper
+
+            const dragControls = new DragControls(sceneMeshes, camera, canvas)
+            dragControls.addEventListener('hoveron', event=>{
+                boxHelper.visible = true
+                orbitControls.enabled = false
+            })
+            dragControls.addEventListener('hoveroff',event=>{
+                boxHelper.visible = false
+                orbitControls.enabled= true
+            })
+            dragControls.addEventListener('drag',event=>{
+                event.object.position.y = 0
+            })
+            dragControls.addEventListener('dragstart', event=>{
+                boxHelper.visible = true
+                orbitControls.enabled = false
+            })
+            dragControls.addEventListener('dragend',event=>{
+                boxHelper.visible = false
+                orbitControls.enabled = true
+            })
+
+            const planeGeometry = new THREE.PlaneGeometry(25,25)
+            const texture = new THREE.TextureLoader().load('../4g2.jpg')
+            const plane = new THREE.Mesh(planeGeometry, new THREE.MeshPhongMaterial({map:texture}))
+            plane.rotateX(-Math.PI/2)
+            plane.position.y = -1
+            plane.receiveShadow = true
+            scene.add(plane)
+
+            let mixer
+            let modelReady = false
+            const gltfLoader = new GLTFLoader()
+            let modelGroup
+            let modelDragBox
+
+            gltfLoader.load('../gltfs/pyramid.gltf', gltf=>{
+                gltf.scene.traverse(child=>{
+                    if(child){
+                        modelGroup = child
+                    }
+                    if(child.isMesh){
+                        child.castShadow = true
+                        child.geometry.computeVertexNormals()
+                    }
+
+                    modelDragBox = new THREE.Mesh(new THREE.BoxGeometry(2,2,2), new THREE.MeshBasicMaterial({transparent: true, opacity:0}))
+                    modelDragBox.geometry.translate(0,0,0) //// center the geometry
+                    scene.add(modelDragBox)
+                    sceneMeshes.push(modelDragBox)
+
+                    boxHelper = new THREE.BoxHelper(modelDragBox, 0xffff00)
+                    boxHelper.visible = false
+                    scene.add(boxHelper)
+
+                    scene.add(gltf.scene)
+
+                    modelReady = true
+                },xhr=>{
+                    console.log((xhr.loaded/xhr.total *100) + '% loaded')//로딩되고 있는 동안 실행
+                },error=>{
+                    console.log(error)
+                })
+            })
+
+            function resizeRendererToDisplaySize(renderer){
+                const canvas = renderer.domElement
+                const width = canvas.clientWidth
+                const height = canvas.clientHeight
+
+                const needResize = width!==canvas.width||height!==canvas.height
+
+                if(needResize){
+                    renderer.setSize(width,height, false)
+                }
+                return needResize
+            }
+
+            const stats = Stats()
+            document.body.appendChild(stats.dom)
+
+            const clock = new THREE.Clock()
+
+            function render(){
+                if(resizeRendererToDisplaySize(renderer)){
+                    camera.aspect= canvas.width/canvas.height  //window.innerWidth / window.innerHeight
+                    camera.updateProjectionMatrix()
+                }
+
+                stats.update()
+                orbitControls.update()
+
+                if(modelReady){
+                    modelGroup.position.copy(modelDragBox.position)
+                    boxHelper.update()
+                }
+
+                renderer.render(scene, camera)
+                requestAnimationFrame(render)
+                
+            }
+            requestAnimationFrame(render)
+
+        }
+
+        main()
+```
+
+
+
+# mouse Pick, measure, outline passgltf animation, 
