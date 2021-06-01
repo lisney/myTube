@@ -653,4 +653,136 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 
 
-# mouse Pick, measure, outline passgltf animation, 
+# mouse Pick
+![image](https://user-images.githubusercontent.com/30430227/120286203-f3a09f00-c2f8-11eb-909d-d58f43247327.png)
+```
+    <script type="module">
+        import * as THREE from './three.module.js'
+        import {OrbitControls} from './OrbitControls.js'
+        import {DragControls} from './DragControls.js'
+
+        import Stats from './stats.module.js'
+        import {GLTFLoader} from './GLTFLoader.js'
+
+        const canvas = document.querySelector('#c')
+
+        function main(){
+            const renderer = new THREE.WebGLRenderer({canvas})
+            renderer.shadowMap.enabled = true
+            renderer.outputEncoding = THREE.sRGBEncoding
+
+            const scene = new THREE.Scene()
+            {
+                const light1 = new THREE.PointLight(0xffffff, 0.7)
+                const light2 = new THREE.PointLight(0xffffff, 0.7)
+                light1.position.set(2,2,2)
+                light2.position.set(-2,2,2)
+                light1.castShadow = true
+                light2.castShadow = true
+                scene.add(light1)
+                scene.add(light2)
+            }
+
+            const camera = new THREE.PerspectiveCamera(75, 2, .1, 100)
+            camera.position.set(5,5,5)
+
+            const controls = new OrbitControls(camera, renderer.domElement)
+
+            const pickObjects = new Array()
+            let intersectedObject
+            let originalMaterials = {}
+            const hightlightedMaterial = new THREE.MeshBasicMaterial({wireframe:true, color:0x00ff00})
+
+            const loader = new GLTFLoader()
+            loader.load('../gltfs/items.gltf', gltf=>{
+                gltf.scene.traverse(child=>{
+                    if(child.isMesh){
+                        let m = child
+                        switch (m.name){
+                            case 'Plane':
+                                m.receiveShadow = true
+                                break
+                            case 'Sphere':
+                                m.castShadow = true
+                                break
+                            default:
+                                m.castShadow = true
+                                pickObjects.push(m)
+                                originalMaterials[m.name] = m.material
+                        }
+                    }
+                })
+                scene.add(gltf.scene)
+            },xhr=>{
+                console.log((xhr.loaded/xhr.total * 100)+'% loaded')
+            },error=>{
+                console.log(error)
+            })
+
+            const raycaster = new THREE.Raycaster()
+            let intersects
+
+            document.addEventListener('mousemove', onDocumentMouseMove, false)
+            const domRect = canvas.getBoundingClientRect()
+
+            function onDocumentMouseMove(event){
+                raycaster.setFromCamera({
+                    x: ((event.clientX -domRect.x)/renderer.domElement.clientWidth)*2 -1,
+                    y: ((event.clientY - domRect.y)/renderer.domElement.clientHeight)*-2+1
+                }, camera)
+                intersects = raycaster.intersectObjects(pickObjects, false)
+
+                if(intersects.length>0){
+                    intersectedObject = intersects[0].object
+                }else{
+                    intersectedObject = null
+                }
+                pickObjects.forEach((o, i)=>{
+                    if(intersectedObject && intersectedObject.name == o.name){
+                        pickObjects[i].material = hightlightedMaterial
+                    }else{
+                        pickObjects[i].material = originalMaterials[o.name]
+                    }
+                })
+            }
+
+            function resizeRendererToDisplaySize(renderer){
+                const canvas = renderer.domElement
+                const width = canvas.clientWidth
+                const height = canvas.clientHeight
+
+                const needResize = width!==canvas.width||height!==canvas.height
+
+                if(needResize){
+                    renderer.setSize(width,height, false)
+                }
+                return needResize
+            }
+
+            const stats = Stats()
+            document.body.appendChild(stats.dom)
+
+            const clock = new THREE.Clock()
+
+            function render(){
+                if(resizeRendererToDisplaySize(renderer)){
+                    camera.aspect= canvas.width/canvas.height  //window.innerWidth / window.innerHeight
+                    camera.updateProjectionMatrix()
+                }
+
+                stats.update()
+                controls.update()
+
+                renderer.render(scene, camera)
+                requestAnimationFrame(render)
+                
+            }
+            requestAnimationFrame(render)
+
+        }
+
+        main()
+```
+
+
+# measure, outline passgltf animation, 
