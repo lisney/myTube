@@ -488,18 +488,6 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
         main()
 ```
 
-# 블렌더에서 GLTF 보내기
-```
-> 라이트 Include:Puncual Lights 체크
-
-> Bone Aniamtion
- 각각 Track 클립 넣기 >  클립 교차되지 않게 위치 옮기기
- 이름 바꾸기 : Animation Data 에서 애니메이션을 선택한 후 이름바꾼다
- 시작 프레임 위치로 옮긴 후 Export
-
-```
-![image](https://user-images.githubusercontent.com/30430227/120104397-3c3c4900-c18f-11eb-8143-51211c5121ec.png)
-[그램] 트랙에 배치한 후 mute 한다(체크해제)
 
 # drag(boxHelper)
 ![image](https://user-images.githubusercontent.com/30430227/120190946-3f4d3d00-c254-11eb-96f1-6c42a549fc4a.png)
@@ -783,6 +771,19 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
         main()
 ```
+
+# 블렌더에서 GLTF 보내기
+```
+> 라이트 Include:Puncual Lights 체크
+
+> Bone Aniamtion
+ 각각 Track 클립 넣기 >  클립 교차되지 않게 위치 옮기기
+ 이름 바꾸기 : Animation Data 에서 애니메이션을 선택한 후 이름바꾼다
+ 시작 프레임 위치로 옮긴 후 Export
+
+```
+![image](https://user-images.githubusercontent.com/30430227/120104397-3c3c4900-c18f-11eb-8143-51211c5121ec.png)
+[그램] 트랙에 배치한 후 mute 한다(체크해제)
 
 
 # measure, outline passgltf animation, 
