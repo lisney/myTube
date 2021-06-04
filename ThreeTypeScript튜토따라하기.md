@@ -786,7 +786,9 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 [그램] 트랙에 배치한 후 mute 한다(체크해제)
 
 
-# gltf animation, 
+# gltf animation
+![image](https://user-images.githubusercontent.com/30430227/120741003-3cda3400-c52f-11eb-8f96-e6df8bb82058.png)
+
 ```
 			import * as THREE from './three.module.js';
 
