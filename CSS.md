@@ -193,3 +193,57 @@ Flex를 사용하는 방법
  }
  -대신 + 라인을 사용한다
  ```
+ 
+ # 비교 슬라이더
+ ![image](https://user-images.githubusercontent.com/30430227/120735395-8291ff00-c525-11eb-8920-3865cbf69f4e.png)
+```
+ <style>
+     *{
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+     }
+     body{
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         min-height: 100vh;
+         background: #000;
+     }
+     .imgBox{
+         position: relative;
+         width: 442px;
+         height: 500px;
+         border: 3px solid white;
+     }
+
+     .imgBox textarea{
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         max-width: 100%;
+         height: 100%;
+         background: url(../4g2.jpg) ;
+         resize: none;
+         opacity: 0.4;
+         filter: grayscale(1) blur(5px);
+         outline: none;
+     }
+
+     .imgBox textarea:nth-child(2){
+         opacity: 1;
+         filter: grayscale(0) blur(0);
+         width: 150px;
+         border-right: 2px solid yellow;
+         resize: horizontal;
+     }
+ </style>
+</head>
+<body>
+
+    <div class="imgBox">
+        <textarea readonly></textarea>
+        <textarea readonly></textarea>
+    </div>
+```
