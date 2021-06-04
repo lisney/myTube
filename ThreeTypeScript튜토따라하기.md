@@ -786,41 +786,19 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 [그램] 트랙에 배치한 후 mute 한다(체크해제)
 
 
-# measure, outline passgltf animation, 
+# gltf animation, 
 ```
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>three.js webgl - skinning and morphing</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link type="text/css" rel="stylesheet" href="main.css">
-		<style>
+			import * as THREE from './three.module.js';
 
-			#c {
-				display: block;
-				width: 600px;
-				height: 300px;
-			}
-		</style>
-	</head>
+			import Stats from './stats.module.js';
+			import { GUI } from './dat.gui.module.js';
 
-	<body>
-		<canvas id="c"></canvas>
-
-		<script type="module">
-
-			import * as THREE from '../build/three.module.js';
-
-			import Stats from './jsm/libs/stats.module.js';
-			import { GUI } from './jsm/libs/dat.gui.module.js';
-
-			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { GLTFLoader } from './GLTFLoader.js';
 
 			let container, stats, clock, gui, mixer, actions, activeAction, previousAction;
 			let camera, scene, renderer, model, face;
 
-			const api = { state: 'Walking' };
+			const api = { state: 'actionA' };
 
 			const canvas = document.querySelector('#c')
 
@@ -832,7 +810,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 				renderer.outputEncoding = THREE.sRGBEncoding;
 	
 				camera = new THREE.PerspectiveCamera( 45, 2, 0.25, 100 );
-				camera.position.set( - 5, 3, 10 );
+				camera.position.set( -3, 3, 7 );
 				camera.lookAt( new THREE.Vector3( 0, 2, 0 ) );
 
 				scene = new THREE.Scene();
@@ -865,7 +843,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 				// model
 
 				const loader = new GLTFLoader();
-				loader.load( 'models/gltf/test.gltf', function ( gltf ) {
+				loader.load( '../gltfs/actions.gltf', function ( gltf ) {
 
 					model = gltf.scene;
 					scene.add( model );
@@ -887,7 +865,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 			function createGUI( model, animations ) {
 
-				const states = [ 'Idle', 'Walking', 'Running', 'Dance', 'Death', 'Sitting', 'Standing' ];
+				const states = [ 'actionA', 'actionB' ];
 				const emotes = [ 'Jump', 'Yes', 'No', 'Wave', 'Punch', 'ThumbsUp' ];
 
 				gui = new GUI();
@@ -913,17 +891,17 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 				// states
 
-				// const statesFolder = gui.addFolder( 'States' );
+				const statesFolder = gui.addFolder( 'States' );
 
-				// const clipCtrl = statesFolder.add( api, 'state' ).options( states );
+				const clipCtrl = statesFolder.add( api, 'state' ).options( states );
 
-				// clipCtrl.onChange( function () {
+				clipCtrl.onChange( function () {
 
-				// 	fadeToAction( api.state, 0.5 );
+					fadeToAction( api.state, 0.5 );
 
-				// } );
+				} );
 
-				// statesFolder.open();
+				statesFolder.open();
 
 				// emotes
 
@@ -961,7 +939,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 				// expressions
 
-				face = model.getObjectByName( 'Cube' );
+				face = model.getObjectByName( 'CubeA' );
 
 				const expressions = Object.keys( face.morphTargetDictionary );
 				const expressionFolder = gui.addFolder( 'Expressions' );
@@ -972,8 +950,8 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 				}
 
-				// activeAction = actions[ 'Walking' ];
-				// activeAction.play();
+				activeAction = actions[ 'actionA' ];
+				activeAction.play();
 
 				expressionFolder.open();
 
@@ -1001,23 +979,40 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 			//
 
+            function resizeRendererToDisplaySize(renderer){
+                const canvas = renderer.domElement
+                const width = canvas.clientWidth
+                const height = canvas.clientHeight
+
+                const needResize = width!==canvas.width||height!==canvas.height
+
+                if(needResize){
+                    renderer.setSize(width, height, false)
+                }
+
+                return needResize
+            }
+
 			function animate() {
 
 				const dt = clock.getDelta();
 
 				if ( mixer ) mixer.update( dt );
 
-				requestAnimationFrame( animate );
-
+                if(resizeRendererToDisplaySize(renderer)){
+                    camera.aspect = canvas.width/canvas.height
+                    camera.updateProjectionMatrix()
+                }
+                
 				renderer.render( scene, camera );
+				requestAnimationFrame( animate );
 
 				stats.update();
 
 			}
 
-		</script>
-
-	</body>
-</html>
 
 ```
+
+# measure, outline pass
+
