@@ -772,6 +772,11 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
         main()
 ```
 
+# measure
+```
+
+```
+
 # 블렌더에서 GLTF 보내기
 ```
 > 라이트 Include:Puncual Lights 체크
@@ -1016,5 +1021,5 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 ```
 
-# measure, outline pass
+# outline pass
 
