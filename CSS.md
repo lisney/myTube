@@ -225,6 +225,7 @@ Flex를 사용하는 방법
          max-width: 100%;
          height: 100%;
          background: url(../4g2.jpg) ;
+         background-size: cover;
          resize: none;
          opacity: 0.4;
          filter: grayscale(1) blur(5px);
