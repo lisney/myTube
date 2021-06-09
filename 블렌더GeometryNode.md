@@ -51,3 +51,6 @@
 ![image](https://user-images.githubusercontent.com/30430227/121284942-886a5480-c918-11eb-8144-ad66d27f0ee3.png)
 
 
+# 노말 활용 - Point Translate, Point Rotate
+![image](https://user-images.githubusercontent.com/30430227/121287676-f7e24300-c91c-11eb-99c4-d9ea86d48f6c.png)
+
