@@ -40,5 +40,14 @@
 
 ![image](https://user-images.githubusercontent.com/30430227/121125774-13d4de80-c862-11eb-9015-746e05931344.png)
 
+# 랜덤분포로 ColorRamp를 사용 - 사용자정의 Attribute 'rand'
+![image](https://user-images.githubusercontent.com/30430227/121281191-7dacc100-c912-11eb-90e9-3ac81f1d4f94.png)
+
+# Atrribute Sample Texture
+![image](https://user-images.githubusercontent.com/30430227/121283574-548e2f80-c916-11eb-8be2-49c1da23cc7b.png)
+![image](https://user-images.githubusercontent.com/30430227/121283592-5d7f0100-c916-11eb-9be9-6796a9be617d.png)
+
+# 거리에 따른 분포 - PingPong
+![image](https://user-images.githubusercontent.com/30430227/121284942-886a5480-c918-11eb-8144-ad66d27f0ee3.png)
 
 
