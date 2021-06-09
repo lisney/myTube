@@ -54,3 +54,5 @@
 # 노말 활용 - Point Translate, Point Rotate
 ![image](https://user-images.githubusercontent.com/30430227/121287676-f7e24300-c91c-11eb-99c4-d9ea86d48f6c.png)
 
+# 그래디언트 사이즈
+![image](https://user-images.githubusercontent.com/30430227/121297817-d89fe180-c92d-11eb-8b6e-f95a8f3a303b.png)
