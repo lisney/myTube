@@ -56,3 +56,6 @@
 
 # 그래디언트 사이즈
 ![image](https://user-images.githubusercontent.com/30430227/121297817-d89fe180-c92d-11eb-8b6e-f95a8f3a303b.png)
+
+# 커스텀 변수 'rand'. Align Rotation to Vector
+![image](https://user-images.githubusercontent.com/30430227/121326853-e49b9b80-c94d-11eb-9c78-bacbcdec98c1.png)
