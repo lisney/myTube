@@ -1021,5 +1021,166 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 ```
 
+# Multi Controls
+![image](https://user-images.githubusercontent.com/30430227/121470318-fdad5680-c9f8-11eb-828e-bd057815ae14.png)
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     #c{
+         display: block;
+         width: 600px;
+         height: 300px;
+     }
+ </style>
+</head>
+<body>
+<video src="" width="300" height="300" autoplay muted></video>
+<canvas id="c"></canvas>
+
+<script type="module">
+    const video = document.querySelector('video')
+
+    startVideo()
+    function startVideo(){
+        navigator.mediaDevices.getUserMedia({video})
+        .then(stream=>video.srcObject = stream)
+        .catch(err=>console.log(err))
+    }
+
+    const ctx = document.createElement('canvas').getContext('2d')
+    ctx.canvas.width = 300
+    ctx.canvas.height = 300
+    document.body.appendChild(ctx.canvas)
+
+    ctx.fillStyle = 'red'
+    ctx.fillRect(0,0,300,300)
+
+    const img = new Image()
+    img.addEventListener('load',()=>{
+        ctx.drawImage(img, 20,20,260,260)
+    })
+    img.src = '../4g2.jpg'
+
+    
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {DragControls} from './DragControls.js'
+    import {TransformControls} from './TransformControls.js'
+    import Stats from './stats.module.js'
+    
+    let renderer, scene, camera, cubes, stats
+    const canvas = document.querySelector('#c')
+    
+    main()
+    animate()
+    
+    function main(){
+        
+        renderer = new THREE.WebGLRenderer({canvas})
+        scene = new THREE.Scene()
+        const axesHelper = new THREE.AxesHelper(5)
+        scene.add(axesHelper)
+        
+        camera = new THREE.PerspectiveCamera(75, 2, 0.1, 10)
+        camera.position.set(0,0,2)
+
+        const geometry = new THREE.BoxGeometry()
+        const material = new THREE.MeshNormalMaterial({transparent:true})
+
+        const cube = new THREE.Mesh(geometry, material)
+        scene.add(cube)
+
+        const orbitControls = new OrbitControls(camera, canvas)
+
+        const dragControls = new DragControls([cube], camera, canvas)
+        dragControls.addEventListener('hoveron',()=>{
+            orbitControls.enabled = false
+        })
+        dragControls.addEventListener('hoveroff',()=>{
+            orbitControls.enabled = true
+        })
+        dragControls.addEventListener('dragstart',(event)=>{
+            event.object.material.opacity = 0.33
+        })
+        dragControls.addEventListener('dragend',(event)=>{
+            event.object.material.opacity = 1
+        })
+        stats = Stats()
+        document.body.appendChild(stats.dom)
+
+        const texture = new THREE.TextureLoader().load('../umbrellas.png',()=>{
+            const rt = new THREE.WebGLCubeRenderTarget(texture.image.height)
+            rt.fromEquirectangularTexture(renderer, texture)
+            scene.background = rt.texture
+        })
+
+        const transformControls = new TransformControls(camera, canvas)
+        transformControls.attach(cube)
+        transformControls.setMode('rotate')
+        transformControls.size =1
+        scene.add(transformControls)
+
+        transformControls.addEventListener('dragging-changed',(event)=>{
+            orbitControls.enabled = !event.value
+            dragControls.enabled = !event.value
+        })
+
+        window.addEventListener('keydown', (event)=>{
+            switch(event.key){
+                case 'w':
+                    transformControls.setMode('translate')
+                    break
+
+                case 'e':
+                    transformControls.setMode('rotate')
+                    break
+
+                case 'r':
+                    transformControls.setMode('scale')
+                    break
+            }
+        })
+        
+    }
+
+    
+    function animate(){
+        if(resizeRendererToDisplaySize(renderer)){
+            camera.aspect = canvas.width/canvas.height
+            camera.updateProjectionMatrix()
+        }
+        stats.update()
+        renderer.render(scene, camera)
+
+        requestAnimationFrame(animate)
+    }
+
+    function resizeRendererToDisplaySize(renderer){
+        const canvas = renderer.domElement
+        const width = canvas.clientWidth
+        const height = canvas.clientHeight
+
+        const needResize = width!==canvas.width||height!==canvas.height
+
+        if(needResize){
+            renderer.setSize(width, height, false)
+        }
+
+        return needResize
+    }
+    
+</script>
+</body>
+</html>
+
+```
+
 # outline pass
 
