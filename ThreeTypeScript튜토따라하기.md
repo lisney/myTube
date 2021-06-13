@@ -773,216 +773,241 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 ```
 
 # measure
-![image](https://user-images.githubusercontent.com/30430227/121773051-570db500-cbb4-11eb-8e8c-ced94582e617.png)
+![image](https://user-images.githubusercontent.com/30430227/121800689-4ae62e00-cc6e-11eb-8e20-74c5cb0bbbcd.png)
 
 ```
 <!DOCTYPE html>
-<html>
-
+<html lang="ko">
 <head>
-    <title>Three.js TypeScript Tutorials by Sean Bradley : https://sbcode.net/threejs</title>
-    <meta name="author" content="Sean Bradley">
-    <style>
-        body {
-            overflow: hidden;
-            margin: 0px;
-        }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     #c{
+         display: block;
+         width: 600px;
+         height: 300px;
+     }
+     #instructions{
+         color: white;
+         position: absolute;
+         left: 100px;
+         top: 10px;
+     }
+     .measurementLabel{
+         position: absolute;
+         background: black;
+         color: white;
 
-        #instructions {
-            color: white;
-            position: absolute;
-            left: 100px;
-            top: 10px;
-            font-family: monospace;
-        }
-
-        .measurementLabel {
-            font-family: monospace;
-            background-color: black;
-            color: white;
-        }
-        #c{
-            display: block;
-            width: 600px;
-            height: 300px;
-            position: absolute;
-        }
-    </style>
+     }
+ </style>
 </head>
-
 <body>
-    <div id="instructions">Press CTRL + Left Mouse Click to start drawing a line. <br />Continue to hold CTRL and Left
-        Mouse Click again to mark the end of the line.</div>
-
     <canvas id="c"></canvas>
-
+    <div id="instructions">Ctrl + Left Mouse to start drawing a line</div>
     <script type="module">
-        import * as THREE from '/js/three.module.js';
-        import { OrbitControls } from '/js/OrbitControls.js';
-        import { GLTFLoader } from '/js/GLTFLoader.js';
-        import Stats from '/js/stats.module.js';
-        import { CSS2DRenderer, CSS2DObject } from '/js/CSS2DRenderer.js';
+        import * as THREE from './three.module.js'
+        import {OrbitControls} from './OrbitControls.js'
+        import {GLTFLoader}  from './GLTFLoader.js'
+        import Stats from './stats.module.js'
+        import {CSS2DRenderer, CSS2DObject} from './CSS2DRenderer.js'
 
         const canvas = document.querySelector('#c')
 
-        const scene = new THREE.Scene();
+        let renderer, labelRenderer, scene, camera, controls, stats
 
-        var light = new THREE.SpotLight();
-        light.position.set(12.5, 12.5, 12.5);
-        light.castShadow = true;
-        light.shadow.mapSize.width = 1024;
-        light.shadow.mapSize.height = 1024;
-        scene.add(light);
-        const camera = new THREE.PerspectiveCamera(50,2, 0.1, 1000);
-        camera.position.set(15,15,15)
-        const renderer = new THREE.WebGLRenderer({canvas});
-        renderer.shadowMap.enabled = true;
-        renderer.outputEncoding = THREE.sRGBEncoding;
-        
-        const labelRenderer = new CSS2DRenderer();
-        labelRenderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        labelRenderer.domElement.style.position = 'absolute';
-        labelRenderer.domElement.style.top = '0px';
-        labelRenderer.domElement.style.pointerEvents = 'none';
-        document.body.appendChild(labelRenderer.domElement);
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        const pickableObjects = new Array();
-        const loader = new GLTFLoader();
-        loader.load('gltf/simple.gltf', function (gltf) {
-            gltf.scene.traverse(function (child) {
-                if (child.isMesh) {
-                    let m = child;
-                    switch (m.name) {
-                        case "Plane":
-                            m.receiveShadow = true;
-                            break;
-                        default:
-                            m.castShadow = true;
+        init()
+        animate()
+
+        function init(){
+            renderer = new THREE.WebGLRenderer({canvas})
+            renderer.shadowMap.enabled = true
+
+            scene = new THREE.Scene()
+
+            camera = new THREE.PerspectiveCamera(50, 2, 0.1,100)
+            camera.position.set(10,10,10)
+
+            controls = new OrbitControls(camera, renderer.domElement)
+            controls.enableDamping = true
+
+            {
+                const light = new THREE.SpotLight()
+                light.position.set(15,15,15)
+                light.castShadow = true
+                light.shadow.mapSize.width = 1024
+                light.shadow.mapSize.height = 1024
+                scene.add(light)
+            }
+
+            const pickableObjects = new Array()
+
+            const loader = new GLTFLoader()
+            loader.load('../gltfs/simple.gltf',gltf=>{
+                gltf.scene.traverse(child=>{
+                    if(child.isMesh){
+                        let m = child
+                        switch (m.name){
+                            case 'Plane':
+                                m.receiveShadow = true
+                                break
+                            default:
+                                m.castShadow = true
+                        }
+                        pickableObjects.push(m)
                     }
-                    pickableObjects.push(m);
-                }
-            });
-            scene.add(gltf.scene);
-        }, (xhr) => {
-            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-        }, (error) => {
-            console.log(error);
-        });
+                })
+                scene.add(gltf.scene)
+            },xhr=>{
+                console.log((xhr.loaded/xhr.total *100) + '% loaded')
+            },error=>{
+                console.log(error)
+            })
 
-        let ctrlDown = false;
-        let lineId = 0;
-        let line;
-        let drawingLine = false;
-        const measurementLabels = {};
-        window.addEventListener('keydown', function (event) {
-            if (event.key === "Control") {
-                ctrlDown = true;
-                controls.enabled = false;
-                renderer.domElement.style.cursor = "crosshair";
-            }
-        });
-        window.addEventListener('keyup', function (event) {
-            if (event.key === "Control") {
-                ctrlDown = false;
-                controls.enabled = true;
-                renderer.domElement.style.cursor = "pointer";
-                if (drawingLine) {
-                    //delete the last line because it wasn't committed
-                    scene.remove(line);
-                    scene.remove(measurementLabels[lineId]);
-                    drawingLine = false;
+            labelRenderer = new CSS2DRenderer()
+            labelRenderer.setSize(canvas.clientWidth, canvas.clientHeight)
+            labelRenderer.domElement.style.position = 'absolute'
+            labelRenderer.domElement.style.top = '0px'
+            labelRenderer.domElement.style.pointerEvents = 'none'
+            document.body.appendChild(labelRenderer.domElement)
+
+            let ctrlDown = false
+            let lineId =0
+            let line
+            let drawingLine = false
+            const measurementLabels = {}
+
+            window.addEventListener('keydown',event=>{
+                if(event.key ==='Control'){
+                    ctrlDown = true
+                    controls.enabled = false
+                    renderer.domElement.style.cursor = 'crosshair'
                 }
-            }
-        });
-        const raycaster = new THREE.Raycaster();
-        let intersects;
-        const mouse = new THREE.Vector2();
-        renderer.domElement.addEventListener('pointerdown', onClick, false);
-        function onClick(event) {
-            if (ctrlDown) {
-                raycaster.setFromCamera(mouse, camera);
-                intersects = raycaster.intersectObjects(pickableObjects, false);
-                if (intersects.length > 0) {
-                    if (!drawingLine) {
+            })
+            window.addEventListener('keyup',event=>{
+                if(event.key ==='Control'){
+                    ctrlDown = false
+                    controls.enabled = true
+                    renderer.domElement.style.cursor = 'pointer'
+                    if(drawingLine){
+                        //완료되지 않고 드로잉 중인 라인은 삭제한다
+                        scene.remove(line)
+                        scene.remove(measurementLabels[lineId])
+                        drawingLine = false
+                    }
+                }
+            })
+
+            const raycaster = new THREE.Raycaster()
+            let intersects
+            const mouse = new THREE.Vector2()
+
+            renderer.domElement.addEventListener('pointerdown', onClick, false)
+
+            function onClick(event){
+                if(ctrlDown){
+                    raycaster.setFromCamera(mouse, camera)
+                    intersects = raycaster.intersectObjects(pickableObjects, false)
+                    if(intersects.length>0){
                         //start the line
-                        const points = [];
-                        points.push(intersects[0].point);
-                        points.push(intersects[0].point.clone());
-                        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                        const points = []
+                        points.push(intersects[0].point)
+                        points.push(intersects[0].point.clone())
+                        const geometry = new THREE.BufferGeometry().setFromPoints(points)
                         line = new THREE.LineSegments(geometry, new THREE.LineBasicMaterial({
-                            color: 0xff0000,
-                            transparent: true,
-                            opacity: 0.75
-                            // depthTest: false,
-                            // depthWrite: false
-                        }));
-                        line.frustumCulled = false;
-                        scene.add(line);
-                        const measurementDiv = document.createElement('div');
-                        measurementDiv.className = 'measurementLabel';
-                        measurementDiv.innerText = "0.0m";
-                        const measurementLabel = new CSS2DObject(measurementDiv);
-                        measurementLabel.position.copy(intersects[0].point);
-                        measurementLabels[lineId] = measurementLabel;
-                        scene.add(measurementLabels[lineId]);
-                        drawingLine = true;
-                    }
-                    else {
-                        //finish the line
-                        const positions = line.geometry.attributes.position.array;
-                        positions[3] = intersects[0].point.x;
-                        positions[4] = intersects[0].point.y;
-                        positions[5] = intersects[0].point.z;
-                        line.geometry.attributes.position.needsUpdate = true;
-                        lineId++;
-                        drawingLine = false;
-                    }
-                }
-            }
-        }
-        document.addEventListener('mousemove', onDocumentMouseMove, false);
+                            color:0xff0000, transparent:true, opacity:.75
+                        }))
+                        line.frustumCulled = false
+                        scene.add(line)
 
-        const domRect = canvas.getBoundingClientRect()
-        function onDocumentMouseMove(event) {
-            event.preventDefault();
-            mouse.x = ((event.clientX-domRect.x) / canvas.clientWidth) * 2 - 1;
-            mouse.y = -((event.clientY-domRect.y) / canvas.clientHeight) * 2 + 1;
-            if (drawingLine) {
-                raycaster.setFromCamera(mouse, camera);
-                intersects = raycaster.intersectObjects(pickableObjects, false);
-                if (intersects.length > 0) {
-                    const positions = line.geometry.attributes.position.array;
-                    const v0 = new THREE.Vector3(positions[0], positions[1], positions[2]);
-                    const v1 = new THREE.Vector3(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z);
-                    positions[3] = intersects[0].point.x;
-                    positions[4] = intersects[0].point.y;
-                    positions[5] = intersects[0].point.z;
-                    line.geometry.attributes.position.needsUpdate = true;
-                    const distance = v0.distanceTo(v1);
-                    measurementLabels[lineId].element.innerText = distance.toFixed(2) + "m";
-                    measurementLabels[lineId].position.lerpVectors(v0, v1, .5);
+                        const measurementDiv = document.createElement('div')
+                        measurementDiv.className = 'measurementLabel'
+                        measurementDiv.innerText = '0.0m'
+
+                        const measurementLabel = new CSS2DObject(measurementDiv)
+                        measurementLabel.position.copy(intersects[0].point)
+                        measurementLabels[lineId]= measurementLabel
+                        scene.add(measurementLabels[lineId])
+                        drawingLine = true
+                    }else{
+                        //finish the line
+                        const positions = line.geometry.attributes.position.array
+                        positions[3] = intersects[0].point.x
+                        positions[4] = intersects[0].point.y
+                        positions[5] = intersects[0].point.z
+                        line.geometry.attributes.position.needsUpdate = true
+                        lineId++
+                        drawingLine = false
+                    }
                 }
             }
+            document.addEventListener('mousemove', onDocumentMouseMove, false)
+
+            const domRect = canvas.getBoundingClientRect()
+
+            function onDocumentMouseMove(event){
+                //기본 브라우저? 이벤트를 막는다
+                event.preventDefault()
+                mouse.x = ((event.clientX - domRect.x)/canvas.clientWidth)* 2 -1
+                mouse.y = ((event.clientY - domRect.y)/canvas.clientHeight)*-2 +1
+
+                if(drawingLine){
+                    //두 번째 점의 위치에 따라 선 및 라벨의 위치 변경
+                    raycaster.setFromCamera(mouse, camera)
+                    intersects = raycaster.intersectObjects(pickableObjects, false)
+                    if(intersects.length>0){
+                        const positions = line.geometry.attributes.position.array
+                        const v0 = new THREE.Vector3(positions[0], positions[1], positions[2])
+                        const v1 = new THREE.Vector3(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
+                        positions[3] = intersects[0].point.x
+                        positions[4] = intersects[0].point.y
+                        positions[5] = intersects[0].point.z
+                        line.geometry.attributes.position.needsUpdate = true
+                        const distance = v0.distanceTo(v1)
+                        measurementLabels[lineId].element.innerText = distance.toFixed(2)+'m'
+                        measurementLabels[lineId].position.lerpVectors(v0, v1, .5)
+                    }
+                }
+            }
+
+            stats = Stats()
+            document.body.appendChild(stats.dom)
+
         }
-        const stats = Stats();
-        document.body.appendChild(stats.dom);
-        var animate = function () {
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight, false)
-            requestAnimationFrame(animate);
-            controls.update();
-            render();
-            stats.update();
-        };
-        function render() {
-            labelRenderer.render(scene, camera);
-            renderer.render(scene, camera);
+
+    
+
+        function resizeRendererToDisplaySize(renderer){
+            const canvas = renderer.domElement
+            const width = canvas.clientWidth
+            const height = canvas.clientHeight
+
+            const needResize = width!==canvas.width||height!==canvas.height
+
+            if(needResize){
+                renderer.setSize(width, height, false)
+            }
+
+            return needResize
         }
-        animate();
-        window.focus()   
+        
+        function animate(){
+            if(resizeRendererToDisplaySize(renderer)){
+                camera.aspect = canvas.width/canvas.height
+                camera.updateProjectionMatrix()
+            }
+            controls.update()
+            stats.update()
+            
+            renderer.render(scene, camera)
+            labelRenderer.render(scene, camera)
+
+            requestAnimationFrame(animate)
+        }
+
     </script>
 </body>
-
 </html>
 ```
 
