@@ -1418,4 +1418,191 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 
 # outline pass
+![image](https://user-images.githubusercontent.com/30430227/121863775-273aea80-cd37-11eb-9366-60d633ed1f5e.png)
 
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     *{
+         margin: 0;
+         padding: 0;
+     }
+     #c{
+         display: block;
+         width: 600px;
+         height: 300px;
+     }
+ </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {GLTFLoader} from './GLTFLoader.js'
+    import Stats from './stats.module.js'
+
+    import {EffectComposer} from './EffectComposer.js'
+    import {RenderPass} from './RenderPass.js'
+    import {OutlinePass} from './OutlinePass.js'
+
+    let renderer, scene, camera, stats, controls, composer, outlineObjects
+
+    const canvas = document.querySelector('#c')
+
+    init()
+    animate()
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({canvas})
+        renderer.shadowMap.enabled = true
+
+        scene = new THREE.Scene()
+
+        camera = new THREE.PerspectiveCamera(50, 2, .1, 100)
+        camera.position.set(10,10,10)
+
+        controls = new OrbitControls(camera, renderer.domElement)
+        controls.enableDamping = true
+
+        {
+            const light = new THREE.SpotLight()
+            light.position.set(15,15,15)
+            light.castShadow = true
+            light.shadow.mapSize.width = 1024
+            light.shadow.mapSize.height = 1024
+            scene.add(light)
+        }
+
+        const pickableObjects = new Array()
+
+        const loader = new GLTFLoader()
+
+        loader.load('../gltfs/simple.gltf',gltf=>{
+            gltf.scene.traverse(child=>{
+                if(child.isMesh){
+                    let m = child
+                    switch(m.name){
+                        case 'Plane':
+                            m.receiveShadow = true
+                            break
+                        default:
+                            m.castShadow = true
+                            pickableObjects.push(m)
+                    }
+                }
+            })
+            scene.add(gltf.scene)
+        },xhr=>{
+            console.log((xhr.loaded/xhr.total*100)+'% loaded')
+        },err=>{
+            console.log(err)
+        })
+
+        const raycaster = new THREE.Raycaster()
+        const mouse = new THREE.Vector2()
+        let intersects, intersectedObject
+        
+        document.addEventListener('mousemove', onDocumentMouseMove, false)
+        const domRect = canvas.getBoundingClientRect()
+
+        function addOutlineObject( object ) {
+            outlineObjects = [];
+            outlineObjects.push( object );
+        }
+
+        function onDocumentMouseMove(event){
+            event.preventDefault()
+            mouse.x = ((event.clientX - domRect.x)/canvas.clientWidth)*2 -1
+            mouse.y = ((event.clientY - domRect.y)/canvas.clientHeight)*-2 +1
+            raycaster.setFromCamera(mouse, camera)
+
+            intersects = raycaster.intersectObjects(pickableObjects, false)
+
+            if(intersects.length > 0){
+                intersectedObject = intersects[0].object
+                addOutlineObject(intersects[0].object)
+            }else{
+                intersectedObject = null
+                outlinePass.selectedObjects = [];
+            }
+
+            pickableObjects.forEach((o,i)=>{
+                if(intersectedObject && intersectedObject.name == o.name){
+                    pickableObjects[i].scale.set(1.2,1.2,1.2)
+                    outlinePass.selectedObjects = outlineObjects
+                }else{
+                    pickableObjects[i].scale.set(1,1,1)
+                }
+            })
+
+        }
+
+        composer = new EffectComposer(renderer)
+        composer.addPass(new RenderPass(scene, camera))
+
+        const outlinePass = new OutlinePass( new THREE.Vector2( canvas.clientWidth, canvas.clientHeight), scene, camera );
+		composer.addPass( outlinePass );
+        {
+            outlinePass.edgeStrength = 5
+            outlinePass.edgeGlow = .5
+            outlinePass.edgeThickness = 1
+            // outlinePass.pulsePeriod = 1
+            outlinePass.visibleEdgeColor.set(0xff00ff)
+            outlinePass.hiddenEdgeColor.set('yellow')
+
+            const textureLoader = new THREE.TextureLoader();
+				textureLoader.load( '../4g2.jpg', function ( texture ) {
+
+					outlinePass.patternTexture = texture;
+					texture.wrapS = THREE.RepeatWrapping;
+					texture.wrapT = THREE.RepeatWrapping;
+
+				} );
+            outlinePass.usePatternTexture = true
+        }
+
+        stats = Stats()
+        document.body.appendChild(stats.dom)
+    }
+
+    function resizeRendererToDisplaySize(renderer){
+        const canvas = renderer.domElement
+        const width = canvas.clientWidth
+        const height = canvas.clientHeight
+
+        const needResize = width!==canvas.width||height!==canvas.height
+
+        if(needResize){
+            renderer.setSize(width,height,false)
+            composer.setSize(width,height,false)
+        }
+
+        return needResize
+    }
+
+    function animate(){
+        if(resizeRendererToDisplaySize(renderer)){
+            camera.aspect = canvas.width/canvas.height
+            camera.updateProjectionMatrix()
+        }
+        
+        controls.update()
+        stats.update()
+        
+        // renderer.render(scene, camera)
+        composer.render()
+        
+        requestAnimationFrame(animate)
+    }
+</script>
+</body>
+</html>
+```
