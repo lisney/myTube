@@ -59,3 +59,8 @@
 
 # 커스텀 변수 'rand'. Align Rotation to Vector
 ![image](https://user-images.githubusercontent.com/30430227/121326853-e49b9b80-c94d-11eb-9c78-bacbcdec98c1.png)
+
+# Proximity
+![image](https://user-images.githubusercontent.com/30430227/121973862-28acf700-cdb9-11eb-9512-c542f3b48804.png)
+![image](https://user-images.githubusercontent.com/30430227/121973887-35c9e600-cdb9-11eb-8b1d-5c9aed516c50.png)
+
