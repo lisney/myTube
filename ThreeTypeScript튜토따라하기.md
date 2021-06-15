@@ -1,79 +1,113 @@
 # 멀티뷰
-![image](https://user-images.githubusercontent.com/30430227/119948691-0acb4e00-bfd4-11eb-877f-1740ee7b0302.png)
+![image](https://user-images.githubusercontent.com/30430227/122009753-5adc4a00-cdf5-11eb-998e-c36d4f7c4f60.png)
+
 ```
-
-
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
  <style>
+     *{
+         box-sizing: border-box;
+         margin: 0;
+     }
      .c{
          position: relative;
-         width: 200px;
-         height: 200px;
+         /* display: block; */
+         width: 300px;
+         height: 300px;
      }
-  
  </style>
 </head>
 <body>
-    <canvas id="c1" class="c"></canvas>
-    <canvas id="c2" class="c"></canvas>
-    <canvas id="c3" class="c"></canvas>
-    <canvas id="c4" class="c"></canvas>
+<canvas id="c1" class="c"></canvas>
+<canvas id="c2" class="c"></canvas>
+<canvas id="c3" class="c"></canvas>
+<canvas id="c4" class="c"></canvas>
 
-    <script type="module">
-        import * as THREE from './three.module.js'
-        import {OrbitControls} from './OrbitControls.js'
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
 
-        const scene = new THREE.Scene()
+    const canvas1 = document.querySelector('#c1')
+    const canvas2 = document.querySelector('#c2')
+    const canvas3 = document.querySelector('#c3')
+    const canvas4 = document.querySelector('#c4')
 
-        const camera1 = new THREE.PerspectiveCamera(75,1,0.1,10)
-        const camera2 = new THREE.OrthographicCamera(-1,1,1,-1,0.1,10)
-        const camera3 = new THREE.OrthographicCamera(-1,1,1,-1,0.1,10)
-        const camera4 = new THREE.OrthographicCamera(-1,1,1,-1,0.1,10)
+    let renderer1, renderer2, renderer3, renderer4, camera1, camera2, camera3, camera4, controls, scene, cube
 
-        const canvas1 = document.querySelector('#c1')
-        const canvas2 = document.querySelector('#c2')
-        const canvas3 = document.querySelector('#c3')
-        const canvas4 = document.querySelector('#c4')
+    init()
+    animate()
 
-        const renderer1 = new THREE.WebGLRenderer({canvas:canvas1})
-        renderer1.setSize(200,200)
+    function init(){
+        renderer1 = new THREE.WebGLRenderer({canvas:canvas1})
+        renderer2 = new THREE.WebGLRenderer({canvas:canvas2})
+        renderer3 = new THREE.WebGLRenderer({canvas:canvas3})
+        renderer4 = new THREE.WebGLRenderer({canvas:canvas4})
 
-        const renderer2 = new THREE.WebGLRenderer({canvas:canvas2})
-        renderer2.setSize(200,200)
-        const renderer3 = new THREE.WebGLRenderer({canvas:canvas3})
-        renderer3.setSize(200,200)
-        const renderer4 = new THREE.WebGLRenderer({canvas:canvas4})
-        renderer4.setSize(200,200)
+        camera1 = new THREE.PerspectiveCamera(75,1,.1,10)
+        camera2 = new THREE.OrthographicCamera(-1,1,1,-1,.1,10)
+        camera3 = new THREE.OrthographicCamera(-1,1,1,-1,.1,10)
+        camera4 = new THREE.OrthographicCamera(-1,1,1,-1,.1,10)
+        
+        camera1.position.z = 2
+        camera2.position.y = 1
+        camera2.lookAt(new THREE.Vector3(0,0,0))
+        camera3.position.z =1
+        //layers 카메라와 대상 모델은 같은 레이어를 공유한다. 기본 레이어:0, 
+        //layers.enable():지정한 레이어도 공유, layers.set():지정레이어만 공유
+        camera3.layers.set(1)
+        camera4.position.x = 1
+        camera4.lookAt(new THREE.Vector3(0,0,0))
+        camera4.layers.set(1)
 
-        const controls = new OrbitControls(camera1, renderer1.domElement)
+        scene = new THREE.Scene()
+        scene.add(camera2)
+
+        const gridHelper1 = new THREE.GridHelper(5,10)
+        const gridHelper2 = new THREE.GridHelper(5,10)
+        const gridHelper3 = new THREE.GridHelper(5,10)
+        gridHelper2.layers.set(1)
+        gridHelper2.rotation.set(Math.PI/2,0,0)
+        gridHelper3.layers.set(1)
+        gridHelper3.rotation.set(0,0,Math.PI/2)
+        scene.add(gridHelper1)
+        scene.add(gridHelper2)
+        scene.add(gridHelper3)
+
+
+        controls = new OrbitControls(camera1, renderer1.domElement)
 
         const geometry = new THREE.BoxGeometry()
         const material = new THREE.MeshBasicMaterial({color:0x00ff00, wireframe:true})
 
-        const cube = new THREE.Mesh(geometry, material)
+        cube = new THREE.Mesh(geometry, material)
         scene.add(cube)
+        cube.layers.enable(1)
+    }
 
-        camera1.position.z = 2
-        camera2.position.y = 1
-        camera2.lookAt(new THREE.Vector3(0,0,0))
-        camera3.position.z = 1
-        camera4.position.x =1
-        camera4.lookAt(new THREE.Vector3(0,0,0))
+    function animate(time){
+        time *=0.001
+        cube.rotation.set(time, time,0)
+        controls.update()
 
-        function animate(time){
-            time *=0.001
-            cube.rotation.set(time,time,0) 
-            controls.update()
-            
-            renderer1.render(scene, camera1)
-            renderer2.render(scene, camera2)
-            renderer3.render(scene, camera3)
-            renderer4.render(scene, camera4)
+        renderer1.setSize(canvas1.width, canvas1.height, false)
 
-            requestAnimationFrame(animate)
-        }
+        renderer1.render(scene, camera1)
+        renderer2.render(scene, camera2)
+        renderer3.render(scene, camera3)
+        renderer4.render(scene, camera4)
 
-        animate()
-        
+        requestAnimationFrame(animate)
+    }
+
+
+</script>
+</body>
+</html>
  ```
  
  # GUI
