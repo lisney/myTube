@@ -227,6 +227,12 @@
                 renderer.render(scene, camera)
             
         }
+	//컬러 클래스없이 바로 배경색을 바꿀 수 있는 방식
+	        gui.addColor(api,'dataColor').onFinishChange(v=>{
+            scene.background = new THREE.Color(v)
+            renderer.render(scene, camera)
+        })
+	//컬러 클래스없이 바로 배경색을 바꿀...
 
         class ColorGUIHelper{
             constructor(object, prop){
