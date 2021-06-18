@@ -1654,7 +1654,47 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
     ....
     const delta = clock.getDelta()
     meshs.rotation.y += delta*.5
-    //자동회전 끝
+    
+// 스킨 머티리얼
+        const textureLoader = new THREE.TextureLoader()
+        const loader = new GLTFLoader()
+
+        meshs = new THREE.Object3D()
+        scene.add(meshs)
+
+        loader.load('../gltfs/LeePerrySmith/LeePerrySmith.glb', gltf=>{
+            const mesh = gltf.scene.children[0]
+
+            mesh.material = new THREE.MeshPhongMaterial({
+                specular: 0x111111,
+                map: textureLoader.load('../gltfs/LeePerrySmith/Map-COL.jpg'),
+                specularMap: textureLoader.load('../gltfs/LeePerrySmith/Map-SPEC.jpg'),
+                normalMap: textureLoader.load('../gltfs/LeePerrySmith/Map-NOR.jpg'),
+                shininess: 25,
+            })
+
+            meshs.add(mesh)
+            scene.add(gltf.scene)
+        },xhr=>{
+            console.log((xhr.loaded/xhr.total*100)+'% loaded')
+        }, err=>{
+            console.log(err)
+        })
+// 평면헬퍼 PlaneHelper
+        // Setup Plane(2D로 무한확장되는 평면)
+        planes = [
+            new THREE.Plane(new THREE.Vector3(-1,0,0), 50),
+            new THREE.Plane(new THREE.Vector3(0,-1,0), 12),
+            new THREE.Plane(new THREE.Vector3(0,0,-1), 50)
+        ]
+        //map은 해당 함수를 실행한 후 배열로 반환, map은 {}로 묶으면 안된다
+        planeHelpers = planes.map(p=>new THREE.PlaneHelper(p, 50, 0xffffff))
+        // planeHelpers = planes.map(p => new THREE.PlaneHelper(p, 50, 0xffffff));
+        //foreach는 함수를 실행만 함
+        planeHelpers.forEach(ph=>{
+            ph.visible = false
+            scene.add(ph)
+        })
     
     
     
