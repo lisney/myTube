@@ -1646,3 +1646,17 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 </body>
 </html>
 ```
+
+# Clipping Face
+```
+// 자동회전 스크립트
+    clock = new THREE.Clock()
+    ....
+    const delta = clock.getDelta()
+    meshs.rotation.y += delta*.5
+    //자동회전 끝
+    
+    
+    
+    
+```
