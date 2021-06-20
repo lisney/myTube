@@ -1695,8 +1695,89 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
             ph.visible = false
             scene.add(ph)
         })
+       
     
-    
-    
-    
+```
+
+# Fresnel 쉐이더
+![image](https://user-images.githubusercontent.com/30430227/122662957-f8f35a00-d1d1-11eb-9c33-e629651aa938.png)
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     #c{
+         display: block;
+         width: 600px;
+         height: 300px;
+     }
+ </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {DecalGeometry} from './DecalGeometry.js'
+    import {FresnelShader} from './FresnelShader.js'
+    import {GLTFLoader} from './GLTFLoader.js'
+
+    let renderer, scene, camera, controls, texture
+    let mouse, raycaster, helper, decalMaterial
+
+    const canvas = document.querySelector('#c')
+
+    init()
+    animate()
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({canvas})
+        scene = new THREE.Scene()
+        camera = new THREE.PerspectiveCamera(75,2,.1,100)
+        camera.position.set(0,0,5)
+
+        controls = new OrbitControls(camera, renderer.domElement)
+        
+        const geometry = new THREE.SphereGeometry(2, 32, 16)
+
+        const shader = FresnelShader
+        const uniforms = THREE.UniformsUtils.clone(shader.uniforms)
+        
+        texture = new THREE.TextureLoader().load('../umbrellas.png',()=>{
+            //큐브맵 크기 정의(이미지의 높이로)
+            const rt = new THREE.WebGLCubeRenderTarget(texture.image.height)
+            //정육면체 텍스처 생성
+            rt.fromEquirectangularTexture(renderer, texture)
+            scene.background = rt.texture
+            uniforms['tCube'].value = rt.texture
+        })
+
+
+        const material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader:shader.vertexShader,
+            fragmentShader:shader.fragmentShader
+        })
+
+
+        const mesh = new THREE.Mesh(geometry, material)
+
+        scene.add(mesh)
+    }
+
+    function animate(){
+        renderer.render(scene,camera)
+        controls.update()
+        
+        requestAnimationFrame(animate)
+    }
+</script>
+</body>
+</html>
 ```
