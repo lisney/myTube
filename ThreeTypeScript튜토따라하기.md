@@ -1781,3 +1781,158 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 </body>
 </html>
 ```
+
+# TWEEN 애니메이션, 프로그래스바
+![image](https://user-images.githubusercontent.com/30430227/122923996-3d345500-d3a0-11eb-9972-d3e28f0e9f00.png)
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     body{
+         overflow: hidden;
+         margin: 0;
+     }
+     #progressBar{
+         width: 500px;
+         height: 24px;
+         position: absolute;
+         left: 50%;
+         top: 25px;
+         margin-left: -250px;
+     }
+     #instructions{
+         color: white;
+         background: #000;
+         position: absolute;
+         left: 50%;
+         top: 10px;
+         margin-left: -120px;
+     }
+ </style>
+</head>
+<body>
+<progress id="progressBar" value="0" max="100"></progress>
+<div id="instructions">더블클릭하쇼</div>
+
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {GLTFLoader} from './GLTFLoader.js'
+    import Stats from './stats.module.js'
+    import {TWEEN} from './tween.module.min.js'
+
+    const renderer = new THREE.WebGLRenderer()
+    renderer.physicallyCorrectLights = true
+    renderer.shadowMap.enabled = true
+    renderer.outputEncoding = THREE.sRGBEncoding
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    document.body.appendChild(renderer.domElement)
+
+    const scene = new THREE.Scene()
+    const axesHelper = new THREE.AxesHelper(5)
+    scene.add(axesHelper)
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1,100)
+    camera.position.set(0,2,5)
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.addEventListener('change', render)
+
+    let sceneMeshes = new Array()
+    let monkey
+
+    const loader = new GLTFLoader()
+    loader.load('../gltfs/Suzanne.gltf', gltf=>{
+        gltf.scene.traverse(child=>{
+            if(child.isMesh){
+                let m = child
+                m.receiveShadow = true
+                m.castShadow = true
+                if(child.name === 'Plane'){
+                    sceneMeshes.push(m)
+                }else if(child.name==='Suzanne'){
+                    monkey = m
+                }
+            }
+            if(child.isLight){
+                let l = child
+                l.castShadow = true
+                l.shadow.bias = -0.0001
+                l.shadow.mapSize.width = 2048
+                l.shadow.mapSize.height = 2048
+            }
+        })
+        progressBar.style.display = 'none'
+        scene.add(gltf.scene)
+        render()
+    },xhr=>{
+        if(xhr.lengthComputable){
+            progressBar.style.display = 'block'
+            var percentComplete = xhr.loaded/xhr.total * 100
+            progressBar.value = percentComplete
+        }
+    },error=> console.log(error))
+
+    window.addEventListener('resize', onWindowResize, false)
+    function onWindowResize(){
+        camera.aspect = window.innerWidth/window.innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        render()
+    }
+
+    const raycaster = new THREE.Raycaster()
+    renderer.domElement.addEventListener('dblclick', onDoubleClick, false)
+    function onDoubleClick(event){
+        const mouse ={
+            x:(event.clientX/renderer.domElement.clientWidth)*2 -1,
+            y:(event.clientY/renderer.domElement.clientHeight)*-2 +1
+        }
+        raycaster.setFromCamera(mouse, camera)
+        const intersects = raycaster.intersectObjects(sceneMeshes, false)
+        if(intersects.length>0){
+            const p = intersects[0].point
+            new TWEEN.Tween(monkey.position)
+                .to({x:p.x, z:p.z}, 500)
+                .start()
+            new TWEEN.Tween(monkey.position)
+                .to({y:p.y +3}, 250)
+                .easing(TWEEN.Easing.Cubic.Out)
+                .onUpdate(()=>render())
+                .start()
+                .onComplete(()=>{
+                    new TWEEN.Tween(monkey.position)
+                        .to({y:p.y + 1}, 250)
+                        .easing(TWEEN.Easing.Bounce.Out)
+                        .onUpdate(()=>render())
+                        .start()
+                })
+        }
+    }
+    const stats = Stats()
+    document.body.appendChild(stats.dom)
+
+    // const clock = new THREE.Clock()
+    
+    function animate(){
+        controls.update()
+        TWEEN.update()
+        stats.update()
+        render()
+        requestAnimationFrame(animate)
+    }
+    animate()
+    
+    function render(){
+        renderer.render(scene, camera)
+    }
+</script>
+</body>
+</html>
+```
