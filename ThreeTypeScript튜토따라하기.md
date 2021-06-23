@@ -382,150 +382,170 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
 
 ```
-    <script type="module">
-        import * as THREE from './js/three.module.js'
-        import {OrbitControls} from './js/OrbitControls.js'
-        import {GLTFLoader} from './js/GLTFLoader.js'
-        import Stats from './js/Stats.module.js'
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     #c{
+         display: block;
+         width: 600px;
+         height: 300px;
+     }
+ </style>
+</head>
+<body>
+<canvas id="c"></canvas>
 
-        const canvas = document.querySelector('#c')
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {GLTFLoader} from './GLTFLoader.js'
+    import Stats from './stats.module.js'
+    
+    const canvas = document.querySelector('#c')
+    
+    let renderer, scene, camera, controls, stats
+    const domRect = canvas.getBoundingClientRect()
+    const raycaster = new THREE.Raycaster()
+    const sceneMeshes = new Array()
+    let arrowHelper, mouse, coneGeometry, material
+    
+    init()
+    animate()
 
-        function main(){
-            const renderer = new THREE.WebGLRenderer({canvas})
-            renderer.physicallyCorrectLight = true
-            renderer.shadowMap.enabled = true
+    function init(){
+        renderer = new THREE.WebGLRenderer({canvas})
+        renderer.physicallyCorrectLight = true
+        // renderer.outputEncoding = THREE.sRGBEncoding
+        renderer.shadowMap.enabled = true
+        
+        scene = new THREE.Scene()
+        scene.background = new THREE.Color('dodgerblue')
+        
+        const axesHelper = new THREE.AxesHelper(5)
+        scene.add(axesHelper)
+        const gridHelper = new THREE.GridHelper(5,10,'yellow','black')
+        scene.add(gridHelper)
+        arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), .25, 0xffff00)
+        scene.add(arrowHelper)
 
-            const scene = new THREE.Scene()
-            scene.background = new THREE.Color('gray')
-
-            const axesHelper = new THREE.AxesHelper(5)
-            scene.add(axesHelper)
-            const gridHelper = new THREE.GridHelper(5,10,'yellow','dodgerblue')
-            scene.add(gridHelper)
-            const arrowHelper = new THREE.ArrowHelper(new THREE.Vector3(), new THREE.Vector3(), .25, 0xffff00)
-            scene.add(arrowHelper)
-
-            const camera = new THREE.PerspectiveCamera(75, 2,0.1,10)
-            camera.position.set(0,0,2)
-
-            {
-                const light = new THREE.DirectionalLight(0xffffff, 1)
-                light.position.set(-1,2,4)
-                // scene.add(light)
-            }
-
-            const controls = new OrbitControls(camera, renderer.domElement)
-
-            const coneGeometry = new THREE.ConeGeometry(.05, .2, 8)
-            const material = new THREE.MeshNormalMaterial()
-
-            const sceneMeshes = new Array()
-
-            const loader = new GLTFLoader()
-            loader.load('./gltf/torus.gltf',gltf=>{
-                gltf.scene.traverse(child=>{
-                    if(child.isMesh){
-                        let m = child
-                        m.receiveShadow = true
-                        m.castShadow = true
-                        m.material.flatShading = true;
-                        sceneMeshes.push(m)
-                    }
-                    if(child.isLight){
-                        let l =child
-                        l.castShadow=true
-                        l.shadow.bias = -.003
-                        l.shadow.mapSize.width=2048
-                        l.shadow.mapSize.height=2048
-                    }
-                })
-                scene.add(gltf.scene)
-            },(xhr)=>{
-                console.log((xhr.loaded/xhr.total*100) +'% loaded')
-            },error=>{
-                console.log(error)
-            })
-
-            function resizeRendererToDisplaySize(renderer){
-                const canvas = renderer.domElement
-                const width = canvas.clientWidth
-                const height = canvas.clientHeight
-
-                const needResize = width!==canvas.width||height!==canvas.height
-
-                if(needResize){
-                    renderer.setSize(width, height, false)
-                }
-                return needResize
-            }
-
-            const stats = Stats()
-            document.body.appendChild(stats.dom)
-
-            function render(){
-                if(resizeRendererToDisplaySize(renderer)){
-                    camera.aspect = canvas.width/canvas.height
-                    camera.updateProjectionMatrix()
-                }
-                controls.update()
-                
-                renderer.render(scene, camera)
-                stats.update()
-
-                requestAnimationFrame(render)
-            }
-            requestAnimationFrame(render)
-
-            renderer.domElement.addEventListener('dblclick',onDoubleClick, false)
-            renderer.domElement.addEventListener('mousemove', onMouseMove, false)
-            
-            const raycaster = new THREE.Raycaster()
-
-            let intersects = new Array()
-
-            const domRect = canvas.getBoundingClientRect()
-
-            function onMouseMove(event){
-                raycaster.setFromCamera({
-                    x:((event.clientX-domRect.x)/renderer.domElement.width)*2-1,
-                    y:((event.clientY-domRect.y)/canvas.height)*-2+1
-                }, camera)
-                intersects = raycaster.intersectObjects(sceneMeshes, false)
-                if(intersects.length>0){
-                    let n = new THREE.Vector3()
-                    n.copy(intersects[0].face.normal)
-                    n.transformDirection(intersects[0].object.matrixWorld)
-                    arrowHelper.setDirection(n)
-                    arrowHelper.position.copy(intersects[0].point)
-                }
-            }
-
-            function onDoubleClick(event){
-                const mouse = {
-                    x:((event.clientX-domRect.x)/canvas.width)*2-1,
-                    y:((event.clientY-domRect.y)/canvas.height)*-2+1
-                }
-                raycaster.setFromCamera(mouse, camera)
-                const intersects= raycaster.intersectObjects(sceneMeshes, false)
-                if(intersects.length>0){
-                    let n = new THREE.Vector3()
-                    n.copy(intersects[0].face.normal)
-                    n.transformDirection(intersects[0].object.matrixWorld)
-                    const cube = new THREE.Mesh(coneGeometry, material)
-                    cube.lookAt(n)
-                    cube.rotateX(Math.PI/2)
-                    cube.position.copy(intersects[0].point)
-                    cube.position.addScaledVector(n, .1)
-                    scene.add(cube)
-                    sceneMeshes.push(cube)
-                }
-            }
+        camera = new THREE.PerspectiveCamera(50, 2, 0.1, 20)
+        camera.position.set(0,2,3)
 
 
+        {
+            const light = new THREE.DirectionalLight(0xffffff, 1)
+            light.position.set(-1,2,4)
+            scene.add(light)
         }
 
+        controls = new OrbitControls(camera, renderer.domElement)
 
-        main()
+        coneGeometry = new THREE.ConeGeometry(.1, .4,8)
+        material = new THREE.MeshNormalMaterial()
+
+
+        const loader = new GLTFLoader()
+        loader.load('../gltfs/raytrace.gltf', gltf=>{
+            gltf.scene.traverse(child=>{
+                if(child.isMesh){
+                    let m = child
+                    m.receiveShadow = true
+                    m.castShadow = true
+                    m.material.flatshading = true
+                    sceneMeshes.push(m)
+                }
+                if(child.isLight){
+                    let l = child
+                    l.castShadow = true
+                    l.shadow.bias = -.001
+                    l.shadow.mapSize.width = 2048
+                    l.shadow.mapSize.height= 2048
+                }
+            })
+            scene.add(gltf.scene)
+        },xhr=>{
+            console.log((xhr.loaded/xhr.total*100)+ '% loaded')
+        },error=>console.log(error))
+        
+        stats = Stats()
+        document.body.appendChild(stats.dom)
+
+        mouse = new THREE.Vector2()
+        
+    }
+    
+    function resizeRendererToDisplaySize(renderer){
+        const canvas = renderer.domElement
+        const width = canvas.clientWidth
+        const height = canvas.clientHeight
+        
+        const needResize = width!==canvas.width||height!==canvas.height
+        
+        if(needResize){
+            renderer.setSize(width, height, false)
+        }
+        return needResize
+    }
+    
+    function animate(){
+        if(resizeRendererToDisplaySize(renderer)){
+            camera.aspect = canvas.clientWidth/canvas.clientHeight
+            camera.updateProjectionMatrix()
+        }
+        controls.update()
+        stats.update()
+        
+        renderer.render(scene, camera)
+        
+        requestAnimationFrame(animate)
+    }
+    
+    renderer.domElement.addEventListener('mousemove',onMouseMove, false)
+    canvas.addEventListener('dblclick',onDoubleClick,false)
+
+    function onMouseMove(event){
+        mouse.x = (event.clientX-domRect.x)/renderer.domElement.width*2 -1
+        mouse.y = (event.clientY-domRect.y)/canvas.clientHeight*-2 +1
+
+        raycaster.setFromCamera(mouse, camera)
+        const intersects = raycaster.intersectObjects(sceneMeshes, false)
+        if(intersects.length>0){
+            let n = new THREE.Vector3()
+            n.copy(intersects[0].face.normal)
+            n.transformDirection(intersects[0].object.matrixWorld)
+            arrowHelper.setDirection(n)
+            arrowHelper.position.copy(intersects[0].point)
+        }
+
+    }
+
+    function onDoubleClick(event){
+        raycaster.setFromCamera(mouse, camera)
+        const intersects = raycaster.intersectObjects(sceneMeshes, false)
+        if(intersects.length>0){
+            let n = new THREE.Vector3()
+            n.copy(intersects[0].face.normal)
+            n.transformDirection(intersects[0].object.matrixWorld)
+            const cube = new THREE.Mesh(coneGeometry, material)
+            cube.lookAt(n)
+            cube.rotateX(Math.PI/2)
+            cube.position.copy(intersects[0].point)
+            cube.position.addScaledVector(n,.01)
+            scene.add(cube)
+            sceneMeshes.push(cube)
+        }
+    }
+
+
+
+</script>
+</body>
+</html>
 ```
 
 
