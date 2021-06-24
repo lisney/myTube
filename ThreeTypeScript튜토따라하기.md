@@ -1819,19 +1819,18 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
          position: absolute;
          left: 50%;
          top: 10px;
-         margin-left: -120px;
+         margin-left: -100px;
      }
  </style>
 </head>
 <body>
 <progress id="progressBar" value="0" max="100"></progress>
-<div id="instructions">더블클릭하쇼</div>
+<div id="instructions">더블클릭 하세따</div>
 
 <script type="module">
     import * as THREE from './three.module.js'
     import {OrbitControls} from './OrbitControls.js'
     import {GLTFLoader} from './GLTFLoader.js'
-    import Stats from './stats.module.js'
     import {TWEEN} from './tween.module.min.js'
 
     const renderer = new THREE.WebGLRenderer()
@@ -1845,10 +1844,10 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
     const axesHelper = new THREE.AxesHelper(5)
     scene.add(axesHelper)
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1,100)
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1,20)
     camera.position.set(0,2,5)
     const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
+    controls.endbleDamping = true
     controls.addEventListener('change', render)
 
     let sceneMeshes = new Array()
@@ -1859,9 +1858,9 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
         gltf.scene.traverse(child=>{
             if(child.isMesh){
                 let m = child
-                m.receiveShadow = true
                 m.castShadow = true
-                if(child.name === 'Plane'){
+                m.receiveShadow = true
+                if(child.name==='Plane'){
                     sceneMeshes.push(m)
                 }else if(child.name==='Suzanne'){
                     monkey = m
@@ -1870,7 +1869,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
             if(child.isLight){
                 let l = child
                 l.castShadow = true
-                l.shadow.bias = -0.0001
+                l.shadow.bias = -.001
                 l.shadow.mapSize.width = 2048
                 l.shadow.mapSize.height = 2048
             }
@@ -1879,12 +1878,12 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
         scene.add(gltf.scene)
         render()
     },xhr=>{
-        if(xhr.lengthComputable){
-            progressBar.style.display = 'block'
-            var percentComplete = xhr.loaded/xhr.total * 100
-            progressBar.value = percentComplete
-        }
-    },error=> console.log(error))
+            if(xhr.lengthComputable){
+                progressBar.style.display='block'
+                var percentComplete = xhr.loaded/xhr.total*100
+                progressBar.value = percentComplete
+            }
+    },error=>console.log(error))
 
     window.addEventListener('resize', onWindowResize, false)
     function onWindowResize(){
@@ -1897,9 +1896,9 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
     const raycaster = new THREE.Raycaster()
     renderer.domElement.addEventListener('dblclick', onDoubleClick, false)
     function onDoubleClick(event){
-        const mouse ={
-            x:(event.clientX/renderer.domElement.clientWidth)*2 -1,
-            y:(event.clientY/renderer.domElement.clientHeight)*-2 +1
+        const mouse={
+            x:(event.clientX/window.innerWidth)*2 -1,
+            y:(event.clientY/window.innerHeight)*-2 +1 
         }
         raycaster.setFromCamera(mouse, camera)
         const intersects = raycaster.intersectObjects(sceneMeshes, false)
@@ -1907,38 +1906,35 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
             const p = intersects[0].point
             new TWEEN.Tween(monkey.position)
                 .to({x:p.x, z:p.z}, 500)
+                // .easing(TWEEN.Easing.Bounce.Out)
                 .start()
             new TWEEN.Tween(monkey.position)
-                .to({y:p.y +3}, 250)
+                .to({y:p.y+3},250)
                 .easing(TWEEN.Easing.Cubic.Out)
                 .onUpdate(()=>render())
                 .start()
                 .onComplete(()=>{
                     new TWEEN.Tween(monkey.position)
-                        .to({y:p.y + 1}, 250)
+                        .to({y:p.y+1},250)
                         .easing(TWEEN.Easing.Bounce.Out)
                         .onUpdate(()=>render())
                         .start()
                 })
         }
     }
-    const stats = Stats()
-    document.body.appendChild(stats.dom)
 
-    // const clock = new THREE.Clock()
-    
     function animate(){
         controls.update()
         TWEEN.update()
-        stats.update()
         render()
         requestAnimationFrame(animate)
     }
     animate()
-    
+
     function render(){
         renderer.render(scene, camera)
     }
+
 </script>
 </body>
 </html>
