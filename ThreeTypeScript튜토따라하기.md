@@ -416,7 +416,7 @@ onChange는 값 변경 중의 매 순간 발생하, onFinishChange는 최종적�
 
     function init(){
         renderer = new THREE.WebGLRenderer({canvas})
-        renderer.physicallyCorrectLight = true
+        renderer.physicallyCorrectLights = true
         renderer.shadowMap.enabled = true
         renderer.outputEncoding = THREE.sRGBEncoding
 
