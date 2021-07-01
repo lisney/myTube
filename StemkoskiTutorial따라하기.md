@@ -46,7 +46,6 @@
 <script type="module">
     import * as THREE from './three.module.js'
     import {OrbitControls} from './OrbitControls.js'
-    import {GUI} from './dat.gui.module.js'
     import Stats from './stats.module.js'
 
     let renderer, scene, camera, controls, stats
