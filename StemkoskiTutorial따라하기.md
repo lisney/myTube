@@ -1,4 +1,4 @@
-# 기본(fullScreen)
+# 기본(fullScreen) - 'f' 키 누름('esc'키 )
 ![image](https://user-images.githubusercontent.com/30430227/123611879-01d0d500-d83d-11eb-9d86-c5c073b33605.png)
 ```
 <!DOCTYPE html>
@@ -102,7 +102,7 @@
 </html>
 ```
 
-# 팝업창 추가
+# 팝업창 추가 - fullscreen 버튼 누름
 ![image](https://user-images.githubusercontent.com/30430227/123762969-48d2cf00-d8fe-11eb-965d-40aa1e87acac.png)
 ```
 <!DOCTYPE html>
