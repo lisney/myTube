@@ -4,109 +4,100 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
 </head>
 <body>
-    <button id="fullscr" style="position: absolute; bottom:50%">
-        Go Fullscreen
-    </button>
-    <script type="module">
-        import * as THREE from './three.module.js'
-        import {OrbitControls} from './OrbitControls.js'
-        import Stats from './stats.module.js'
+<button id="fsBtn" style="position: absolute; top: 50%;">크게</button>
 
+<script>
+    // let fullscreen = false  
+    const fsBtn = document.querySelector('#fsBtn')
+    window.addEventListener('keyup', event=>{
+        // 풀스크린 상태는 document.fullscreenElement 로 확인한다
+        if(!document.fullscreenElement && event.key==='f'){
+            fsBtn.innerHTML = '작게'
+            document.documentElement.requestFullscreen()
+            //keyCode==27 혹은 key==='Escape'.. 풀스크린 상태에선 안먹힌다^^
+        }else if(document.fullscreenElement && event.key==='f'){
+            document.exitFullscreen()
+            fsBtn.innerHTML = '크게'
+        }
+    })
+    // esc를 사용하여 전체 화면을 종료 할 때 Chrome은 
+    // 주요 이벤트를 발생하지(키 이벤트등) 않습니다. 
+    // 그러나 fullscreenchange 이벤트가 발생합니다.
+    // window.addEventListener('fullscreenchange',()=>{
+    //     if(document.fullscreenElement){
+    //         fullscreen = false
+    //         fsBtn.innerHTML = '크게'
+    //     }
+    // }, false)
+</script>
 
-        let renderer, scene, camera, controls, stats
-        let container, mesh, fullscreen
-        const clock = new THREE.Clock()
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {GUI} from './dat.gui.module.js'
+    import Stats from './stats.module.js'
 
-        const fsBtn = document.querySelector('#fullscr')
+    let renderer, scene, camera, controls, stats
+    let container, mesh
 
-        
-        fsBtn.addEventListener('click', e=>{
-            e.preventDefault()
-            if(!fullscreen){
-                fullscreen = true
-                document.documentElement.requestFullscreen()
-                fsBtn.textContent = "Exit Fullscreen"
-            }else{
-                fullscreen = false
-                document.exitFullscreen()
-                fsBtn.innerHTML ='Go Fullscreen'
-            }
-        })
-        
-        init()
-        animate()
+    init()
+    animate()
 
-        function init(){
-            renderer = new THREE.WebGLRenderer({antialias: true})
-            renderer.setSize(window.innerWidth, window.innerHeight)
-            document.body.appendChild(renderer.domElement)
+    function init(){
+        renderer = new THREE.WebGLRenderer({antialias: true})
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild(renderer.domElement)
 
-            scene = new THREE.Scene()
-            // scene.background = new THREE.Color('aqua')
+        scene = new THREE.Scene()
+        scene.background = new THREE.Color('aqua')
+        scene.fog = new THREE.Fog('aqua', 3,7)
 
-            camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, .1, 100)
-            camera.position.set(0,3,5)
-            camera.lookAt(scene.position)
-            controls = new OrbitControls(camera, renderer.domElement)
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1, 100)
+        camera.position.set(0,2,4)
+        controls = new OrbitControls(camera, renderer.domElement)
 
-            stats = Stats()
-            document.body.appendChild(stats.dom)
+        const floorGeometry = new THREE.PlaneGeometry(10,10,10,10)
 
-            {
-                const light = new THREE.PointLight()
-                light.position.set(10,25,10)
-                scene.add(light)
-            }
-
-            //Floor
-            const floorGeometry = new THREE.PlaneGeometry(10,10, 10,10)
-
-            const textureLoader = new THREE.TextureLoader()
-            textureLoader.load('../checkerboard.jpg',texture=>{
-                texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-                texture.repeat.set(10,10)
-                const floorMaterial = new THREE.MeshBasicMaterial({
-                    map:texture,
-                    // side: THREE.DoubleSide
-                })
-                const floor = new THREE.Mesh(floorGeometry, floorMaterial)
-                floor.position.y = -.5
-                floor.rotation.x = -Math.PI/2
-                scene.add(floor)
+        const txtLoader = new THREE.TextureLoader() 
+        txtLoader.load('../checkerboard.jpg', texture=>{
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+            texture.repeat.set(10,10)
+            const floorMaterial = new THREE.MeshBasicMaterial({
+                map: texture,
+                side: THREE.DoubleSide
             })
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial)
+            floor.position.y = -1
+            floor.rotation.x = -Math.PI/2
+            scene.add(floor)
+        })
 
-            const skyGeometry = new THREE.BoxGeometry(100,100,100)
-            const skyMaterial = new THREE.MeshBasicMaterial({color:0x9999ff, side:THREE.BackSide})
-            const sky = new THREE.Mesh(skyGeometry, skyMaterial)
-            scene.add(sky)
+        stats = Stats()
+        document.body.appendChild(stats.dom)
+    }
 
-            // const sphereGeometry = new THREE
+    function animate(){
+        stats.update()
+        controls.update()
+        renderer.render(scene, camera)
 
+        requestAnimationFrame(animate)
+    }
 
-            renderer.render(scene, camera)
+    window.addEventListener('resize', onWindowResize, false)
 
-        }
-
-        window.addEventListener('resize', onWindowResize, false)
-        function onWindowResize(){
-            camera.aspect = window.innerWidth/window.innerHeight
-            camera.updateProjectionMatrix()
-            renderer.setSize(window.innerWidth,window.innerHeight)
-            renderer.render(scene, camera)
-        }
-
-        function animate(){
-            controls.update()
-            stats.update()
-            renderer.render(scene, camera)
-            requestAnimationFrame(animate)
-        }
-
-    </script>
+    function onWindowResize(){
+        camera.aspect = window.innerWidth/window.innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+</script>
 </body>
 </html>
 ```
