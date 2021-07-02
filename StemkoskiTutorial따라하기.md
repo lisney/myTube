@@ -294,3 +294,229 @@
 </html>
 ```
 
+# GUI
+![image](https://user-images.githubusercontent.com/30430227/124269594-087d8600-db76-11eb-83e3-8938e6bfdaaa.png)
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     *{
+         margin: 0;
+         padding: 0;
+     }
+ </style>
+</head>
+<body>
+<button id="fsBtn" style="position: absolute; top: 50%;">크게</button>
+
+<script>
+    // let fullscreen = false  
+    const fsBtn = document.querySelector('#fsBtn')
+    window.addEventListener('keyup', event=>{
+        // 풀스크린 상태는 document.fullscreenElement 로 확인한다
+        if(!document.fullscreenElement && event.key==='f'){
+            fsBtn.innerHTML = '작게'
+            document.documentElement.requestFullscreen()
+            //keyCode==27 혹은 key==='Escape'.. 풀스크린 상태에선 안먹힌다^^
+        }else if(document.fullscreenElement && event.key==='f'){
+            document.exitFullscreen()
+            fsBtn.innerHTML = '크게'
+        }
+    })
+    // esc를 사용하여 전체 화면을 종료 할 때 Chrome은 
+    // 주요 이벤트를 발생하지(키 이벤트등) 않습니다. 
+    // 그러나 fullscreenchange 이벤트가 발생합니다.
+    // window.addEventListener('fullscreenchange',()=>{
+    //     if(document.fullscreenElement){
+    //         fullscreen = false
+    //         fsBtn.innerHTML = '크게'
+    //     }
+    // }, false)
+</script>
+
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+    import {GUI} from './dat.gui.module.js'
+    import Stats from './stats.module.js'
+    import {SceneUtils} from './SceneUtils.js'
+
+    let renderer, scene, camera, controls, gui, stats
+    let api, sphere
+
+    init()
+    animate()
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({antialias: true})
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild(renderer.domElement)
+
+        scene = new THREE.Scene()
+        scene.background = new THREE.Color('aqua')
+        scene.fog = new THREE.Fog('aqua', 5,9)
+
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1, 100)
+        camera.position.set(0,2,4)
+        controls = new OrbitControls(camera, renderer.domElement)
+
+        const floorGeometry = new THREE.PlaneGeometry(10,10,10,10)
+
+        const txtLoader = new THREE.TextureLoader() 
+        txtLoader.load('../checkerboard.jpg', texture=>{
+            texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+            texture.repeat.set(10,10)
+            const floorMaterial = new THREE.MeshBasicMaterial({
+                map: texture,
+                side: THREE.DoubleSide
+            })
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial)
+            floor.position.y = -1
+            floor.rotation.x = -Math.PI/2
+            scene.add(floor)
+        })
+
+        const sphereGeometry = new THREE.SphereGeometry(1,32,16)
+        const sphereMaterial = new THREE.MeshPhongMaterial({
+            color:0xff0000, transparent:true, opacity:1
+        })
+        sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+        scene.add(sphere)
+
+        {
+            const light = new THREE.PointLight(0xffffff)
+            light.position.set(1,1,1)
+            scene.add(light)
+            const lightbulbGeometry = new THREE.SphereGeometry(.1,8,4)
+            const lightbulbMaterial = new THREE.MeshBasicMaterial({
+                color:'white', transparent:true, opacity:0.8, blending:THREE.AdditiveBlending
+            })
+        // 멀티 머티리얼
+            const wireMaterial = new THREE.MeshBasicMaterial({color:0x000000, wireframe:true})
+            const materials =[lightbulbMaterial, wireMaterial]
+            const lightbulb = new SceneUtils.createMultiMaterialObject(lightbulbGeometry,materials)
+            lightbulb.position.copy(light.position)
+            scene.add(lightbulb)
+
+            const aLight = new THREE.AmbientLight(0x333333)
+            scene.add(aLight)
+        }
+
+        // GUI //
+
+        gui = new GUI()
+
+        api ={
+            x:0, y:0, z:0,
+            color: '#ff0000',
+            colorE: '#000033',
+            colorS: '#ffff00',
+            shininess:30,
+            opacity:1,
+            visible:true,
+            material:'Phong',
+            reset: function(){resetSphere()}
+        }
+
+        const folder1 = gui.addFolder('Position')
+        const sphereX = folder1.add(api, 'x').min(-1).max(2).step(0.1).listen()
+        sphereX.onChange(value=>{
+            sphere.position.x = value
+        })
+        folder1.open()
+
+        const sphereColor = gui.addColor(api,'color').name('Color').listen()
+        sphereColor.onChange(value=>{
+            sphere.material.color.setHex(value.replace('#','0x'))
+        })
+        const sphereColorE = gui.addColor(api,'colorE').name('Emissive').listen()
+        sphereColorE.onChange(value=>{
+            sphere.material.emissive.setHex(value.replace('#','0x'))
+        })
+        const sphereColorS = gui.addColor(api,'colorS').name('Specular').listen()
+        sphereColorS.onChange(value=>{
+            sphere.material.specular.setHex(value.replace('#','0x'))
+        })
+        const sphereShininess = gui.add(api,'shininess',0,60,1).name('Shininess').listen()
+        sphereShininess.onChange(value=>{
+            sphere.material.shininess = value
+        })
+        const sphereMat = gui.add(api,'material').options(['Basic','Lambert','Phong','Wireframe']).name('Material Type').listen()
+        sphereMat.onChange(value=>{
+            updateSphere()
+        })
+        gui.add(api, 'reset').name("Reset")
+
+        stats = Stats()
+        document.body.appendChild(stats.dom)
+    }
+
+    function updateSphere()
+{
+	var value = api.material;
+	var newMaterial;
+	if (value == "Basic")
+		newMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+	else if (value == "Lambert")
+		newMaterial = new THREE.MeshLambertMaterial( { color: 0x000000 } );
+	else if (value == "Phong")
+		newMaterial = new THREE.MeshPhongMaterial( { color: 0x000000 } );
+	else // (value == "Wireframe")
+		newMaterial = new THREE.MeshBasicMaterial( { wireframe: true } );
+	sphere.material = newMaterial;
+	
+	sphere.position.x = api.x;
+	sphere.position.y = api.y;
+	sphere.position.z = api.z;
+	sphere.material.color.setHex( api.color.replace("#", "0x") );
+    if (sphere.material.emissive)
+		sphere.material.emissive.setHex( api.colorE.replace("#", "0x") ); 
+	if (sphere.material.specular)
+		sphere.material.specular.setHex( api.colorS.replace("#", "0x") ); 
+    if (sphere.material.shininess)
+		sphere.material.shininess = api.shininess;
+	sphere.material.opacity = api.opacity;  
+	sphere.material.transparent = true;
+
+}
+
+function resetSphere()
+{
+	api.x = 0;
+	api.y = 0;
+	api.z = 0;
+	api.color = "#ff0000";
+	api.colorA = "#000000";
+	api.colorE = "#000033";
+	api.colorS = "#ffff00";
+    api.shininess = 30;
+	api.opacity = 1;
+	api.visible = true;
+	api.material = "Phong";
+	updateSphere();
+}
+
+    function animate(){
+        stats.update()
+        controls.update()
+        renderer.render(scene, camera)
+
+        requestAnimationFrame(animate)
+    }
+
+    window.addEventListener('resize', onWindowResize, false)
+
+    function onWindowResize(){
+        camera.aspect = window.innerWidth/window.innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth, window.innerHeight)
+    }
+</script>
+</body>
+</html>
+```
