@@ -520,3 +520,90 @@ function resetSphere()
 </body>
 </html>
 ```
+
+# 점선
+![image](https://user-images.githubusercontent.com/30430227/124447726-9ea2ed80-ddbc-11eb-98f5-d11037c0a6f5.png)
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     *{
+         margin: 0;
+         padding: 0;
+     }
+ </style>
+</head>
+<body>
+    <button id="fsBtn" style="position: absolute; top: 50%;">크게</button>
+
+    <script>
+        const fsBtn = document.querySelector('#fsBtn')
+        fsBtn.addEventListener('click', event=>{
+            if(!document.fullscreenElement){
+                fsBtn.innerHTML = '작게'
+                document.documentElement.requestFullscreen()
+            }else if(document.fullscreenElement){
+                document.exitFullscreen()
+                fsBtn.textContent = '크게'
+            }
+        })
+    </script>
+
+    <script type="module">
+        import * as THREE from './three.module.js'
+        import {OrbitControls} from './OrbitControls.js'
+        import Stats from './stats.module.js'
+
+        let renderer, scene, camera, controls, stats
+        let line
+
+        init()
+        animate()
+
+        function init(){
+            renderer = new THREE.WebGLRenderer({antialias:true})
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            document.body.appendChild(renderer.domElement)
+
+            scene = new THREE.Scene()
+            scene.background = new THREE.Color('aqua')
+
+
+            camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight, .1,100)
+            camera.position.set(0,0,2)
+            camera.lookAt(scene.position)
+            controls = new OrbitControls(camera, renderer.domElement)
+
+            const points=[new THREE.Vector3(0,-1,0), new THREE.Vector3(0,1,0)]
+
+            // const geometry = new THREE.BufferGeometry().setFromPoints(points)
+            const geometry = new THREE.BufferGeometry().setFromPoints(points)
+            const material = new THREE.LineDashedMaterial({
+                color:0xff0000, dashSize:.05, gapSize:.1, scale:1, linewidth:1
+            })
+            const line = new THREE.Line(geometry, material)
+            line.computeLineDistances()
+            scene.add(line)
+            
+            stats = Stats()
+            document.body.appendChild(stats.dom)
+        }
+
+        function animate(){
+            controls.update()
+            stats.update()
+            renderer.render(scene, camera)
+
+            requestAnimationFrame(animate)
+        }
+
+    </script>
+
+</body>
+</html>
+```
