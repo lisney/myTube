@@ -607,3 +607,120 @@ function resetSphere()
 </body>
 </html>
 ```
+
+# 캔버스 텍스트
+![image](https://user-images.githubusercontent.com/30430227/124466934-234c3680-ddd2-11eb-9a25-01619a2000f3.png)
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     *{
+         margin: 0;
+         padding: 0;
+     }
+ </style>
+</head>
+<body>
+    <button id="fsBtn" style="position: absolute; top: 50%;">크게</button>
+
+    <script>
+        const fsBtn = document.querySelector('#fsBtn')
+        fsBtn.addEventListener('click', event=>{
+            if(!document.fullscreenElement){
+                fsBtn.innerHTML = '작게'
+                document.documentElement.requestFullscreen()
+            }else if(document.fullscreenElement){
+                document.exitFullscreen()
+                fsBtn.textContent = '크게'
+            }
+        })
+    </script>
+
+    <script type="module">
+        import * as THREE from './three.module.js'
+        import {OrbitControls} from './OrbitControls.js'
+        import Stats from './stats.module.js'
+
+        let renderer, scene, camera, controls, stats, texture
+        let line
+
+        init()
+        animate()
+
+        function init(){
+            renderer = new THREE.WebGLRenderer({antialias:true})
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            document.body.appendChild(renderer.domElement)
+
+            scene = new THREE.Scene()
+            scene.background = new THREE.Color('skyblue')
+
+
+            camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight, .1,100)
+            camera.position.set(0,0,2)
+            camera.lookAt(scene.position)
+            controls = new OrbitControls(camera, renderer.domElement)
+
+            const floorGeometry = new THREE.PlaneGeometry(10,10,2,2)
+
+            const txtLoader = new THREE.TextureLoader()
+            txtLoader.load('../checkerboard.jpg', texture=>{
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+                texture.repeat.set(10,10)
+                const floorMaterial = new THREE.MeshBasicMaterial({
+                    map:texture,side:THREE.DoubleSide
+                })
+                const floor = new THREE.Mesh(floorGeometry, floorMaterial)
+                floor.position.y = -1
+                floor.rotation.x = -Math.PI/2
+                scene.add(floor)
+            })
+
+            const ctx = document.createElement('canvas').getContext('2d')
+            ctx.canvas.width = 400
+            ctx.canvas.height = 100
+            ctx.font = 'bold 50px arial'
+            ctx.fillStyle = 'red'
+            ctx.fillText('Hello, world!',50,60)
+            document.body.appendChild(ctx.canvas)
+            
+            texture = new THREE.CanvasTexture(ctx.canvas)
+            const material = new THREE.MeshBasicMaterial({
+                map: texture, side: THREE.DoubleSide
+            })
+            // material.transparent = true
+            const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2,.5), material)
+
+            scene.add(mesh)
+            stats = Stats()
+            document.body.appendChild(stats.dom)
+        }
+
+        function animate(){
+            controls.update()
+            stats.update()
+            texture.needsUpdate= true
+            renderer.render(scene, camera)
+
+            requestAnimationFrame(animate)
+        }
+
+        window.addEventListener('resize',onWindowResize,false)
+
+        function onWindowResize(){
+            camera.aspect = window.innerWidth/window.innerHeight
+            camera.updateProjectionMatrix()
+            renderer.setSize(window.innerWidth, window.innerHeight)
+        }
+
+    </script>
+
+</body>
+</html>
+```
