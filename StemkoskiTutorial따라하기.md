@@ -724,3 +724,135 @@ function resetSphere()
 </body>
 </html>
 ```
+# GLTF Empty 위치에 Sprite 배치하기
+![image](https://user-images.githubusercontent.com/30430227/124571780-10de0580-de83-11eb-9efd-9fd61d18d250.png)
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+</head>
+<body>
+
+    <script type="module">
+        import * as THREE from './three.module.js'
+        import {OrbitControls} from './OrbitControls.js'
+        import {GLTFLoader} from './GLTFLoader.js'
+
+        const ctx = document.createElement('canvas').getContext('2d')
+
+        ctx.canvas.width = 300
+        ctx.canvas.height = 300
+        ctx.fillStyle = 'yellow'
+        ctx.strokeStyle = 'black'
+        ctx.lineWidth = 5
+
+        roundRect(ctx,10,10, 200, 100, 20)
+        ctx.fillStyle='black'
+        ctx.font = 'bold 50px 바탕체'
+        ctx.fillText('하이',50,80)
+        
+        document.body.appendChild(ctx.canvas)
+
+// function for drawing rounded rectangles
+        function roundRect(ctx, x, y, w, h, r){
+            ctx.beginPath()
+            ctx.moveTo(x+r,y)
+            ctx.lineTo(x+w-r,y)
+            ctx.quadraticCurveTo(x+w,y,x+w,y+r)
+            ctx.lineTo(x+w,y+h-r)
+            ctx.quadraticCurveTo(x+w, y+h,x+w-r,y+h)
+            ctx.lineTo(x+r,y+h)
+            ctx.quadraticCurveTo(x,y+h,x,y+h-r)
+            ctx.lineTo(x,y+r)
+            ctx.quadraticCurveTo(x,y,x+r,y)
+            ctx.closePath()
+            ctx.fill()
+            // ctx.closePath()
+            ctx.fill()
+            ctx.stroke()
+        }
+
+        let renderer, scene, camera, controls, texture
+        let empty
+
+        init()
+        animate()
+
+        function init(){
+            renderer = new THREE.WebGLRenderer({antialias:true})
+            renderer.setSize(window.innerWidth, window.innerHeight)
+            document.body.appendChild(renderer.domElement)
+
+            scene = new THREE.Scene()
+            scene.background = new THREE.Color('skyblue')
+            const gridHelper = new THREE.GridHelper(5,10,'white','green')
+            scene.add(gridHelper)
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, .1,100)
+            camera.position.set(5,10,5)
+            camera.lookAt(scene.position)
+            controls = new OrbitControls(camera, renderer.domElement)
+
+            empty = new THREE.Object3D()
+            scene.add(empty)
+            
+            const loader = new GLTFLoader()
+            loader.load('../gltfs/afo.gltf', gltf=>{
+                gltf.scene.traverse(child=>{
+                    if(child.name==='Empty'){
+                        empty = child
+                    }
+                    //gltf 모델이 ambient light 안 먹힐 때
+                    if(child.material)child.material.metalness =0
+                })
+                scene.add(gltf.scene)
+                addSprite()
+            },xhr=>console.log(xhr.loaded/xhr.total*100+'% 노딩')
+            ,error=>console.log(error))
+            {
+                const ambientLight = new THREE.AmbientLight('skyblue', 1)
+                scene.add(ambientLight)
+                const pointLight = new THREE.PointLight()
+                pointLight.position.set(-2,2,2)
+                scene.add(pointLight)
+            }
+            console.log(empty)
+
+        }
+        function addSprite(){
+            texture = new THREE.CanvasTexture(ctx.canvas)
+            const material = new THREE.SpriteMaterial({
+                map:texture
+            })
+            const sprite = new THREE.Sprite(material)
+            sprite.center = new THREE.Vector2(0.1,1)
+            sprite.scale.set(1.5,1.5,1.5)
+            empty.add(sprite)
+
+        }
+
+        function animate(){
+            controls.update()
+            renderer.render(scene, camera)
+
+            requestAnimationFrame(animate)
+        }
+
+        window.addEventListener('resize',onWindowResize, false)
+
+        function onWindowResize(){
+            camera.aspect = window.innerWidth/window.innerHeight
+            camera.updateProjectionMatrix()
+            renderer.setSize(window.innerWidth, window.innerHeight)
+        }
+
+
+    </script>
+</body>
+</html>
+```
