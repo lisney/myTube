@@ -856,3 +856,163 @@ function resetSphere()
 </body>
 </html>
 ```
+
+# 글로우 쉐이더 +심플 후광
+![image](https://user-images.githubusercontent.com/30430227/124878068-a81f9600-e006-11eb-92ab-bc5727beb90d.png)
+
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <title>title</title>
+ <style>
+     #c{
+         display: block;
+         width: 600px;
+         height: 300px;
+     }
+ </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+    import * as THREE from './three.module.js'
+    import {OrbitControls} from './OrbitControls.js'
+
+    let renderer, scene, camera, controls, sphere
+    const canvas = document.querySelector('#c')
+
+    const vShader =`
+    uniform vec3 viewVector;
+uniform float c;
+uniform float p;
+varying float intensity;
+void main() 
+{
+    vec3 vNormal = normalize( normalMatrix * normal );
+	vec3 vNormel = normalize( normalMatrix * viewVector );
+	intensity = pow( c - dot(vNormal, vNormel), p );
+	
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}
+    `
+    const fShader =`
+    uniform vec3 glowColor;
+varying float intensity;
+void main() 
+{
+	vec3 glow = glowColor * intensity;
+    gl_FragColor = vec4( glow, 1.0 );
+}
+    `
+
+    init()
+    render()
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true})
+        
+        scene = new THREE.Scene()
+
+        camera = new THREE.PerspectiveCamera(50, 2, .1, 10)
+        camera.position.set(2,2,4)
+        controls = new OrbitControls(camera, canvas)
+        // controls.target = scene.position
+
+        {
+            const light = new THREE.PointLight()
+            light.position.set(0,5,0)
+            scene.add(light)
+        }
+
+        let geometry = new THREE.BufferGeometry()
+
+        const positionData=[
+            0,0,0,
+            2,0,0,
+            0,2,0
+        ]
+        const positionArray = new Float32Array(positionData)
+
+        const positionAttribute = new THREE.BufferAttribute(
+            positionArray,
+            3,
+            false
+        )
+
+        geometry.setAttribute('position', positionAttribute)
+
+        geometry = new THREE.BoxGeometry()
+
+        // const material = new THREE.MeshBasicMaterial()
+
+        const material = new THREE.ShaderMaterial({
+            uniforms: 
+		{ 
+			"c":   { type: "f", value: 1.0 },
+			"p":   { type: "f", value: 1.4 },
+			glowColor: { type: "c", value: new THREE.Color(0xffff00) },
+			viewVector: { type: "v3", value: camera.position }
+		},
+            vertexShader: vShader,
+            fragmentShader:fShader,
+            // side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        })
+
+        const cube = new THREE.Mesh(geometry, material)
+        scene.add(cube)
+
+        const spGeometry = new THREE.SphereGeometry(1,32,16)
+
+        sphere = new THREE.Mesh(spGeometry, material.clone())
+        sphere.scale.multiplyScalar(1.2)
+        scene.add(sphere)
+        //심플 후광
+        const tex = new THREE.TextureLoader()
+        const spriteMaterial = new THREE.SpriteMaterial({
+            map: tex.load('../glow.png'),
+            color:0x00ff50, 
+            transparent: false,
+            blending: THREE.AdditiveBlending
+        })
+        const sprite = new THREE.Sprite(spriteMaterial)
+        sprite.scale.multiplyScalar(5)
+        cube.add(sprite)
+
+    }
+
+    function resizeRendererToDisplaySize(renderer){
+        const canvas = renderer.domElement
+        const width = canvas.clientWidth
+        const height = canvas.clientHeight
+
+        const needResize = width!=canvas.width||height!=canvas.height
+
+        if(needResize){
+            renderer.setSize(width, height, false)
+        }
+
+        return needResize
+    }
+
+    function render(){
+        if(resizeRendererToDisplaySize(renderer)){
+            camera.aspect = canvas.clientWidth/canvas.clientHeight
+            camera.updateProjectionMatrix()
+        }
+        controls.update()
+        sphere.material.uniforms.viewVector.value =
+            new THREE.Vector3().subVectors(camera.position, sphere.position)
+        renderer.render(scene, camera)
+
+        requestAnimationFrame(render)
+    }
+</script>
+</body>
+</html>
+```
