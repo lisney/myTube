@@ -149,7 +149,6 @@ void main()
         camera = new THREE.PerspectiveCamera(50, 2, .1, 10)
         camera.position.set(2,2,4)
         controls = new OrbitControls(camera, canvas)
-        controls.target = scene.position
 
         {
             const light = new THREE.PointLight()
