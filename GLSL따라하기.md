@@ -111,7 +111,7 @@
     import * as THREE from './three.module.js'
     import {OrbitControls} from './OrbitControls.js'
 
-    let renderer, scene, camera, controls
+    let renderer, scene, camera, controls, sphere
     const canvas = document.querySelector('#c')
 
     const vShader =`
@@ -138,16 +138,6 @@ void main()
 }
     `
 
-// const vShader =`
-//         void main(){
-// 			gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-//         }
-//     `
-//     const fShader =`
-//         void main(){
-//             gl_FragColor = vec4(1.0,0.0,0,1.0);
-//         }
-//     `
     init()
     render()
 
@@ -198,6 +188,7 @@ void main()
 		},
             vertexShader: vShader,
             fragmentShader:fShader,
+            // side: THREE.DoubleSide,
             blending: THREE.AdditiveBlending,
             transparent: true
         })
@@ -207,7 +198,7 @@ void main()
 
         const spGeometry = new THREE.SphereGeometry(1,32,16)
 
-        const sphere = new THREE.Mesh(spGeometry, material.clone())
+        sphere = new THREE.Mesh(spGeometry, material.clone())
         sphere.scale.multiplyScalar(1.2)
         scene.add(sphere)
 
@@ -233,6 +224,8 @@ void main()
             camera.updateProjectionMatrix()
         }
         controls.update()
+        sphere.material.uniforms.viewVector.value =
+            new THREE.Vector3().subVectors(camera.position, sphere.position)
         renderer.render(scene, camera)
 
         requestAnimationFrame(render)
