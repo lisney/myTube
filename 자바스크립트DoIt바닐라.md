@@ -42,3 +42,41 @@
     </script>
 ```
 
+## 가위바위보 맞추기?
+![image](https://user-images.githubusercontent.com/30430227/125717676-b9b6c5e5-c143-47c6-bedf-dc78bc255aeb.png)
+```
+    <script>
+        document.write('<h1>컴퓨터 가위, 바위, 보 맞추기</h1> ')
+
+        let gamer = prompt('가위, 바위, 보 중 선택하세요','가위')
+        let gamerNum
+
+        switch(gamer){
+            case '가위':
+                gamerNum = 3
+                break
+            case '바위':
+                gamerNum = 4
+                break
+            case '보':
+                gamerNum = 5
+                break
+            default:
+                alert('니주글래!')
+                location.reload()
+        }
+
+        let comNum = Math.ceil(Math.random()*3) + 2
+
+        document.write(`<img src="../4g${gamerNum}.jpg">`)
+
+        if(gamerNum ==comNum){
+            document.write(`<span style='background:yellow;font-size:3em;'>추카</span> `)
+            document.write(gamerNum, comNum)
+        }else{
+            document.write(`<span style='background:red;font-size:3em;'>니주글래</span> `)
+            document.write(gamerNum, comNum)
+        }
+
+    </script>
+```
