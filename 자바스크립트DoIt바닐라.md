@@ -156,7 +156,7 @@
     </script>
 ```
 
-## 금쪽같은 부모와 자식들 firstElementChild, chldNodes.item(3)
+## 금쪽같은 부모와 자식들 firstElementChild, chldNodes.item(3)/item 에는 태그요소만 있는게 아니구나!
 ![image](https://user-images.githubusercontent.com/30430227/125756044-7e205db3-4663-4b4d-a1d2-7a36add79b8d.png)
 ```
     <section>
