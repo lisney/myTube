@@ -138,3 +138,21 @@
     </script>
 ```
 
+## 배경색 바꾸기
+![image](https://user-images.githubusercontent.com/30430227/125734675-749b3ee6-2eb6-4ec9-952d-02d06960547a.png)
+```
+    <section>
+        <button onclick='onColor()'>배경색 바꾸기</button>
+    </section>
+    <script>
+        function onColor(){
+            const arrColor =['#ff0','orange','tomato','dodgerblue']
+            let arrNum = Math.floor(Math.random()*arrColor.length)
+            const bodyTag = document.querySelector('body')
+
+            console.log(arrNum)
+            bodyTag.style.background=arrColor[arrNum]
+        }
+    </script>
+```
+
