@@ -156,3 +156,57 @@
     </script>
 ```
 
+## 금쪽같은 부모와 자식들 firstElementChild, chldNodes.item(3)
+![image](https://user-images.githubusercontent.com/30430227/125756044-7e205db3-4663-4b4d-a1d2-7a36add79b8d.png)
+```
+    <section>
+        <p>금쪽같은 내새끼</p>
+        <div class="parent">
+            <div class="child one"></div>
+            <div class="child two" onclick="onParent()"></div>
+            <div class="child three"></div>
+        </div>
+    </section>
+```
+```
+ <style>
+     section{
+         margin: 0 auto;
+         width: 200px;
+         height: 150px;
+         display: flex;
+         flex-direction: column;
+         justify-content: left;
+         align-items: center;
+         border: 1px solid #000;
+         background: orange;
+     }
+     .parent{
+         width: 150px;
+         height: 80px;
+         border: 1px solid #000;
+         background: olive;
+         display: flex;
+         justify-content: space-around;
+         align-items: center;
+     }
+     .child{
+         width: 30px;
+         height: 50px;
+         background: gold;
+     }
+     
+
+ </style>
+```
+```
+    <script>
+        //.childNodes
+        // console.log(document.querySelector('.parent').childNodes.item(3))
+        document.querySelector('.parent').firstElementChild.style.background='white'
+        document.querySelector('.parent').childNodes.item(3).style.cursor='pointer'
+        function onParent(){
+            event.target.parentNode.style.background = 'black'
+        }
+    </script>
+```
