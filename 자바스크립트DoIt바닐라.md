@@ -108,7 +108,7 @@
 
 ```
 
-## DOM 객체
+## Window 객체
 ![image](https://user-images.githubusercontent.com/30430227/125729109-6826a766-0876-4d8c-aa87-df68831184a4.png)
 ```
     <script>
@@ -116,3 +116,25 @@
         document.write(screen.width)
     </script>
 ```
+
+## 문자열 메소드
+![image](https://user-images.githubusercontent.com/30430227/125731787-d2379175-1993-4929-94e5-aa4703e4209e.png)
+```
+    <script>
+        let phoneNum = prompt('전화번호?',"010-0000-0000")
+        //.substr(a,b) 인덱스 a부터 b개 반환
+        //.substring(a,b) 인덱스 a부터 인덱스b까지 반환(b가 작을 경우 b~a)
+        let result_1 = phoneNum.substr(-4,9)
+        let result_2 = phoneNum.replace('010','니주글래')
+        //slice 인덱스 a~b 반환
+        let result_3 = phoneNum.slice(-4, phoneNum.length)
+        //split(문자) 지정한 문자를 기준으로 나누고 배열 반환(b가 작으면 반환 없음)
+        let result_4 = phoneNum.split('-')
+
+        document.write(result_1,"****<br>")
+        document.write(result_2,'<br>')
+        document.write(result_3,'<br>')
+        document.write(result_4,)
+    </script>
+```
+
