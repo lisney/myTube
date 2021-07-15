@@ -80,3 +80,39 @@
 
     </script>
 ```
+
+![image](https://user-images.githubusercontent.com/30430227/125723794-7bfc11f7-8813-49e6-9a99-a0641046a474.png)
+```
+    <script>
+        document.write('<h1>이메일 유효성 검사</h1>')
+        const userEmail = prompt("당신의 이메일 주소는?","")
+        const arrUrl = ['co.kr','com','net','or.kr']
+
+        let check1 =false
+        let check2 = false
+
+        //indexOf 제일 먼저 찾은 문자의 인덱스 번호 반환
+        if(userEmail.indexOf('@')>0)check1=true
+
+        arrUrl.forEach(url=>{
+            if(userEmail.indexOf(url)>0)check2 = true
+        })
+
+        if(check1 && check2){
+            document.write(userEmail)
+        }else{
+            alert('니주글래')
+            location.reload()
+        }
+    </script>
+
+```
+
+## DOM 객체
+![image](https://user-images.githubusercontent.com/30430227/125729109-6826a766-0876-4d8c-aa87-df68831184a4.png)
+```
+    <script>
+        document.write(navigator.userAgent+'<br>')
+        document.write(screen.width)
+    </script>
+```
