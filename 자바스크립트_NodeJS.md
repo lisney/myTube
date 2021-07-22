@@ -218,3 +218,27 @@ server.get('/contact',(req,res)=>{
     
 </body>
 ```
+
+4. #each 반복
+
+>> server.js
+```
+server.get('/contact',(req,res)=>{
+    res.status(200).render('index.hbs',{  //{name:   } 객체 전달
+        contact: true,
+        list:[
+            'Danny','Jenny','boy'
+        ]
+    }) 
+})
+```
+>> index.hbs
+```
+<h1>반갑</h1>
+<ul>
+    {{#each list}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+```
+
