@@ -6,7 +6,7 @@ const server = http.createServer((request, response)=>{
     console.log(request.url) // '/xxx' 주소
     console.log(request.method) 
     if(request.url ==='/'){ // 주소가 '/'이면
-        response.write('Hello') // 서버의 응답
+        response.write('Hello') // 서버의 응답, express에선 response.send('text')하면 된다
         response.end()  // 응답 끝
     }else{
         response.write('hi')
