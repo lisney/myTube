@@ -220,6 +220,7 @@ server.get('/contact',(req,res)=>{
 ```
 
 4. #each 반복
+![image](https://user-images.githubusercontent.com/30430227/126609548-a83b2faf-8498-46c1-822a-550068a1fe9d.png)
 
 >> server.js
 ```
