@@ -163,4 +163,6 @@ server.get('/',(req,res)=>{
 <h2>{{name}} 안녕 </h2>
 ```
 
+### nodemon 감시 확장자 설정 방법
+>> nodemon server.js --ext .js,.hbs
 
