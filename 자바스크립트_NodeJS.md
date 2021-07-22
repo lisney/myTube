@@ -243,3 +243,34 @@ server.get('/contact',(req,res)=>{
 </ul>
 ```
 
+## REST API 1) GET method
+![image](https://user-images.githubusercontent.com/30430227/126629970-a22d1be7-7c01-4152-8615-f95d4bb06843.png)
+> /api/user 주소를 입력하면(요청하면) json데이터로 응답한다
+```
+const express = require('express')
+
+const server = express()
+
+const users =[
+    {
+    id:'Dan',
+    name:'Danny',
+    email:'d@dan.com'
+    },
+    {
+    id:'lisney',
+    name:'Lee',
+    email:'lisney@namver.com'
+    }
+
+]
+
+server.get('/api/user',(req, res)=>{
+    res.json(users)
+})
+
+
+server.listen(3000,()=>{
+    console.log('The server is running')
+})
+```
