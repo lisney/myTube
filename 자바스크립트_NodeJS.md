@@ -93,3 +93,74 @@ server.listen(3000, ()=>{
 1. handlebars 설치
 > npm i express-handlebars
 
+2. 서버 파일
+```
+const express = require('express')
+const hbs = require('express-handlebars')
+
+const server = express()
+
+server.engine('hbs', hbs({
+    extname:'hbs',
+    defaultLayout:'layout',
+    layoutDir:__dirname+'/views/layouts', // views 템플릿 폴더
+    partialsDir:__dirname+'/views/partials'
+}))
+
+server.set('view engine', 'hbs') // view engine 세팅
+
+server.use(express.static(__dirname+'/statics')) // express.static 미들웨어 사용
+
+server.use((req,res,next)=>{
+    //config
+    next()
+})
+
+server.get('/',(req,res)=>{
+    res.status(200).render('index.hbs') // 템플릿 랜더
+})
+
+server.listen(3000, ()=>{
+    console.log('The server is running on Port 3000!')
+})
+```
+
+3. layout.hbs
+> views/layouts 폴더
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <img src="./4g2.jpg" style="width: 200px;" alt="">
+    {{{ body }}} //이 부분에 index.hbs 내용이 들어간다
+</body>
+</html>
+```
+
+4. index.hbs
+> views 폴더
+```
+<h1>안녕</h1>
+```
+![image](https://user-images.githubusercontent.com/30430227/126600391-15ab168d-5b2c-4df0-823a-8af006ff2f8d.png)
+
+5. 서버에서 index.hbs 로 객체 보내기
+> 서버 내용 변경
+```
+server.get('/',(req,res)=>{
+    res.status(200).render('index.hbs',{  //{name:   } 객체 전달
+        name:'DannyTWLC'
+    }) 
+})
+```
+> index.hbs 내용 변경
+```
+<h1>안녕</h1>
+<h2>{{name}} 안녕 </h2>
+```
+
+
