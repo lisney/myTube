@@ -163,6 +163,58 @@ server.get('/',(req,res)=>{
 <h2>{{name}} 안녕 </h2>
 ```
 
-### nodemon 감시 확장자 설정 방법
+### nodemon 변경 감시 확장자 설정 방법
 >> nodemon server.js --ext .js,.hbs
 
+## handlebars 사용
+![image](https://user-images.githubusercontent.com/30430227/126608100-5d13d6de-1753-408b-acae-fbed45c8d493.png)
+
+1. layout.hbs
+```
+    <style>
+        .active{
+            color:white;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <img src="./4g2.jpg" style="width: 200px;" alt="">
+    <nav>
+        <a class="{{#if home}}active{{/if}}" href="/">Home</a>
+        <a class="{{#if features}}active{{/if}}" href="/features">Features</a>
+        <a class="{{#if contact}}active{{/if}}" href="/contact">Contact</a>
+    </nav>
+    {{{ body }}}
+```
+
+2. server.js
+```
+server.get('/',(req,res)=>{
+    res.status(200).render('index.hbs',{  //{name:   } 객체 전달
+        home: true
+    }) 
+})
+server.get('/features',(req,res)=>{
+    res.status(200).render('index.hbs',{  //{name:   } 객체 전달
+        features: true
+    }) 
+})
+server.get('/contact',(req,res)=>{
+    res.status(200).render('index.hbs',{  //{name:   } 객체 전달
+        contact: true
+    }) 
+})
+```
+
+3. partials(layout 분리)
+![image](https://user-images.githubusercontent.com/30430227/126608655-cf6d2ae4-a7f9-407e-949a-4d38782d3e69.png)
+```
+<body>
+    <img src="./4g2.jpg" style="width: 200px;" alt="">
+    {{>nav}}
+
+    {{{ body }}}
+    
+</body>
+```
