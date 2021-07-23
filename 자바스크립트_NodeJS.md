@@ -363,14 +363,54 @@ server.delete('/api/user/:id', (req, res)=>{
 ```
 > server.delete > splice(접합, 결혼)
 
+## 파일업로드 multer 미들웨어
+> npm i multer
+```
+const multer = require('multer')
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination:(req, file, cb)=>{
+            cb(null,'uploads/') // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
+        },
+        filename: (req, file, cb)=>{
+            cb(null, file.originalname) // cb 콜백함수를 통해 전송된 파일 이름 설정
+        }
+    })
+})
+```
+```
+server.post('/upload',upload.single('img'), (req, res)=>{
+    res.send('업로드 성공!'+req.file)
+})
+```
+
+
 ## 반복 코드
+![image](https://user-images.githubusercontent.com/30430227/126763279-d7efa93a-89df-49da-994f-c6e36c6c8f00.png)
+
 ```
 const express = require('express')
 const hbs = require('express-handlebars')
 const bodyParser = require('body-parser')
+//파일업로드
+const multer = require('multer')
 
+const upload = multer({
+    storage: multer.diskStorage({
+        destination:(req, file, cb)=>{
+            cb(null,'uploads/') // cb 콜백함수를 통해 전송된 파일 저장 디렉토리 설정
+        },
+        filename: (req, file, cb)=>{
+            cb(null, file.originalname) // cb 콜백함수를 통해 전송된 파일 이름 설정
+        }
+    })
+})
+
+//서버 생성
 const server = express()
 
+//hbs 엔진
 server.engine(
     'hbs',
     hbs({
@@ -383,16 +423,25 @@ server.engine(
 
 server.set('view engine', 'hbs')
 
+//미들웨어
 server.use(express.static(__dirname+'/statics')) // statics 가 루트경로로 지정된다
 
 server.use('/users', express.static(__dirname+'/statics'))// statics 가상경로 지정하기
 
-server.get('/', (req, res)=>{
-    res.send('Hello World!!')
+server.get('/',(req,res)=>{
+    res.status(200).sendFile(__dirname+'/index.html') // __dirname 현재 경로
 })
 
 server.get('/login', (req, res)=>{
     res.send('<h1>login please Goo!</h1>')
+})
+
+// 파일업로드
+server.get('/upload', (req, res)=>{
+    res.render('upload.hbs') // '/views' 폴더
+})
+server.post('/upload',upload.single('img'), (req, res)=>{
+    res.send('업로드 성공!'+req.file)
 })
 
 ////////////////////
