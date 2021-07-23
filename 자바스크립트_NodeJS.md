@@ -336,6 +336,69 @@ server.get("/api/user/:id",(req, res)=>{
 ![image](https://user-images.githubusercontent.com/30430227/126742307-03f57ab0-0fde-49ba-99f8-e28047460665.png)
 > 응답!
 
-## REST  put 데이터 업데이트
+## REST  put, delete 데이터 업데이트, 삭제
+```
+server.put('/api/user/:id',(req, res)=>{
+    let foundIndex = users.findIndex(u=>u.id===req.params.id)
+    if(foundIndex === -1){
+        res.status(404).json({errorMessage:'User was not found'})
+    }else{
+        users[foundIndex] = {...users[foundIndex], ...req.body} // ... Rest Operator 똑같은 프로퍼티가 있다면 뒤에 쓴걸로 덮어쓰기
+        res.json(users[foundIndex])
+    }
+})
+```
+> server.put > ... Rest Operator 사용
+
+```
+server.delete('/api/user/:id', (req, res)=>{
+    let foundIndex = users.findIndex(u=> u.id === req.params.id)
+    if(foundIndex === -1){
+        res.status(404).json({errorMessage:"User was not found"})
+    }else{
+        let foundUser = users.splice(foundIndex, 1)
+        res.json(foundUser[0])
+    }
+})
+```
+> server.delete > splice(접합, 결혼)
+
+## 반복 코드
+```
+const express = require('express')
+const hbs = require('express-handlebars')
+const bodyParser = require('body-parser')
+
+const server = express()
+
+server.engine(
+    'hbs',
+    hbs({
+        extname:'hbs',
+        defaultLayout:'layout',
+        layoutsDir:__dirname+'/views/layouts',
+        partialsDir:__dirname+'/views/partials'
+    })
+)
+
+server.set('view engine', 'hbs')
+
+server.use(express.static(__dirname+'/statics')) // statics 가 루트경로로 지정된다
+
+server.use('/users', express.static(__dirname+'/statics'))// statics 가상경로 지정하기
+
+server.get('/', (req, res)=>{
+    res.send('Hello World!!')
+})
+
+server.get('/login', (req, res)=>{
+    res.send('<h1>login please Goo!</h1>')
+})
+
+server.listen(3000, ['192.168.0.33'], ()=>{
+    console.log('The server is running...')
+})
+```
+
 
 
