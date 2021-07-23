@@ -274,3 +274,68 @@ server.listen(3000,()=>{
     console.log('The server is running')
 })
 ```
+
+## REST POST  body-parser 요청 데이터 파싱 미들웨어
+```
+const express = require('express')
+
+const bodyParser = require('body-parser') //body-parser
+
+const server = express()
+
+server.use(bodyParser.json()) // JSON 파싱
+
+const users =[
+    {
+    id:'Dan',
+    name:'Danny',
+    email:'d@dan.com'
+    },
+    {
+    id:'lisney',
+    name:'Lee',
+    email:'lisney@namver.com'
+    }
+
+]
+
+server.get('/api/user',(req, res)=>{
+    res.json(users)
+})
+
+server.post('/api/user',(req, res)=>{
+    console.log(req.body) // 요청 데이터 표시
+    users.push(req.body) // 요청 데이터 users에 추가
+    res.json(users)
+})
+
+server.listen(3000,()=>{
+    console.log('The server is running')
+})
+```
+![image](https://user-images.githubusercontent.com/30430227/126738802-6d986bc2-7ea4-4fea-93bd-8c8ca5649804.png)
+> 헤더에 보내는 데이터 타입 JSON
+
+![image](https://user-images.githubusercontent.com/30430227/126738842-11d72ce2-d94b-4e1e-8610-65d6c5c15c51.png)
+> 바디에 JSON 문 작성 ("쌍따옴표)
+
+
+## REST ID를 통해 데이터 불러오기 params(params.id)
+```
+server.get("/api/user/:id",(req, res)=>{
+    const user = users.find(u=>{
+        return u.id === req.params.id // 요청 : 파라미터 id 와 같은게 있는지 찾기, 있으면 true 리턴
+    })
+    if(user){
+        res.json(user)
+    }else{
+        res.status(404).json({errorMessage:"User was not found"})
+    }
+})
+```
+![image](https://user-images.githubusercontent.com/30430227/126742307-03f57ab0-0fde-49ba-99f8-e28047460665.png)
+> 응답!
+
+## REST  put 데이터 업데이트
+
+
