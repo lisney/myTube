@@ -395,10 +395,57 @@ server.get('/login', (req, res)=>{
     res.send('<h1>login please Goo!</h1>')
 })
 
+////////////////////
+const users =[
+    {
+    id:'Dan',
+    name:'Danny',
+    email:'d@dan.com'
+    },
+    {
+    id:'lisney',
+    name:'Lee',
+    email:'lisney@namver.com'
+    }
+
+]
+////////GET///////////
+server.get('/api/user',(req, res)=>{
+    res.json(users)
+})
+
+////////POST/////////
+server.post('/api/user',(req, res)=>{
+    console.log(req.body) // 요청 데이터 표시
+    users.push(req.body) // 요청 데이터 users에 추가
+    res.json(users)
+})
+
+////////PUT/////////////
+server.put('/api/user/:id',(req, res)=>{
+    let foundIndex = users.findIndex(u=>u.id===req.params.id)
+    if(foundIndex === -1){
+        res.status(404).json({errorMessage:'User was not found'})
+    }else{
+        users[foundIndex] = {...users[foundIndex], ...req.body} // ... Rest Operator 똑같은 프로퍼티가 있다면 뒤에 쓴걸로 덮어쓰기
+        res.json(users[foundIndex])
+    }
+})
+
+/////////DELETE/////////////
+server.delete('/api/user/:id', (req, res)=>{
+    let foundIndex = users.findIndex(u=> u.id === req.params.id)
+    if(foundIndex === -1){
+        res.status(404).json({errorMessage:"User was not found"})
+    }else{
+        let foundUser = users.splice(foundIndex, 1) //splice 접합, 결혼
+        res.json(foundUser[0])
+    }
+})
+
+
 server.listen(3000, ['192.168.0.33'], ()=>{
     console.log('The server is running...')
 })
 ```
-
-
 
