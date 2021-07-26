@@ -438,7 +438,7 @@ server.get('/login', (req, res)=>{
 
 // 파일업로드
 server.get('/upload', (req, res)=>{
-    res.render('upload.hbs') // '/views' 폴더
+    res.render('upload.hbs',{contact:true}) // '/views' 폴더, contact 변수 전달
 })
 server.post('/upload',upload.single('img'), (req, res)=>{
     res.send('업로드 성공!'+req.file)
