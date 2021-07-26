@@ -388,7 +388,7 @@ server.post('/upload',upload.single('img'), (req, res)=>{
 
 ## 반복 코드
 ![image](https://user-images.githubusercontent.com/30430227/126763279-d7efa93a-89df-49da-994f-c6e36c6c8f00.png)
-> upload.hbs
+> upload.hbs '/views/'
 ```
 <form action="upload" method='post' enctype="multipart/form-data">
     <input type="file" name="img">
@@ -396,7 +396,7 @@ server.post('/upload',upload.single('img'), (req, res)=>{
 </form>
 ```
 
->layout.hbs
+>layout.hbs '/views/layouts/'
 ```
 <!DOCTYPE html>
 <html lang="ko">
@@ -420,7 +420,7 @@ server.post('/upload',upload.single('img'), (req, res)=>{
 </html>
 ```
 
-> nav.hbs
+> nav.hbs '/views/partials/'
 ```
     <nav>
         <a class="{{#if home}}active{{/if}}" href="/">Home</a>
