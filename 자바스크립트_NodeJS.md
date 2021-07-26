@@ -466,6 +466,8 @@ server.set('view engine', 'hbs')
 //미들웨어
 server.use(express.static(__dirname+'/statics')) // statics 가 루트경로로 지정된다
 
+server.use(bodyParser.json())
+
 server.use('/users', express.static(__dirname+'/statics'))// statics 가상경로 지정하기
 
 server.get('/',(req,res)=>{
