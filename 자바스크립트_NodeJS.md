@@ -390,7 +390,7 @@ server.post('/upload',upload.single('img'), (req, res)=>{
 ![image](https://user-images.githubusercontent.com/30430227/126763279-d7efa93a-89df-49da-994f-c6e36c6c8f00.png)
 > upload.hbs '/views/'
 ```
-<form action="upload" method='post' enctype="multipart/form-data">
+<form action="upload" method='post' enctype="multipart/form-data"> // action 해당경로 '/upload'로 이동
     <input type="file" name="img">
     <input type="submit">
 </form>
