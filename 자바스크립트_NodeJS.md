@@ -388,6 +388,46 @@ server.post('/upload',upload.single('img'), (req, res)=>{
 
 ## 반복 코드
 ![image](https://user-images.githubusercontent.com/30430227/126763279-d7efa93a-89df-49da-994f-c6e36c6c8f00.png)
+> upload.hbs
+```
+<form action="upload" method='post' enctype="multipart/form-data">
+    <input type="file" name="img">
+    <input type="submit">
+</form>
+```
+
+>layout.hbs
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        .active{
+            color:white;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <img src="./4g2.jpg" style="width: 200px;" alt="">
+    {{>nav}}
+
+    {{{ body }}}
+    
+</body>
+</html>
+```
+
+> nav.hbs
+```
+    <nav>
+        <a class="{{#if home}}active{{/if}}" href="/">Home</a>
+        <a class="{{#if features}}active{{/if}}" href="/features">Features</a>
+        <a class="{{#if contact}}active{{/if}}" href="/contact">Contact</a>
+    </nav>
+```
 
 ```
 const express = require('express')
@@ -496,5 +536,9 @@ server.delete('/api/user/:id', (req, res)=>{
 server.listen(3000, ['192.168.0.33'], ()=>{
     console.log('The server is running...')
 })
+```
+
+```
+
 ```
 
