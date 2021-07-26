@@ -539,8 +539,119 @@ server.listen(3000, ['192.168.0.33'], ()=>{
     console.log('The server is running...')
 })
 ```
+## 몽고db
+![image](https://user-images.githubusercontent.com/30430227/126935220-f2819c3a-83f2-48ed-8400-86a9c010a3d6.png)
+![image](https://user-images.githubusercontent.com/30430227/126935275-8985f2ba-2d1e-413b-9e5f-4492d886b56a.png)
+> 모든ip 주소를 허용하기 위해 두번 쩨 Add Different Ip 버튼을 클릭 후 '0.0.0.0'을 입력, 사용자 root/1234 입력
 
+![image](https://user-images.githubusercontent.com/30430227/126935628-105cc6f5-76c6-40a6-8414-20dfe75d5612.png)
+> 두 번째 'Connect your Application' 클릭
+
+1. pagkage.json 생성
+> npm init --y 한방에 생성
+
+2. 모듈 설치
+> npm i express mongoose dotenv //dotenv 보안을 위해 환경변수를 관리하는 모듈
+
+>  variables.env 파일 생성
+```
+MONGODB_URL=mongodb+srv://root:1234@education.8nfen.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+```
+> server.js
+```
+const express = require('express')
+const mongoose = require('mongoose')
+require('dotenv').config({path:'variables.env'})
+
+// console.log(process.env.MONGODB_URL) // dotenv 내 변수 'process.env.변수명'
+
+//몽고db접속 URL
+// const MONGODB_URL ='mongodb+srv://root:1234@education.8nfen.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+
+mongoose.connect(process.env.MONGODB_URL, {useUnifiedTopology:true, useNewUrlParser: true},(err=>{
+    if(err){
+        console.log(err)
+    }else{
+        console.log('Connected to database succefully')
+    }
+}))
 ```
 
+3. 데이터베이스 모델 생성
+> models 폴더 생성 > User.js 모델 파일(대문자로 시작)
+```
+const mongoose = require('mongoose')
+const {Schema} = mongoose   // const Schema = mongoose.Schema 와 같다
+
+const userSchema = new Schema({
+    email:{
+        type:String,
+        required:true //email이 있어야 데이터 생성
+    },
+    name:String,
+    age:{
+        type:Number,
+        min:18,
+        max:50
+    },
+    //가입 일시 저장
+    // enrolled:{
+    //     type:Date,
+    //     default:Date.now
+    // }
+},
+//가입일 업데이트 일시 자동저장 enrolled 필요없음
+{
+    timestamps: true
+})
+
+module.exports = mongoose.model('User', userSchema)
+```
+
+> server.js 수정
+```
+const express = require('express')
+const mongoose = require('mongoose')
+require('dotenv').config({path:'variables.env'})
+
+const User = require('./models/User')
+
+const server = express()
+
+server.get('/',(req, res)=>{
+    const newUser = new User()
+    newUser.email = "danny@1.com"
+    newUser.name = 'Danny'
+    newUser.age = 25
+    newUser.save().then((user)=>{
+        console.log(user)
+        res.json({
+            message:'User Created Successfully'
+        })
+    }).catch((err)=>{
+        res.json({
+            message:"User was not successfully created"
+        })
+    })
+})
+
+server.listen(3000,err=>{
+    if(err){
+        return console.log(err)
+    }else{
+        mongoose.connect(process.env.MONGODB_URL, {useUnifiedTopology:true, useNewUrlParser: true},(err=>{
+            if(err){
+                console.log(err)
+            }else{
+                console.log('Connected to database succefully')
+            }
+        }))
+
+    }
+})
+// console.log(process.env.MONGODB_URL)
+
+//몽고db접속 URL
+// const MONGODB_URL ='mongodb+srv://root:1234@education.8nfen.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 ```
 
