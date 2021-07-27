@@ -79,6 +79,29 @@ server.listen(3000, ()=>{
 ```
 
 ![image](https://user-images.githubusercontent.com/30430227/127126797-f0853a8d-87e0-4f98-9b61-cdd6d0a44121.png)
+> layout.hbs
+```
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <div>Contact Book</div>
+        <ul>
+            <li><a href="/contacts">Index</a></li>
+            <li><a href="/contacts/new">New</a></li>
+        </ul>
+    </nav>
+
+    {{{body}}}
+</body>
+</html>
+```
+
+> index.hbs
 ```
 <h2>Index</h2>
 <ul>
@@ -87,6 +110,7 @@ server.listen(3000, ()=>{
     {{/each}}
 </ul>
 ```
+> new.hbs
 ```
 <h2>New</h2>
 <form action="/contacts" method="post">
