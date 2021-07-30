@@ -15,6 +15,13 @@
 10. 이름을 pupil로 바꾼 후 Edit 모드에서 스케일을 줄여 puipil 머티리얼을 적용한다(Edit모드에서 점들을 선택하고 Assign)
 11. pupil에 eyeball Mask를 적용한다음 Edit Mode에서 위치를 옮겨서 확인한다
 
+## 드로잉
+![image](https://user-images.githubusercontent.com/30430227/127612134-5d9e5ae5-ceb2-4a8d-bc10-b4c2a0173505.png)
+> Draw Strokes on Back(기존 형태 뒤에 그린다)/ Auto Merge / Add Weight Data / Use Additive Drawing(이전 키프레임에 쌓는다)
+
+## Boundary Stroke (Fill 기능)
+> 열린 커브에 색을 채울 때 임시로 닫힌 커브로 그린 후 채운다(Edit 모드에서 제거)
+> 단축키 Alt + Draw => Ctrl + Alt + Draw 로 바꾼다
 
 
 
