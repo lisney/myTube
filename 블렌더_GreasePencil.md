@@ -23,10 +23,22 @@
 > 열린 커브에 색을 채울 때 임시로 닫힌 커브로 그린 후 채운다(Edit 모드에서 제거)
 > 단축키 Alt + Draw => Ctrl + Alt + Draw 로 바꾼다
 
-## Tint Draw 
+## Tint Tool
 > 텍스처 드로잉의 경우 Texture Preview 모드로 바꾸어야 보임
 > Mode에서 선택한 대상만 적용됨(Stroke/Fill...)
 
+## Cutter Tool
+> Trim 기능
+
+## Eye Dropper
+> Stroke 머티리얼 생성/ Shift + 클릭(Fill) / Shift + Ctrl(Stroke + Fill)
+
+## Line
+> Thickness Profile / 시작 끝 점 굵기 설정
+> 단축키 'e' 이어 그리기
+
+## Guide 타입
+> 도움선
 
 
 
