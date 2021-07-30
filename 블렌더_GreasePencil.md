@@ -23,6 +23,10 @@
 > 열린 커브에 색을 채울 때 임시로 닫힌 커브로 그린 후 채운다(Edit 모드에서 제거)
 > 단축키 Alt + Draw => Ctrl + Alt + Draw 로 바꾼다
 
+## Tint Draw 
+> 텍스처 드로잉의 경우 Texture Preview 모드로 바꾸어야 보임
+> Mode에서 선택한 대상만 적용됨(Stroke/Fill...)
+
 
 
 
