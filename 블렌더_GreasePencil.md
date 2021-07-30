@@ -45,7 +45,7 @@
 > shift + v
 
 ## 텡탱볼
-![image](https://user-images.githubusercontent.com/30430227/127643950-828e36c8-a40d-44fd-b2df-5799fe0ec4ad.png)
+![image](https://user-images.githubusercontent.com/30430227/127644242-9e2f87dc-c0da-4edc-8b13-90faa600cf04.png)
 ![image](https://user-images.githubusercontent.com/30430227/127643978-bdc518ea-eea6-4ffe-83b1-b1a9b617308c.png)
 ![image](https://user-images.githubusercontent.com/30430227/127644049-27a7d98d-a9ea-469c-8681-6c56aac6a0fc.png)
 
