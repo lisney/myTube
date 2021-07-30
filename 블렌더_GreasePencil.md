@@ -42,5 +42,7 @@
 
 ## Stroke thickness
 ![image](https://user-images.githubusercontent.com/30430227/127641853-690963b6-70a2-4f9d-9c22-1bbf405ec0c2.png)
+> shift + v
+
 
 
