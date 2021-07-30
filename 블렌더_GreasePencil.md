@@ -50,6 +50,7 @@
 ![image](https://user-images.githubusercontent.com/30430227/127644049-27a7d98d-a9ea-469c-8681-6c56aac6a0fc.png)
 
 > 다른 방법
+
 ![image](https://user-images.githubusercontent.com/30430227/127646421-d39f95e2-f5f0-461f-91e4-2cbcb3c8978c.png)
 ![image](https://user-images.githubusercontent.com/30430227/127646535-fe6a4326-53b1-4932-af64-d01fd3a14b6f.png)
 
