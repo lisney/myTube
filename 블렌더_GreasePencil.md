@@ -52,6 +52,7 @@
 > 다른 방법
 
 ![image](https://user-images.githubusercontent.com/30430227/127646421-d39f95e2-f5f0-461f-91e4-2cbcb3c8978c.png)
+![image](https://user-images.githubusercontent.com/30430227/127646734-e5e373e4-5728-4937-a127-431c81b9e0e7.png)
 ![image](https://user-images.githubusercontent.com/30430227/127646535-fe6a4326-53b1-4932-af64-d01fd3a14b6f.png)
 
 
