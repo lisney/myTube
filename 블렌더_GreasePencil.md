@@ -61,17 +61,21 @@
 ![image](https://user-images.githubusercontent.com/30430227/127789483-a062a9ca-0be1-433a-b4a6-0ca815bc9824.png)
 
 > 키프레임
+> 
 ![image](https://user-images.githubusercontent.com/30430227/127789513-efd74afd-32da-4e58-94ad-93313ef4e946.png)
 ![image](https://user-images.githubusercontent.com/30430227/127789520-7fc885ef-d278-47b5-b762-cc8db9db6c33.png)
 
 > 프레임 1로 이동 후 Object 모드로 전환, 오토키프레임 끄고 본 생성
+> 
 ![image](https://user-images.githubusercontent.com/30430227/127789549-d598e8fc-87f6-4534-8956-4aecc980072e.png)
 
 > Modifier TimeOffset, PoseMode에서 본을 이동
+> 
 ![image](https://user-images.githubusercontent.com/30430227/127789596-330892db-6f3e-4a65-9811-feb148f241bd.png)
 ![image](https://user-images.githubusercontent.com/30430227/127789756-65dfd9ea-17c3-477f-9f3e-6f2d0e8fa39c.png)
 
 > Edit모드
+> 
 ![image](https://user-images.githubusercontent.com/30430227/127789823-ea280052-6fb1-4267-a84c-5c191fe203a1.png)
 ![image](https://user-images.githubusercontent.com/30430227/127790014-d1ca94a0-51a6-4477-9412-c053650ad767.png)
 
