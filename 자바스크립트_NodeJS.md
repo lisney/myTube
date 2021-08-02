@@ -655,3 +655,35 @@ server.listen(3000,err=>{
 // const MONGODB_URL ='mongodb+srv://root:1234@education.8nfen.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 ```
 
+
+## 몽구스
+> 데이터베이스 연결
+```
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/goormdb', { useNewUrlParser });
+// 위에서처럼 데이터베이스가 연결되면, connection 인스턴스가 생성되며 연결되는 순간에는 open 이벤트가 발생합니다. 이때 인스턴스는 mongoose.connection입니다. goormdb라는 데이터베이스가 없다면 mongoDB는 이를 자동으로 생성합니다.
+```
+
+> 여러개의 데이터베이스를 연결할 때
+```
+var mongoose = require('mongoose');
+var connection1 = mongoose.createConnection('mongodb://localhost/mydb1');
+var connection2 = mongoose.createConnection('mongodb://localhost/mydb2');
+```
+
+> 스키마 생성
+```
+var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
+var ArticleSchema = new Schema({
+    author: ObjectId,
+    title: String,
+    body: String,
+    date: Date
+});
+```
+
+> 스키마를 이용 모델 생성
+```
+var ArticleModel = mongoose.model('Article', ArticleScheme);
+```
+
