@@ -170,7 +170,8 @@ function handleValidationError(err,body){
 
 function updateRecord(req,res)
 {
-    Employee.findOneAndUpdate({_id:req.body._id}, req.body,{new:true},(err,doc)=>{
+// new:true 업데이트 후 문서를 반환한다(doc), runValidators: ValidationError 에러 체크(구문에러)
+    Employee.findOneAndUpdate({_id:req.body._id}, req.body,{new:true, runValidators:true},(err,doc)=>{
         if(!err){
             res.redirect('employee/list')
         }else{
@@ -180,10 +181,8 @@ function updateRecord(req,res)
                     viewTitle:"Uddate Employee",
                     employee:req.body
                 })
-            }else{
                 console.log('Error occured in Updating the records'+err)
             }
-        }
     })
 }
 
