@@ -30,6 +30,26 @@
 ## Cutter Tool
 > Trim 기능
 
+## Edit mode /'v' 분리 / 'm' 다른 레이어로 / Ctrl + 'm' 미러 / Shift + R  반복
+![image](https://user-images.githubusercontent.com/30430227/127853367-204caaa1-db74-4402-aab0-0155b9727538.png)
+
+> 그래디언트
+![image](https://user-images.githubusercontent.com/30430227/127854060-fcc1546e-11b8-400b-9982-99b2cb5a2db7.png)
+![image](https://user-images.githubusercontent.com/30430227/127854407-3b6ed166-db61-463e-92bf-6c907d70ee04.png)
+![image](https://user-images.githubusercontent.com/30430227/127854016-c080d82f-82b3-4b2e-8deb-41c033ba337d.png)
+
+## 멀티라인
+![image](https://user-images.githubusercontent.com/30430227/127855234-b28945bb-fd59-4554-bd6c-6b3ddf347e34.png)
+> 여러 점 선택 후 'e' 익스트루더
+
+## 혜성
+![image](https://user-images.githubusercontent.com/30430227/127855867-e85db7fd-234e-46dd-9179-1108f7505f43.png)
+![image](https://user-images.githubusercontent.com/30430227/127855836-9fd2a449-b015-426c-93d9-46f89971987e.png)
+![image](https://user-images.githubusercontent.com/30430227/127855965-d87e7373-e81f-45b0-ae58-3662f7c14774.png)
+
+## Array Modifier - Randomize
+![image](https://user-images.githubusercontent.com/30430227/127859264-99cfb70d-6b88-493d-abdf-1acd4f2d7bc6.png)
+
 ## Eye Dropper
 > Stroke 머티리얼 생성/ Shift + 클릭(Fill) / Shift + Ctrl(Stroke + Fill)
 
@@ -81,3 +101,13 @@
 ![image](https://user-images.githubusercontent.com/30430227/127790014-d1ca94a0-51a6-4477-9412-c053650ad767.png)
 
 ![image](https://user-images.githubusercontent.com/30430227/127790236-23715820-09d0-4a0b-824d-3ffba2614955.png)
+
+## holdout 마스크 머티리얼
+![image](https://user-images.githubusercontent.com/30430227/127842987-9ed11e99-0fde-481c-88ea-01d9111db4c7.png)
+![image](https://user-images.githubusercontent.com/30430227/127843019-716da9fa-70f0-436e-80aa-323139651f90.png)
+
+## circle 
+ctrl + 마우스 휠 => 다각형
+
+## Layer Auto Lock
+![image](https://user-images.githubusercontent.com/30430227/127851954-c7d58c33-3a58-4f02-8aa8-9fe7941a76a1.png)
