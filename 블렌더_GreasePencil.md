@@ -134,4 +134,8 @@ ctrl + 마우스 휠 => 다각형
 ![image](https://user-images.githubusercontent.com/30430227/127954083-e6c5d6b1-9e8a-49d5-b693-73645963d11c.png)
 ![image](https://user-images.githubusercontent.com/30430227/127954111-6bc2122f-ecbb-4733-8803-04bb40059691.png)
 
+## Constraint 근경/중경/원경
+![image](https://user-images.githubusercontent.com/30430227/127954824-895c29b3-8d5a-4642-83b2-1f072b71c9b6.png)
+![image](https://user-images.githubusercontent.com/30430227/127954836-688dab93-de20-4c18-aed8-d22abb735d52.png)
+![image](https://user-images.githubusercontent.com/30430227/127954851-a576910d-2c65-4e34-854f-318e3484f481.png)
 
