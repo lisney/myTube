@@ -111,3 +111,27 @@ ctrl + 마우스 휠 => 다각형
 
 ## Layer Auto Lock
 ![image](https://user-images.githubusercontent.com/30430227/127851954-c7d58c33-3a58-4f02-8aa8-9fe7941a76a1.png)
+
+## Maker 'm', 글자수정 Ctrl + 'm'
+![image](https://user-images.githubusercontent.com/30430227/127942083-8ba49424-4584-495c-a9e6-79f3db32ff58.png)
+
+
+## Tint Modifier Fake DOF
+![image](https://user-images.githubusercontent.com/30430227/127942672-64c3c04a-afc4-424b-8faa-4a99a43d6b12.png)
+![image](https://user-images.githubusercontent.com/30430227/127942695-66607307-2f24-483a-8109-18771bc7ade3.png)
+
+## Offset Modifier
+![image](https://user-images.githubusercontent.com/30430227/127942750-506a929c-29c0-4f83-ba51-ccf2fa5d30e0.png)
+![image](https://user-images.githubusercontent.com/30430227/127942735-184b3a48-6075-4bf3-b7da-da14c23489ca.png)
+
+
+## Constraint/ Floor
+![image](https://user-images.githubusercontent.com/30430227/127953747-834a10d3-f583-4edb-a117-86fc3a3c8c22.png)
+![image](https://user-images.githubusercontent.com/30430227/127953766-e167454c-c877-49ae-9b4d-268be528d371.png)
+
+## Constraint/ Maintain Volume
+![image](https://user-images.githubusercontent.com/30430227/127954124-bcd1f76d-54cd-4c7a-af59-c6030d450c72.png)
+![image](https://user-images.githubusercontent.com/30430227/127954083-e6c5d6b1-9e8a-49d5-b693-73645963d11c.png)
+![image](https://user-images.githubusercontent.com/30430227/127954111-6bc2122f-ecbb-4733-8803-04bb40059691.png)
+
+
