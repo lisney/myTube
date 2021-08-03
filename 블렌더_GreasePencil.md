@@ -142,4 +142,10 @@ ctrl + 마우스 휠 => 다각형
 ## Convert to
 ![image](https://user-images.githubusercontent.com/30430227/127955179-7eae9741-0ef3-4299-84d4-9c6be9ea042b.png)
 ![image](https://user-images.githubusercontent.com/30430227/127955148-fd3f6869-a037-498d-856c-5e4abe275046.png)
-![image](https://user-images.githubusercontent.com/30430227/127958728-e8b69393-a778-48b7-a1d0-9d69793490e3.png)
+
+## 자동차 와이프 회전
+> #cos(frame) -> cos(frame*pi/20)
+![image](https://user-images.githubusercontent.com/30430227/127959774-67560b78-4fc4-4573-8a71-c9375f3e9ed4.png)
+
+
+
