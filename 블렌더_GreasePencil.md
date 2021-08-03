@@ -139,3 +139,7 @@ ctrl + 마우스 휠 => 다각형
 ![image](https://user-images.githubusercontent.com/30430227/127954836-688dab93-de20-4c18-aed8-d22abb735d52.png)
 ![image](https://user-images.githubusercontent.com/30430227/127954851-a576910d-2c65-4e34-854f-318e3484f481.png)
 
+## Convert to
+![image](https://user-images.githubusercontent.com/30430227/127955179-7eae9741-0ef3-4299-84d4-9c6be9ea042b.png)
+![image](https://user-images.githubusercontent.com/30430227/127955148-fd3f6869-a037-498d-856c-5e4abe275046.png)
+![image](https://user-images.githubusercontent.com/30430227/127958728-e8b69393-a778-48b7-a1d0-9d69793490e3.png)
