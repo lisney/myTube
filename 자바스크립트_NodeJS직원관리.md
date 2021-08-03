@@ -65,8 +65,8 @@ app.get('/',(req,res)=>{
     })
     
     //별도 라우터 사용하기
-    const employeeController =require('./controller/employeeController')
-    app.use('/employee', employeeController) // '/employee' 경로
+    const employeeRouter =require('./routers/employeeRouter')
+    app.use('/employee', employeeRouter) // '/employee' 경로
 ```
 
 > 라우터 employeeController.js
