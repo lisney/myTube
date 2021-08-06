@@ -1,4 +1,6 @@
 ## Addon
+설치 시 TimeScrub 옵션 체크 끈다(단축키 혼선)
+
 ![image](https://user-images.githubusercontent.com/30430227/128438995-0aba4100-e048-46a2-bcb2-6d5538b24348.png)
 ![image](https://user-images.githubusercontent.com/30430227/128439042-0d05f240-8e8f-47f6-b9ad-32ac11863f3b.png)
 
