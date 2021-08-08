@@ -163,5 +163,9 @@ ctrl + 마우스 휠 => 다각형
 > #cos(frame) -> cos(frame*pi/20)
 ![image](https://user-images.githubusercontent.com/30430227/127959774-67560b78-4fc4-4573-8a71-c9375f3e9ed4.png)
 
+## 로토스코핑 Camera Background
+![image](https://user-images.githubusercontent.com/30430227/128616610-337c92a5-058e-4b92-9767-03dd986c3530.png)
+
+
 
 
