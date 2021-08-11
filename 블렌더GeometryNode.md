@@ -9,6 +9,8 @@
 ![image](https://user-images.githubusercontent.com/30430227/120794443-366dab80-c573-11eb-9ef0-092446c6dcae.png)
 ![image](https://user-images.githubusercontent.com/30430227/120794475-408faa00-c573-11eb-9bcd-6faa1be57f94.png)
 ![image](https://user-images.githubusercontent.com/30430227/120794501-49807b80-c573-11eb-90a7-4e215902f725.png)
+> Whole Collection 체크를 끄면 Seed가 나타난다
+
 ![image](https://user-images.githubusercontent.com/30430227/120794532-52714d00-c573-11eb-9d61-b45636fccded.png)
 
 # 모그래픽 1
