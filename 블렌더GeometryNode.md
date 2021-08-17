@@ -1,3 +1,8 @@
+# 노드 뮤트 
+![image](https://user-images.githubusercontent.com/30430227/129670865-dd6b7fbe-6573-46c1-8bb1-f3410b4cdcdb.png)
+
+# Layout Frame에서 벗어나기 Alt + P
+
 # 빌딩 I
 ![image](https://user-images.githubusercontent.com/30430227/120792513-9878e180-c570-11eb-8b78-b48a04d11931.png)
 ![image](https://user-images.githubusercontent.com/30430227/120792541-a464a380-c570-11eb-8505-e1d922b7c409.png)
