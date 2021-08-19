@@ -6,10 +6,12 @@ Addon
 설치 시 TimeScrub 옵션 체크 끈다(단축키 혼선)
 
 ![image](https://user-images.githubusercontent.com/30430227/128438995-0aba4100-e048-46a2-bcb2-6d5538b24348.png)
-![image](https://user-images.githubusercontent.com/30430227/128439042-0d05f240-8e8f-47f6-b9ad-32ac11863f3b.png)
 
+![image](https://user-images.githubusercontent.com/30430227/128439042-0d05f240-8e8f-47f6-b9ad-32ac11863f3b.png)
 ![image](https://user-images.githubusercontent.com/30430227/128439085-2c7f4e2a-69b5-403a-a22a-dd15307b8a16.png)
+
 ![image](https://user-images.githubusercontent.com/30430227/128439128-fb200d56-8c08-4f33-a6cf-cb74233bf55a.png)
+
 > 텍스처 추가
 
 ![image](https://user-images.githubusercontent.com/30430227/128440446-b1a2b140-ef9f-419d-890b-f63faffafc9c.png)
