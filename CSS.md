@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" media="all" href="style.css" />
 
 # CSS
 >###  가상요소 `:before`, `after`
