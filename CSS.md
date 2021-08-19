@@ -1,5 +1,9 @@
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
 
+<div class='red'>
+Hello
+</div>
+	
 # CSS
 >###  가상요소 `:before`, `after`
 
