@@ -1,4 +1,8 @@
-## Addon
+GreasePencil
+==============
+
+Addon
+---------
 설치 시 TimeScrub 옵션 체크 끈다(단축키 혼선)
 
 ![image](https://user-images.githubusercontent.com/30430227/128438995-0aba4100-e048-46a2-bcb2-6d5538b24348.png)
@@ -14,10 +18,15 @@
 >Box Deform
 >
 
-## Mask
+
+Basic
+---------
+1.mask
+
 ![image](https://user-images.githubusercontent.com/30430227/125914029-d139b2b2-b98a-4c4b-891c-2dd90f1a22f7.png)
 
 ![image](https://user-images.githubusercontent.com/30430227/125914155-9c388baf-e7ab-4019-a17d-cbe39ace3b78.png)
+
 * Material Preview 모드 -> solid 모드(흰색 배경)
 1. Overlay > Guides>Floor Hide
 2. Add > Blank Grease Pencil
@@ -31,8 +40,10 @@
 10. 이름을 pupil로 바꾼 후 Edit 모드에서 스케일을 줄여 puipil 머티리얼을 적용한다(Edit모드에서 점들을 선택하고 Assign)
 11. pupil에 eyeball Mask를 적용한다음 Edit Mode에서 위치를 옮겨서 확인한다
 
-## 드로잉
+2. 드로잉
+
 ![image](https://user-images.githubusercontent.com/30430227/127612134-5d9e5ae5-ceb2-4a8d-bc10-b4c2a0173505.png)
+
 > Draw Strokes on Back(기존 형태 뒤에 그린다)/ Auto Merge / Add Weight Data / Use Additive Drawing(이전 키프레임에 쌓는다)
 
 ## Boundary Stroke (Fill 기능)
@@ -165,6 +176,14 @@ ctrl + 마우스 휠 => 다각형
 
 ## 로토스코핑 Camera Background
 ![image](https://user-images.githubusercontent.com/30430227/128616610-337c92a5-058e-4b92-9767-03dd986c3530.png)
+
+Tip
+-----
+1. Convert Curve
+기존 Ctrl + C는 안먹힌다 > Object 메뉴
+![image](https://user-images.githubusercontent.com/30430227/129989694-bbbb5b20-4f56-491a-a5a4-65568dadb014.png)
+새로운 커브가 생성된다 > 심플리파이 기능이 없으므로 Checker Deselect 후 Invert, Delete
+![image](https://user-images.githubusercontent.com/30430227/129989804-0235ef7f-f6d6-4a29-ab8a-abf253d13058.png)
 
 
 
